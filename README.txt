@@ -41,7 +41,7 @@ brew install pkg-config
 1) cd myWorld
 2) mkdir build
 3) cd build
-4) make ../ && make
+4) cmake ../ && make
 5) To run the compiled executable: ./myWorld
 
 (1 line to compile and run: cmake  ../ && make  && ./myWorld)
