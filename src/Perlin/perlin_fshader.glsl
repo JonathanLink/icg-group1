@@ -3,7 +3,8 @@
 out vec3 color;
 
 float rand(vec2 c){
-    return fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
+    float result = fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
+    return result;
 }
 
 float noise(vec2 p, float freq ){
@@ -18,7 +19,8 @@ float noise(vec2 p, float freq ){
     float d = rand((ij+vec2(1.,1.)));
     float x1 = mix(a, b, xy.x);
     float x2 = mix(c, d, xy.x);
-    return mix(x1, x2, xy.y);
+    float result = mix(x1, x2, xy.y);
+    return result;
 }
 
 float fbm(vec2 x) {
