@@ -17,7 +17,8 @@ void main() {
 	float local_height = texture(tex, my_uv_coords).r;
 	vec3 local_pos_3d = vec3(position.x, local_height, -position.y);
 
-	vec2 east_move = vec2(0.01, 0.01);
+	float delta = 0.1;
+	vec2 east_move = vec2(delta, delta);
 	vec2 west_move = -east_move;
 	float friend_height_west = texture(tex, my_uv_coords + west_move).r;
 	float friend_height_east = texture(tex, my_uv_coords + east_move).r;
