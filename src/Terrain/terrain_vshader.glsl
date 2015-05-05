@@ -5,6 +5,8 @@ layout (location = 0) in vec2 position;
 out float diffuse_coefficient;
 out float my_height;
 
+out vec2 uv;
+
 uniform mat4 MVP;
 uniform sampler2D tex;
 uniform mat4 normal_matrix;
@@ -12,6 +14,7 @@ uniform mat4 normal_matrix;
 void main() {
 	// UV textures in [0,1] whereas OpenGL [-1, 1]
     vec2 my_uv_coords = (position + vec2(1.0, 1.0)) * 0.5;
+    uv = my_uv_coords;
 	float local_height = texture(tex, my_uv_coords).r;
 	vec3 local_pos_3d = vec3(position.x, local_height, -position.y);
 
@@ -36,4 +39,5 @@ void main() {
 
 	my_height = local_height;
     gl_Position = MVP * vec4(local_pos_3d, 1.0);
+
 }

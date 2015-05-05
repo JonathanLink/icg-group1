@@ -31,6 +31,16 @@ void Terrain::init() {
     // Apply a rotation on the model matrix
     model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+
+
+    // Bind Grass Texture
+    _grassTexId = gen2DTexture("../tex/grass.jpg", GL_RGB);
+     // Bind Snow Texture
+    _snowTexId = gen2DTexture("../tex/snow.jpg", GL_RGB);
+     // Bind Sand Texture
+    _sandTexId = gen2DTexture("../tex/sand.jpg", GL_RGB);
+     // Bind Rock Texture
+    _rockTexId = gen2DTexture("../tex/rock.jpg", GL_RGB);
 }   
 
 
@@ -50,11 +60,30 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glm::mat4 normal_matrix_data = glm::transpose(glm::inverse(modelView));
     glUniformMatrix4fv(normalMatrix, 1, GL_FALSE,  glm::value_ptr(normal_matrix_data));
 
-    // Bind texture
+
+    /* Bind textures */
+    //Perlin Noise
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _textureId);
     GLuint tex_id = glGetUniformLocation(pid, "tex");
     glUniform1i(tex_id, 0);
+    //Grass
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, _grassTexId);
+    glUniform1i(glGetUniformLocation(pid, "grassTex"), 1);
+    //Snow
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, _snowTexId);
+    glUniform1i(glGetUniformLocation(pid, "snowTex"), 2);
+    //Sand
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, _sandTexId);
+    glUniform1i(glGetUniformLocation(pid, "sandTex"), 3);
+    //Rock
+    glActiveTexture(GL_TEXTURE4);
+    glBindTexture(GL_TEXTURE_2D, _rockTexId);
+    glUniform1i(glGetUniformLocation(pid, "rockTex"), 4);
+
 
     // Draw
     glBindVertexArray(_vertexArrayId);
