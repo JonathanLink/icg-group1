@@ -1,5 +1,5 @@
-#ifndef WORLD_H
-#define WORLD_H
+#ifndef MYWORLD_H
+#define MYWORLD_H
 
 #include "pgl/Scene.h"
 #include "Terrain/Terrain.h"
@@ -9,7 +9,6 @@
 #include "Cube/Cube.h"
 
 class MyWorld: public Scene {
-
 public:
 	MyWorld();
 	void init() override;
@@ -17,13 +16,11 @@ public:
 	void cleanUp() override;
 
 private:
-
 	Perlin _perlin;
 	Terrain _terrain;
 	Triangle _triangle;
 	Square _square;
 	Cube _cube;
-
 };
 
-#endif
+#endif // MYWORLD_H

@@ -2,15 +2,18 @@
 
 
 FrameBuffer::FrameBuffer(GLuint width, GLuint height): _width(width), _height(height) {
+    // Do nothing
 }
 
 GLuint FrameBuffer::initTextureId() {
     // Framebuffer
     glGenFramebuffers(1, &_frameBufferObject);
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBufferObject);
+
     // Create a color attchment texture
     GLuint textureColorbuffer = generateAttachmentTexture(false, false);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+
     // Create a renderbuffer object for depth and stencil attachment
     GLuint renderBufferObject;
     glGenRenderbuffers(1, &renderBufferObject);

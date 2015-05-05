@@ -1,11 +1,10 @@
 #include "pgl/Scene.h"
 
 Scene::Scene() : camera(glm::vec3(0.0f, 12.0f, 10.0f)) {
-
+    // Do nothing
 }
 
 void Scene::renderScene() {
-
     deltaTime = glfwGetTime() - lastTime;
     lastTime = glfwGetTime();
 
@@ -18,7 +17,7 @@ void Scene::renderScene() {
     render();
 }
 
-void Scene::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+void Scene::keyCallback(GLFWwindow* /*window*/, int key, int /*scancode*/, int action, int /*mode*/) {
     if(action == GLFW_PRESS) {
         keys[key] = true;
     } else if (action == GLFW_RELEASE) {
@@ -26,16 +25,18 @@ void Scene::keyCallback(GLFWwindow* window, int key, int scancode, int action, i
     }
 }
 
-void Scene::mouseCallback(GLFWwindow* window, double xpos, double ypos) {
+void Scene::mouseCallback(GLFWwindow* /*window*/, double xpos, double ypos) {
     if(firstMouse) {
         lastX = xpos;
         lastY = ypos;
         firstMouse = false;
     }
+
     GLfloat xOffset = xpos - lastX;
     GLfloat yOffset = lastY - ypos;
     lastX = xpos;
     lastY = ypos;
+
     camera.rotate(xOffset, yOffset);
 }
 

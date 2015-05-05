@@ -1,6 +1,5 @@
 #include "pgl/Camera.h"
 
-
 Camera::Camera(glm::vec3 position) {
     _position = position;
     _worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -29,24 +28,30 @@ void Camera::updateCameraVectors() {
 void Camera::translate(CameraMovement direction, GLfloat deltaTime) {
     GLfloat velocity = _movementSpeed * deltaTime;
     switch(direction) {
-        case FORWARD:
-        _position += _front * velocity;
-        break;
+        case FORWARD: {
+            _position += _front * velocity;
+            break;
+        }
 
-        case BACKWARD:
-        _position -= _front * velocity;
-        break;
 
-        case LEFT:
-        _position -= _right * velocity;
-        break;
+        case BACKWARD: {
+            _position -= _front * velocity;
+            break;
+        }
 
-        case RIGHT:
-        _position += _right * velocity;
-        break;
+        case LEFT: {
+            _position -= _right * velocity;
+            break;
+        }
 
-        default:
-        break;
+        case RIGHT: {
+            _position += _right * velocity;
+            break;
+        }
+
+        default: {
+            // Do nothing
+        }
     }
 }
 
@@ -65,7 +70,6 @@ void Camera::rotate(GLfloat xOffset, GLfloat yOffset) {
     }
 
     updateCameraVectors();
-
 } 
 
 

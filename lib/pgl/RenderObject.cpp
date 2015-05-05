@@ -7,13 +7,12 @@
 #include <iostream>
 
 RenderObject::RenderObject() {
-
+    // Do nothing
 }
 
 
 // TODO: better to use that solution: http://stackoverflow.com/questions/11093444/compile-a-program-with-local-file-embedded-as-a-string-variable
 void RenderObject::loadShaders(const char* vertexShaderFile,const char* fragmentShaderFile) {
-
     // 1. Retrieve the vertex/fragment source code from filePath
     std::string vertexCode;
     std::string fragmentCode;
@@ -22,12 +21,15 @@ void RenderObject::loadShaders(const char* vertexShaderFile,const char* fragment
         std::ifstream vShaderFile(vertexShaderFile);
         std::ifstream fShaderFile(fragmentShaderFile);
         std::stringstream vShaderStream, fShaderStream;
+
         // Read file's buffer contents into streams
         vShaderStream << vShaderFile.rdbuf();
-        fShaderStream << fShaderFile.rdbuf();       
+        fShaderStream << fShaderFile.rdbuf();
+
         // close file handlers
         vShaderFile.close();
         fShaderFile.close();
+
         // Convert stream into GLchar array
         vertexCode = vShaderStream.str();
         fragmentCode = fShaderStream.str();     
@@ -47,6 +49,7 @@ void RenderObject::loadShaders(const char* vertexShaderFile,const char* fragment
     vertex = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex, 1, &vShaderCode, NULL);
     glCompileShader(vertex);
+
     // Print compile errors if any
     glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
     if(!success) {
@@ -58,6 +61,7 @@ void RenderObject::loadShaders(const char* vertexShaderFile,const char* fragment
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment, 1, &fShaderCode, NULL);
     glCompileShader(fragment);
+
     // Print compile errors if any
     glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
     if(!success) {
@@ -70,13 +74,15 @@ void RenderObject::loadShaders(const char* vertexShaderFile,const char* fragment
     glAttachShader(pid, vertex);
     glAttachShader(pid, fragment);
     glLinkProgram(pid);
-        // Print linking errors if any
+
+    // Print linking errors if any
     glGetProgramiv(pid, GL_LINK_STATUS, &success);
     if (!success) {
         glGetProgramInfoLog(pid, 512, NULL, infoLog);
         std::cout << "[ERROR] RenderObject:loadShaders()\n\tLINKING_FAILED\n\t" << infoLog << std::endl;
     }
-        // Delete the shaders as they're linked into our program now and no longer necessery
+
+    // Delete the shaders as they're linked into our program now and no longer necessery
     glDeleteShader(vertex);
     glDeleteShader(fragment);
 
@@ -95,14 +101,17 @@ GLuint RenderObject::gen2DTexture(const char* imagePath, GLint format) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    int width, height, n;
+
     int req_comp = (format == GL_RGB) ? STBI_rgb : STBI_rgb_alpha;
+
+    int width, height, n;
     unsigned char* image = stbi_load(imagePath, &width, &height, &n, req_comp);
     if (image != NULL) {
         glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, image );
         glGenerateMipmap(GL_TEXTURE_2D);
         stbi_image_free(image);
     }
+
     glBindTexture(GL_TEXTURE_2D, 0);
     return textureId;
 }

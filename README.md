@@ -48,29 +48,29 @@ Build process
 Description of all classes of the pgl library:
 
 * Window:
-	* It is a static class. For the moment, pgl can only handle one and unique window.
+    * It is a static class. For the moment, pgl can only handle one and unique window.
 
 * Scene
-	* The window need to be associated to a Scene in order to display something.
-	* A Scene is an abstract class which:
-		* will handle all keyboard/mouse input
-		* set a default FPS camera for the scene
-		* force its subclass to implement those 3 methods: init(), render(), cleanUp().
-	* ADVICE: see Scene header to have a complete overview of the class.
+    * The window need to be associated to a Scene in order to display something.
+    * A Scene is an abstract class which:
+        * will handle all keyboard/mouse input
+        * set a default FPS camera for the scene
+        * force its subclass to implement those 3 methods: init(), render(), cleanUp().
+    * ADVICE: see Scene header to have a complete overview of the class.
 
 * RenderObject
-	* Each object you want to render MUST be a subclass of RenderObject. That way our class is force to implement those 3 methods: init(), render(mat4 view, mat4 projection) and cleanUp().
-	* IMPORTANT: In the init method of your subclass of Scene, don’t forget to call setScene(this);
-	RenderObject offers a method to load your vertex and fragments shader and one method to generate a 2D texture.
-	* ADVICE: See RenderObject header to have a complete overview of the class.
+    * Each object you want to render MUST be a subclass of RenderObject. That way our class is force to implement those 3 methods: init(), render(mat4 view, mat4 projection) and cleanUp().
+    * IMPORTANT: In the init method of your subclass of Scene, don’t forget to call setScene(this);
+    RenderObject offers a method to load your vertex and fragments shader and one method to generate a 2D texture.
+    * ADVICE: See RenderObject header to have a complete overview of the class.
 
 * Camera:
-	* Default camera of the pgl library. You never have to do anything with this class. 
-	* Scene object handle it for you.
+    * Default camera of the pgl library. You never have to do anything with this class. 
+    * Scene object handle it for you.
 
 * FrameBuffer
-	* FrameBuffer object with bind and unbind functions. Draw your texture in between those 2 calls.
-	* ADVICE: See FrameBuffer header to have a complete overview of the class.
+    * FrameBuffer object with bind and unbind functions. Draw your texture in between those 2 calls.
+    * ADVICE: See FrameBuffer header to have a complete overview of the class.
 
 
 > ********************************************************************************

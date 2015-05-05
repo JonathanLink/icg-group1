@@ -1,12 +1,12 @@
 #include "MyWorld.h"
 #include "pgl/FrameBuffer.h"
+#include "Constants.h"
 
-MyWorld::MyWorld()  {
-
+MyWorld::MyWorld() {
+    // Do nothing
 }
 
 void MyWorld::init() {
-
 	_perlin.setScene(this);
 	_terrain.setScene(this);
 	
@@ -14,26 +14,23 @@ void MyWorld::init() {
     _cube.setScene(this);
 
 	// Draw perlin noise in framebuffer we've just created
-	FrameBuffer frameBuffer = FrameBuffer(1024, 1024);
+    FrameBuffer frameBuffer = FrameBuffer(Constants::FRAMEBUFFER_WIDTH,
+                                          Constants::FRAMEBUFFER_WIDTH);
 	GLuint textureId = frameBuffer.initTextureId(); 
 	frameBuffer.bind();
 		_perlin.render(view, projection);
 	frameBuffer.unbind();
 
 	_terrain.setTexture(textureId);
-	
-
 }
 
 void MyWorld::render() {
-
 	bool renderTerrain = true;
 	if (renderTerrain) {
 		_terrain.render(view, projection);
 	} else {
 		_perlin.render(view, projection);
 	}
-	
 
 	// uncomment this line to have a surprise 
     //_cube.render(view, projection);
