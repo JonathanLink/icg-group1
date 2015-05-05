@@ -1,4 +1,5 @@
 #include "Terrain.h"
+#include "../Constants.h"
 
 
 Terrain::Terrain() {
@@ -45,9 +46,9 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glm::mat4 mvp = projection * modelView;
     glUniformMatrix4fv(mvpLoc, 1, GL_FALSE,  glm::value_ptr(mvp));
 
-    GLuint inverseModelViewLoc = glGetUniformLocation(pid, "inverseModelView");
-    glm::mat4 inverseModelView = glm::transpose(glm::inverse(modelView));
-    glUniformMatrix4fv(inverseModelViewLoc, 1, GL_FALSE,  glm::value_ptr(inverseModelView));
+    GLuint normalMatrix = glGetUniformLocation(pid, "normal_matrix");
+    glm::mat4 normal_matrix_data = glm::transpose(glm::inverse(modelView));
+    glUniformMatrix4fv(normalMatrix, 1, GL_FALSE,  glm::value_ptr(normal_matrix_data));
 
     // Bind texture
     glActiveTexture(GL_TEXTURE0);
