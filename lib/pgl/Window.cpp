@@ -1,16 +1,6 @@
 #include "pgl/Window.h"
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode); 
-static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-
-static GLuint _windowWidth;
-static GLuint _windowHeight;
-static const char* _title;
-static GLFWwindow* _window;
-static Scene* _scene;
-
-void Window::init(GLuint width, GLuint height, const char* title) {
+Window::Window(GLuint width, GLuint height, const char* title) {
     _windowWidth = width;
     _windowHeight = height;
     _title = title;
@@ -31,9 +21,9 @@ void Window::init(GLuint width, GLuint height, const char* title) {
     glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
 
     // set  callback functions
-    glfwSetKeyCallback(_window, key_callback);
-    glfwSetCursorPosCallback(_window, mouse_callback);
-    glfwSetScrollCallback(_window, scroll_callback);
+    glfwSetKeyCallback(_window, Window::window_key_callback);
+    glfwSetCursorPosCallback(_window,  Window::window_mouse_callback);
+    glfwSetScrollCallback(_window,  Window::window_scroll_callback);
 
     std::cout << "OpengGL Context has been set." << std::endl;
 
@@ -77,20 +67,22 @@ void Window::render()  {
      glfwTerminate();
 }
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+void Window::window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
     if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
-    Window::getScene()->keyCallback(window, key, scancode, action, mode);
+    getInstance().getScene()->keyCallback(window, key, scancode, action, mode);
 }
 
-void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-    Window::getScene()->mouseCallback(window, xpos, ypos);
+void Window::window_mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+    getInstance().getScene()->mouseCallback(window, xpos, ypos);
 }
 
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-    Window::getScene()->scrollCallback(window, xoffset, yoffset);
+void Window::window_scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+    getInstance().getScene()->scrollCallback(window, xoffset, yoffset);
 }
 
-
-
+Window &Window::getInstance() {
+    static Window instance(Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT, "Best landscape ever.");
+    return instance;
+}

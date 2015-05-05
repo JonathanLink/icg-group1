@@ -3,9 +3,7 @@
 
 #include "common.h"
 
-
 class FrameBuffer {
-
 public:
     FrameBuffer(GLuint width, GLuint height);
     GLuint initTextureId();

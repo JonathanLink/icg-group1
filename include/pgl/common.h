@@ -1,5 +1,5 @@
-#ifndef COMMON_H
-#define COMMON_H
+#ifndef EPFL_ICG_COMMON_H
+#define EPFL_ICG_COMMON_H
 
 #include <iostream>
 #include <vector>
@@ -12,4 +12,4 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "glm/ext.hpp"
 
-#endif
+#endif // EPFL_ICG_COMMON_H

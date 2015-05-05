@@ -10,7 +10,6 @@ RenderObject::RenderObject() {
     // Do nothing
 }
 
-
 // TODO: better to use that solution: http://stackoverflow.com/questions/11093444/compile-a-program-with-local-file-embedded-as-a-string-variable
 void RenderObject::loadShaders(const char* vertexShaderFile,const char* fragmentShaderFile) {
     // 1. Retrieve the vertex/fragment source code from filePath

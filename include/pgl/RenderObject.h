@@ -6,7 +6,6 @@
 #include "Scene.h"
 
 class RenderObject {
-
 public:
     RenderObject();
     virtual void init() =0;

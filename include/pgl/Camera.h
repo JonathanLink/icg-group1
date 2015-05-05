@@ -3,11 +3,8 @@
 
 #include "common.h"
 
-
 class Camera {
-
 public:
-
     enum CameraMovement {
         FORWARD,
         BACKWARD,
@@ -15,11 +12,11 @@ public:
         RIGHT
     };
 
-    const GLfloat YAW        = -90.0f;
-    const GLfloat PITCH      =  0.0f;
-    const GLfloat SPEED      =  3.0f;
-    const GLfloat SENSITIVTY =  0.25f;
-    const GLfloat ZOOM       =  0.0f;
+    const GLfloat YAW = -90.0f;
+    const GLfloat PITCH = 0.0f;
+    const GLfloat SPEED = 3.0f;
+    const GLfloat SENSITIVTY = 0.25f;
+    const GLfloat ZOOM = 0.0f;
 
     Camera(glm::vec3 position);
     glm::mat4 getViewMatrix();
@@ -29,7 +26,6 @@ public:
     GLfloat getZoom();
 
 private:
-
     glm::vec3 _position;
     glm::vec3 _front;
     glm::vec3 _up;
@@ -42,9 +38,6 @@ private:
     GLfloat _zoom;
 
     void updateCameraVectors();
-
-
-
 };
 
 #endif

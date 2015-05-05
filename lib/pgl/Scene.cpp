@@ -52,14 +52,6 @@ void Scene::setSceneHeight(GLuint height) {
     _sceneHeight = height;
 }
 
-GLuint Scene::getSceneWidth() const {
-    return _sceneWidth;
-}
-
-GLuint Scene::getSceneHeight() const {
-    return _sceneHeight;
-}
-
 GLuint Scene::getSceneAspectRatio() const {
     return _sceneWidth / _sceneHeight;
 }
