@@ -1,7 +1,6 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#include <GL/glu.h>
 
 class Constants {
 public:
