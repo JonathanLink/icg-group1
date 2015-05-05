@@ -3,7 +3,7 @@
 
 int main() {
     Window& window = Window::getInstance();
-
+    
     MyWorld myWorld = MyWorld();
 
     window.setScene(&myWorld);

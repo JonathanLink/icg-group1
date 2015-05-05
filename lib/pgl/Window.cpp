@@ -83,6 +83,6 @@ void Window::window_scroll_callback(GLFWwindow* window, double xoffset, double y
 }
 
 Window &Window::getInstance() {
-    static Window instance(Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT, "Best landscape ever.");
+    static Window instance(WINDOW_WIDTH, WINDOW_HEIGHT, "Best landscape ever.");
     return instance;
 }

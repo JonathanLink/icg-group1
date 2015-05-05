@@ -15,6 +15,9 @@ public:
 	void render() override;
 	void cleanUp() override;
 
+	static const GLuint FRAMEBUFFER_WIDTH = 1024;
+    static const GLuint FRAMEBUFFER_HEIGHT = 1024;
+
 private:
 	Perlin _perlin;
 	Terrain _terrain;

@@ -3,11 +3,14 @@
 
 #include "common.h"
 #include "Scene.h"
-#include "../../src/Constants.h"
+
+
 
 class Window {
 public:
     static Window& getInstance();
+    static const GLuint WINDOW_WIDTH = 800;
+    static const GLuint WINDOW_HEIGHT = 600;
 
     const int OPENGL_VERSION_MAJOR = 3;
     const int OPENGL_VERSION_MINOR = 3;
