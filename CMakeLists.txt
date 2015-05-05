@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build")
+
 set(PROJECT_NAME "myWorld")
 set(LIB_PATH "lib")
 set(SRC_PATH "src")
