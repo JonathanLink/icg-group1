@@ -6,31 +6,26 @@ Terrain::Terrain() {
 }
 
 void Terrain::init() {
-
     std::cout << "Init Terrain" << std::endl;
-    
     loadShaders( "../src/Terrain/terrain_vshader.glsl", "../src/Terrain/terrain_fshader.glsl" );
 
-    constructGrid();                        // construct grid
+    constructGrid();
+    glGenVertexArrays(1, &_vertexArrayId);
+    glGenBuffers(1, &_vertexBufferId);
+    glGenBuffers(1, &_elementBufferId);
 
-    glGenVertexArrays(1, &_vertexArrayId);  // vertexArray
-    glGenBuffers(1, &_vertexBufferId);      // vertexBuffer
-    glGenBuffers(1, &_elementBufferId);     // elementBuffer
-
-    glBindVertexArray(_vertexArrayId);      // bind vertexArray
-
+    glBindVertexArray(_vertexArrayId);
         // vertices
         glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
         glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(GLfloat), &_vertices[0], GL_STATIC_DRAW);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0); // position attribute (location=0)
+        // position attribute (location=0)
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
         glEnableVertexAttribArray(0);
 
         // indices
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBufferId);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices.size() * sizeof(GLuint), &_indices[0], GL_STATIC_DRAW);
-
-
-    glBindVertexArray(0);                      //unbind vertexArray
+    glBindVertexArray(0);
 
     // Apply a rotation on the model matrix
     model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -39,7 +34,6 @@ void Terrain::init() {
 
 
 void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
-
    useShaders();
 
     // Set uniform variables for the vertex and fragment glsl files
@@ -64,9 +58,7 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     // Draw
     glBindVertexArray(_vertexArrayId);
     glDrawElements(GL_TRIANGLE_STRIP, _indices.size(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0); 
-
-
+    glBindVertexArray(0);
 }
 
 void Terrain::cleanUp() {
