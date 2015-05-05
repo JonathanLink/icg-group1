@@ -2,7 +2,7 @@
 
 
 Terrain::Terrain() {
-
+    // Do nothing
 }
 
 void Terrain::init() {

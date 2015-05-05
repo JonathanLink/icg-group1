@@ -1,14 +1,11 @@
 #include "Triangle.h"
 
-#include <cmath>
-
 Triangle::Triangle()  {
-
+    // Do nothing
 }
 
 void Triangle::init() {
     std::cout << "Init Triangle" << std::endl;
-    
 
     glGenVertexArrays(1, &_vertexArrayId);
     glBindVertexArray(_vertexArrayId);
@@ -20,7 +17,6 @@ void Triangle::init() {
         1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
         0.0f,  1.0f, 0.0f, 0.0f, 0.0f, 1.0f
     };
-
 
     glBindVertexArray(_vertexArrayId); // bind VAO
     glGenBuffers(1, &_vertexBufferId);
@@ -36,12 +32,9 @@ void Triangle::init() {
     glEnableVertexAttribArray(1);
 
     glBindVertexArray(0); //unbind VAO
-
-
 }   
 
 void Triangle::render(const glm::mat4 &view, const glm::mat4 &projection) {
-
     // activate the shader
     useShaders();
 

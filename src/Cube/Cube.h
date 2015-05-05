@@ -4,7 +4,6 @@
 #include "pgl/RenderObject.h"
 
 class Cube: public RenderObject {
-
 public:
     Cube();
     void init() override; 
@@ -16,7 +15,6 @@ private:
     GLuint _vertexBufferId;
     GLuint _elementBufferId;
     GLuint _texture1;
-
 };
 
 #endif

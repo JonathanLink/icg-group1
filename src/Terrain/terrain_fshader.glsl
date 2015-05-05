@@ -28,7 +28,6 @@ void main() {
 
     vec3 diffuse = ((pos1 - pos0) + (pos2 - pos0) + (pos3 - pos0) + (pos4 - pos0)) / 4.0;
     float diffuseLength = length(diffuse);
-	
 
     if (height0 <= 0.39) {
     	 color = vec3(0.0, 0.0, 1.0);
@@ -41,8 +40,6 @@ void main() {
     }
 
     //color = vec3(height0, height0, height0);
-
     //color *= diffuseLength * 5.0;
-
     //color = vec3(1.0, 0.0, 0.0);
 }

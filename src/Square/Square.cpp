@@ -1,16 +1,12 @@
 #include "Square.h"
 
-
 Square::Square() {
-
+    // Do nothing
 }
 
 void Square::init() {
-
     std::cout << "Init Square" << std::endl;
-    
     loadShaders( "../src/Square/square_vshader.glsl", "../src/Square/square_fshader.glsl" );
-
 
     GLfloat vertices[] = {
         // Positions          // Colors           // Texture Coords
@@ -25,14 +21,11 @@ void Square::init() {
         1 , 2, 3
     };  
 
-
     glGenVertexArrays(1, &_vertexArrayId);
     glGenBuffers(1, &_vertexBufferId);
     glGenBuffers(1, &_elementBufferId);
 
-
     glBindVertexArray(_vertexArrayId); // bind VAO
-
 
     glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -57,7 +50,6 @@ void Square::init() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBufferId);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-
     glBindVertexArray(0); //unbind VAO
 
     // Bind Texture
@@ -66,11 +58,9 @@ void Square::init() {
 
     // Transformation
     model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-
 }   
 
 void Square::render(const glm::mat4 &view, const glm::mat4 &projection) {
-
     // better: 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _texture1);
@@ -82,7 +72,6 @@ void Square::render(const glm::mat4 &view, const glm::mat4 &projection) {
     useShaders();
 
     // Transformation
-
     // better: setUniformMatrix4fv("model", glm::value_ptr(model));
     GLuint modelLoc = glGetUniformLocation(pid, "model");
     GLuint viewLoc = glGetUniformLocation(pid, "view");

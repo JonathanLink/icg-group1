@@ -40,13 +40,10 @@ float fbm(vec2 x) {
 }
 
 void main() {
-
     /*float c = noise(gl_FragCoord.xy, 5);*/
     float c = fbm(gl_FragCoord.xy);
 
     color = vec3(c);
-
-
 }
 
 

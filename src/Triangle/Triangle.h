@@ -4,7 +4,6 @@
 #include "pgl/RenderObject.h"
 
 class Triangle: public RenderObject {
-
 public:
     Triangle();
     void init() override;

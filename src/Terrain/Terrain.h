@@ -4,7 +4,6 @@
 #include "pgl/RenderObject.h"
 
 class Terrain: public RenderObject {
-
 public:
     Terrain();
     void init() override;
@@ -19,6 +18,7 @@ private:
     GLuint _textureId;
     std::vector<GLfloat> _vertices;
     std::vector<GLuint> _indices;
+
     struct Triangle {
         double x;
         double y;
@@ -31,7 +31,6 @@ private:
     };
 
     void constructGrid();
-
 };
 
 #endif

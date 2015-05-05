@@ -1,6 +1,5 @@
 #include "Cube.h"
 
-
 glm::vec3  _cubePositions[] = {
   glm::vec3( 0.0f,  0.0f,  0.0f), 
   glm::vec3( 2.0f,  5.0f, -15.0f), 
@@ -15,13 +14,11 @@ glm::vec3  _cubePositions[] = {
 };
 
 Cube::Cube() {
-
+    // Do nothing
 }
 
 void Cube::init() {
-
     std::cout << "Init Cube" << std::endl;
-    
     loadShaders( "../src/Cube/cube_vshader.glsl", "../src/Cube/cube_fshader.glsl" );
 
     // x,y,z,u,v
@@ -69,14 +66,11 @@ void Cube::init() {
         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
 
-
     glGenVertexArrays(1, &_vertexArrayId);
     glGenBuffers(1, &_vertexBufferId);
     glGenBuffers(1, &_elementBufferId);
 
-
     glBindVertexArray(_vertexArrayId); // bind VAO
-
 
     glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -93,14 +87,10 @@ void Cube::init() {
 
     // Bind Texture
     _texture1 = gen2DTexture("../tex/container.jpg", GL_RGB);
-   
-
 }   
 
 double previousTime = 0.0;
 void Cube::render(const glm::mat4 &view, const glm::mat4 &projection) {
-
-
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _texture1);
     glUniform1i(glGetUniformLocation(this->pid, "ourTexture1"), 0);

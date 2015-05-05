@@ -4,7 +4,6 @@
 #include "pgl/RenderObject.h"
 
 class Square: public RenderObject {
-
 public:
     Square();
     void init() override; 
@@ -17,7 +16,6 @@ private:
     GLuint _elementBufferId;
     GLuint _texture1;
     GLuint _texture2;
-
 };
 
 #endif

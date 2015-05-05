@@ -4,7 +4,6 @@
 #include "pgl/RenderObject.h"
 
 class Perlin: public RenderObject {
-
 public:
     Perlin();
     void init() override; 
@@ -14,8 +13,6 @@ public:
 private:
     GLuint _vertexArrayId;
     GLuint _vertexBufferId;
-
-
 };
 
 #endif
