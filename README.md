@@ -41,7 +41,7 @@ Build process
 * `cmake ..`
 * To compile and run the code
     * `make`
-    * ./myWorld
+    * `./myWorld`
 
 # PGL Architecture:
 
@@ -85,4 +85,5 @@ A small home-made library aiming to accelerate simple openGL projects or for pro
 # Credits
 
 Date: April 2015
+
 Author: Jonathan Link
