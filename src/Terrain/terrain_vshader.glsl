@@ -6,6 +6,7 @@ out float diffuse_coefficient;
 out float my_height;
 
 out vec2 uv;
+out vec3 vNormal;
 
 uniform mat4 MVP;
 uniform sampler2D tex;
@@ -27,6 +28,7 @@ void main() {
     vec3 va = normalize(vec3(size.xy, s21 - s01));
     vec3 vb = normalize(vec3(size.yx, s12 - s10));
 	vec3 vertex_normal = vec4(cross(va, vb), 0).xyz;
+	vNormal = vertex_normal;
 
 	vec3 diffuse_reflection_normal = normalize(
 		normal_matrix *
