@@ -19,6 +19,8 @@ private:
     std::vector<GLfloat> _vertices;
     std::vector<GLuint> _indices;
 
+    static const int GRID_SIZE = 512;
+
     struct Triangle {
         double x;
         double y;

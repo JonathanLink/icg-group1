@@ -38,17 +38,17 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
    useShaders();
 
     // Set uniform variables for the vertex and fragment glsl files
-    GLuint modelViewLoc = glGetUniformLocation(pid, "modelView");
+    GLuint modelViewLoc_id = glGetUniformLocation(pid, "modelView");
     glm::mat4 modelView = view * model;
-    glUniformMatrix4fv(modelViewLoc, 1, GL_FALSE,  glm::value_ptr(modelView));
+    glUniformMatrix4fv(modelViewLoc_id, 1, GL_FALSE,  glm::value_ptr(modelView));
 
-    GLuint mvpLoc = glGetUniformLocation(pid, "MVP");
+    GLuint mvpLoc_id = glGetUniformLocation(pid, "MVP");
     glm::mat4 mvp = projection * modelView;
-    glUniformMatrix4fv(mvpLoc, 1, GL_FALSE,  glm::value_ptr(mvp));
+    glUniformMatrix4fv(mvpLoc_id, 1, GL_FALSE,  glm::value_ptr(mvp));
 
-    GLuint normalMatrix = glGetUniformLocation(pid, "normal_matrix");
-    glm::mat4 normal_matrix_data = glm::transpose(glm::inverse(modelView));
-    glUniformMatrix4fv(normalMatrix, 1, GL_FALSE,  glm::value_ptr(normal_matrix_data));
+    GLuint grid_size_id = glGetUniformLocation(pid, "grid_size");
+    glm::float1 grid_size = (float)GRID_SIZE;
+    glUniform1f(grid_size_id, grid_size);
 
     // Bind texture
     glActiveTexture(GL_TEXTURE0);
@@ -72,8 +72,7 @@ void Terrain::cleanUp() {
 }
 
 void Terrain::constructGrid() {
-    const int GRID_SIZE = 512;
-    const double STEP = (1.0 / GRID_SIZE) * 2.0 ;
+    const double STEP = (1.0 / GRID_SIZE) * 2.0;
 
     // construct vertices grid
     Point points [GRID_SIZE + 1][GRID_SIZE + 1];
