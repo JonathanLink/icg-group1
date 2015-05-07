@@ -5,27 +5,28 @@ layout (location = 0) in vec2 position;
 out float diffuse_component;
 out float my_height;
 
-out vec2 uv;
-out vec3 vNormal;
+out float slope;
+out vec2 uv_coords;
 
-uniform mat4 MVP;
+uniform mat4 MVP_matrix;
 uniform sampler2D tex;
 uniform float grid_size;
 
 void main() {
 	// UV textures in [0, 1] whereas OpenGL [-1, 1]
-    vec2 my_uv_coords = (position + vec2(1.0, 1.0)) * 0.5;
+    vec2 local_uv_coords = (position + vec2(1.0, 1.0)) * 0.5;
+    uv_coords = local_uv_coords;
 
     // Compute 3D position of current vertex by looking up height in height map
-	float local_height = texture(tex, my_uv_coords).r;
+	float local_height = texture(tex, local_uv_coords).r;
 	vec3 local_pos_3d = vec3(position.x, local_height, -position.y);
 
 	// Find 2D position of neighbors (1 texel distance)
 	float heightMapWidth = grid_size;
 	float heightMapHeight = grid_size;
-	vec2 north_2d = vec2(my_uv_coords.x, my_uv_coords.y + 1.0 / heightMapHeight);
-	vec2 west_2d = vec2(my_uv_coords.x - 1.0 / heightMapWidth, my_uv_coords.y);
-	vec2 south_2d = vec2(my_uv_coords.x, my_uv_coords.y - 1.0 / heightMapHeight);
+	vec2 north_2d = vec2(local_uv_coords.x, local_uv_coords.y + 1.0 / heightMapHeight);
+	vec2 west_2d = vec2(local_uv_coords.x - 1.0 / heightMapWidth, local_uv_coords.y);
+	vec2 south_2d = vec2(local_uv_coords.x, local_uv_coords.y - 1.0 / heightMapHeight);
 
 	// Look up height of neighbors in height map
 	float north_height = texture(tex, north_2d).r;
@@ -54,6 +55,8 @@ void main() {
 	float diffuse_coefficient = - 0.5;
 	diffuse_component = diffuse_coefficient * max(0.0, dot(vertex_normal, light_direction));
 
+	slope = dot(vertex_normal, vec3(0.0, -1.0, 0.0));
+
 	my_height = local_height;
-    gl_Position = MVP * vec4(local_pos_3d, 1.0);
+    gl_Position = MVP_matrix * vec4(local_pos_3d, 1.0);
 }

@@ -52,7 +52,7 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glm::mat4 modelView = view * model;
     glUniformMatrix4fv(modelViewLoc_id, 1, GL_FALSE,  glm::value_ptr(modelView));
 
-    GLuint mvpLoc_id = glGetUniformLocation(pid, "MVP");
+    GLuint mvpLoc_id = glGetUniformLocation(pid, "MVP_matrix");
     glm::mat4 mvp = projection * modelView;
     glUniformMatrix4fv(mvpLoc_id, 1, GL_FALSE,  glm::value_ptr(mvp));
 
