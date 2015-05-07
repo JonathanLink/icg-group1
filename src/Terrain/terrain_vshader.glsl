@@ -5,6 +5,9 @@ layout (location = 0) in vec2 position;
 out float diffuse_component;
 out float my_height;
 
+out vec2 uv;
+out vec3 vNormal;
+
 uniform mat4 MVP;
 uniform sampler2D tex;
 uniform float grid_size;
