@@ -16,8 +16,14 @@ private:
     GLuint _vertexBufferId;
     GLuint _elementBufferId;
     GLuint _textureId;
+    GLuint _grassTexId;
+    GLuint _snowTexId;
+    GLuint _sandTexId;
+    GLuint _rockTexId;
     std::vector<GLfloat> _vertices;
     std::vector<GLuint> _indices;
+
+    static const int GRID_SIZE = 512;
 
     struct Triangle {
         double x;

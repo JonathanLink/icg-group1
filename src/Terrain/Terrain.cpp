@@ -1,4 +1,5 @@
 #include "Terrain.h"
+#include "../Constants.h"
 
 
 Terrain::Terrain() {
@@ -30,6 +31,16 @@ void Terrain::init() {
     // Apply a rotation on the model matrix
     model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+
+
+    // Bind Grass Texture
+    _grassTexId = gen2DTexture("../tex/grass.jpg", GL_RGB);
+     // Bind Snow Texture
+    _snowTexId = gen2DTexture("../tex/snow.jpg", GL_RGB);
+     // Bind Sand Texture
+    _sandTexId = gen2DTexture("../tex/sand.jpg", GL_RGB);
+     // Bind Rock Texture
+    _rockTexId = gen2DTexture("../tex/rock.jpg", GL_RGB);
 }   
 
 
@@ -37,23 +48,42 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
    useShaders();
 
     // Set uniform variables for the vertex and fragment glsl files
-    GLuint modelViewLoc = glGetUniformLocation(pid, "modelView");
+    GLuint modelViewLoc_id = glGetUniformLocation(pid, "modelView");
     glm::mat4 modelView = view * model;
-    glUniformMatrix4fv(modelViewLoc, 1, GL_FALSE,  glm::value_ptr(modelView));
+    glUniformMatrix4fv(modelViewLoc_id, 1, GL_FALSE,  glm::value_ptr(modelView));
 
-    GLuint mvpLoc = glGetUniformLocation(pid, "MVP");
+    GLuint mvpLoc_id = glGetUniformLocation(pid, "MVP_matrix");
     glm::mat4 mvp = projection * modelView;
-    glUniformMatrix4fv(mvpLoc, 1, GL_FALSE,  glm::value_ptr(mvp));
+    glUniformMatrix4fv(mvpLoc_id, 1, GL_FALSE,  glm::value_ptr(mvp));
 
-    GLuint inverseModelViewLoc = glGetUniformLocation(pid, "inverseModelView");
-    glm::mat4 inverseModelView = glm::transpose(glm::inverse(modelView));
-    glUniformMatrix4fv(inverseModelViewLoc, 1, GL_FALSE,  glm::value_ptr(inverseModelView));
+    GLuint grid_size_id = glGetUniformLocation(pid, "grid_size");
+    glm::float1 grid_size = (float)GRID_SIZE;
+    glUniform1f(grid_size_id, grid_size);
 
-    // Bind texture
+
+    /* Bind textures */
+    //Perlin Noise
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _textureId);
     GLuint tex_id = glGetUniformLocation(pid, "tex");
     glUniform1i(tex_id, 0);
+    //Grass
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, _grassTexId);
+    glUniform1i(glGetUniformLocation(pid, "grassTex"), 1);
+    //Snow
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, _snowTexId);
+    glUniform1i(glGetUniformLocation(pid, "snowTex"), 2);
+    //Sand
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, _sandTexId);
+    glUniform1i(glGetUniformLocation(pid, "sandTex"), 3);
+    //Rock
+    glActiveTexture(GL_TEXTURE4);
+    glBindTexture(GL_TEXTURE_2D, _rockTexId);
+    glUniform1i(glGetUniformLocation(pid, "rockTex"), 4);
+
 
     // Draw
     glBindVertexArray(_vertexArrayId);
@@ -71,8 +101,7 @@ void Terrain::cleanUp() {
 }
 
 void Terrain::constructGrid() {
-    const int GRID_SIZE = 512;
-    const double STEP = (1.0 / GRID_SIZE) * 2.0 ;
+    const double STEP = (1.0 / GRID_SIZE) * 2.0;
 
     // construct vertices grid
     Point points [GRID_SIZE + 1][GRID_SIZE + 1];

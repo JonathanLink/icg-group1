@@ -40,7 +40,7 @@ void Triangle::render(const glm::mat4 &view, const glm::mat4 &projection) {
 
     // Set shader triangle uniform variables
     GLfloat timeValue = glfwGetTime();
-    GLfloat greenValue = (sin(timeValue) / 2) + 0.5;
+    GLfloat greenValue = (sin(timeValue) / 2.0) + 0.5;
     GLint vertexColorLocation = glGetUniformLocation(pid, "myColor");
     glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
