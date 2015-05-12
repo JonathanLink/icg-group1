@@ -6,11 +6,11 @@ MyWorld::MyWorld() {
 }
 
 void MyWorld::init() {
+	
+	_skybox.setScene(this);
 	_perlin.setScene(this);
 	_terrain.setScene(this);
-	
-	_square.setScene(this);
-    _cube.setScene(this);
+
 
 	// Draw perlin noise in framebuffer we've just created
     FrameBuffer frameBuffer = FrameBuffer(FRAMEBUFFER_WIDTH,
@@ -24,19 +24,11 @@ void MyWorld::init() {
 }
 
 void MyWorld::render() {
-	bool renderTerrain = true;
-	if (renderTerrain) {
-		_terrain.render(view, projection);
-	} else {
-		_perlin.render(view, projection);
-	}
-
-	// uncomment this line to have a surprise 
-    //_cube.render(view, projection);
+	_skybox.render(view, projection);
+	_terrain.render(view, projection); 
 }
 
 void MyWorld::cleanUp() {
+	_skybox.cleanUp();
 	_terrain.cleanUp();
-    _square.cleanUp();
-    _cube.cleanUp();
 }

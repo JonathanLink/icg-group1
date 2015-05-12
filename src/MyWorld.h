@@ -2,11 +2,13 @@
 #define MYWORLD_H
 
 #include "pgl/Scene.h"
+#include "pgl/Skybox/Skybox.h"
 #include "Terrain/Terrain.h"
 #include "Perlin/Perlin.h"
 #include "Triangle/Triangle.h"
 #include "Square/Square.h"
 #include "Cube/Cube.h"
+
 
 class MyWorld: public Scene {
 public:
@@ -20,10 +22,12 @@ public:
 
 private:
 	Perlin _perlin;
+	Skybox _skybox;
 	Terrain _terrain;
 	Triangle _triangle;
 	Square _square;
 	Cube _cube;
+
 };
 
 #endif // MYWORLD_H
