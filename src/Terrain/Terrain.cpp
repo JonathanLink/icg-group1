@@ -28,8 +28,8 @@ void Terrain::init() {
     glBindVertexArray(0);
 
     // Apply a rotation on the model matrix
-    model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+    //model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    //model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
 
 
     // Bind Grass Texture

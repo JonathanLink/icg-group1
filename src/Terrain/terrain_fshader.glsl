@@ -1,8 +1,11 @@
 #version 330 core
 
+#define M_PI 3.1415926535897932384626433832795
+
 in vec2 uv_coords;
 in vec3 fragPos;
 in float fragHeight;
+in vec3 normal;
 
 uniform sampler2D tex;
 uniform float grid_size;
@@ -25,7 +28,7 @@ float grassCoeff(float local_slope) {
     }
 }
 
-vec3 getNormal(vec2 fragPos) {
+/*vec3 getNormal(vec2 fragPos) {
     
     float delta = 1.0 / grid_size;
     // Create 2D vectors
@@ -52,50 +55,49 @@ vec3 getNormal(vec2 fragPos) {
     vec3 normalA = normalize(cross(v, w));
 
     // Second triangle normal (triangle: north-east-south)
-    v = north3D - east3D;
-    w = south3D - east3D;
-    vec3 normalB = normalize(cross(v, w));
+    vec3 v2 = north3D - east3D;
+    vec3 w2 = south3D - east3D;
+    vec3 normalB = normalize(cross(v2, w2));
 
     // Compute average normal vector
     vec3 avgNormal = (normalA + normalB) / 2.0f;
-    return vec3(0.0f, 0.0f, 1.0f);
-    return avgNormal;
+    //return vec3(0.0f, 0.0f, 1.0f);
+    return normalize(normalA);
     
 
     
-}
+}*/
 
 void main() {
 
-    vec3 normal2 = getNormal(gl_FragCoord.xy);
+    //vec3 normal2 = getNormal(gl_FragCoord.xy);
 
-    // Texturing part
+    // ============ Texturing part ==================
     float tilingScalaSand = 30;
     float tilingScaleGrassRock = 10;
     float tilingScaleSnow = 60;
 
-    float slope = dot(normal2, vec3(0.0, -1.0, 0.0)); 
+    float angle = abs( acos(dot(normal, vec3(0.0f, -1.0f, 0.0f))) );
     vec3 textureColor;
     if (fragHeight <= 0.39) { // sand
          textureColor = texture(sandTex, 6 * tilingScalaSand * uv_coords).rgb;
          //textureColor = vec3(1.0f,0.0f,0.0f);
     } else if (fragHeight <= 0.8) { // rock
-        textureColor = mix(texture(rockTex, tilingScaleGrassRock * uv_coords).rgb, texture(grassTex, tilingScaleGrassRock * uv_coords).rgb, grassCoeff(1.0 - slope));
+        textureColor = mix(texture(rockTex, tilingScaleGrassRock * uv_coords).rgb, texture(grassTex, tilingScaleGrassRock * uv_coords).rgb, grassCoeff(1.0 - angle));
         //textureColor = vec3(0.0f,1.0f,0.0f);
     } else { // snow
         textureColor = texture(snowTex, 3 * tilingScaleSnow * uv_coords).rgb ;
         //textureColor = vec3(0.0f,0.0f,1.0f);
     }
-    color = vec4(textureColor ,1.0f);
-
-    // Lightning part
+    
+     // ============ Lightning part ==================
 
     // Ambient
-    float ambientStrength = 0.60f;
+    float ambientStrength = 0.2f;
     vec3 ambient = ambientStrength * lightColor;
 
     // Diffuse
-    vec3 norm = normalize(normal2);
+    vec3 norm = normalize(normal);
     vec3 lightDir = normalize(lightPos - fragPos);  
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
@@ -103,6 +105,10 @@ void main() {
     // Ambient + Diffuse
     vec3 result = (ambient + diffuse) * textureColor;
     color = vec4(result, 1.0f);
+
+    //color = vec4(mod(angle,2.0*M_PI) /(2.0*M_PI), mod(angle,2.0*M_PI) /(2.0*M_PI), mod(angle,2.0*M_PI) /(2.0*M_PI), 1.0f);
+    //vec2 relFragPos = (fragPos.xz + vec2(1.0, 1.0)) * 0.5;
+    //color = texture(tex, relFragPos);
 
     
 }

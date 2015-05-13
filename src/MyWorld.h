@@ -17,8 +17,8 @@ public:
 	void render() override;
 	void cleanUp() override;
 
-	static const GLuint FRAMEBUFFER_WIDTH = 1024;
-    static const GLuint FRAMEBUFFER_HEIGHT = 1024;
+	static const GLuint FRAMEBUFFER_WIDTH = 512;
+    static const GLuint FRAMEBUFFER_HEIGHT = 512;
 
 private:
 	Perlin _perlin;
