@@ -29,7 +29,7 @@ void Terrain::init() {
 
     // Apply a rotation on the model matrix
     //model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    //model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+    model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
 
 
     // Bind Grass Texture
@@ -63,12 +63,12 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glUniform1f(grid_size_id, grid_size);
 
     // light vector
-    glm::vec3 lightPos = glm::vec3(5.0f, 5.0f, 0.0f);
+    //glm::vec3 lightPos = glm::vec3(5.0f, 5.0f, 0.0f);
     float radius = 5.0f;
     float xSun = radius * sin(_lightAngle * 180.0/3.14) + 5.0f;
     float zSun = radius * cos(_lightAngle * 180.0/3.14);
-    //glm::vec3 lightPos = glm::vec3(xSun, 5.0f, zSun);
-    _lightAngle += 0.02;
+    glm::vec3 lightPos = glm::vec3(xSun, 5.0f, zSun);
+    _lightAngle += 0.0001;
     //lightPos = glm::rotate(lightPos, _lightAngle, glm::vec3(0.0f, 1.0f, 0.0f));
     GLint lightPosLoc = glGetUniformLocation(pid, "lightPos");
     glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);  

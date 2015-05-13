@@ -14,7 +14,7 @@ uniform float grid_size;
 
 vec3 getNormal(vec2 pos) {
     
-    float delta = 1.0/10000.0;
+    float delta = 1.0/grid_size;
     // Create 2D vectors
     vec2 north2D = vec2(pos.x, pos.y + delta);
     vec2 south2D = vec2(pos.x, pos.y - delta);
@@ -33,6 +33,16 @@ vec3 getNormal(vec2 pos) {
     vec3 east3D = vec3(east2D.x, eastHeight, east2D.y);
     vec3 west3D = vec3(west2D.x, westHeight, west2D.y);
 
+
+    vec3 south_to_north = north3D - south3D;
+	vec3 south_to_west = west3D - south3D;
+
+	return normalize(cross(south_to_north, south_to_west));
+
+
+
+    // ============= LINK ============
+    /*
     // First triangle normal (triangle: north-west-south)
     vec3 v = north3D - west3D;
     vec3 w = south3D - west3D;
@@ -47,6 +57,7 @@ vec3 getNormal(vec2 pos) {
     vec3 avgNormal = (normalA + normalB) / 2.0f;
     //return vec3(0.0f, 0.0f, 1.0f);
     return normalize(avgNormal);
+    */
     
 }
 

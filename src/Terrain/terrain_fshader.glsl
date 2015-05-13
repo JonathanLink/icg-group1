@@ -64,8 +64,6 @@ vec3 getNormal(vec2 fragPos) {
     //return vec3(0.0f, 0.0f, 1.0f);
     return normalize(avgNormal);
     
-
-    
 }
 
 void main() {
@@ -88,13 +86,13 @@ void main() {
 
     if (fragHeight <= 0.39) { // sand
          textureColor = texture(sandTex, 6 * tilingScalaSand * uv_coords).rgb;
-         textureColor = vec3(1.0f,0.0f,0.0f);
+         //textureColor = vec3(1.0f,0.0f,0.0f);
     } else if (fragHeight <= 0.8) { // rock
         textureColor = mix(texture(rockTex, tilingScaleGrassRock * uv_coords).rgb, texture(grassTex, tilingScaleGrassRock * uv_coords).rgb, grassCoeff(1.0 - angle));
-        textureColor = vec3(0.0f,1.0f,0.0f);
+        //textureColor = vec3(0.0f,1.0f,0.0f);
     } else { // snow
         textureColor = texture(snowTex, 3 * tilingScaleSnow * uv_coords).rgb ;
-        textureColor = vec3(0.0f,0.0f,1.0f);
+        //textureColor = vec3(0.0f,0.0f,1.0f);
     }
 
 
