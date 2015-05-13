@@ -14,7 +14,7 @@ uniform float grid_size;
 
 vec3 getNormal(vec2 pos) {
     
-    float delta = 1.0/grid_size;
+    float delta = 1.0/10000.0;
     // Create 2D vectors
     vec2 north2D = vec2(pos.x, pos.y + delta);
     vec2 south2D = vec2(pos.x, pos.y - delta);
@@ -22,7 +22,7 @@ vec3 getNormal(vec2 pos) {
     vec2 west2D = vec2(pos.x - delta, pos.y);
 
     // Look up height of neighbors in height map
-    float northHeight = 43;
+    float northHeight = texture(tex, north2D).r;
     float southHeight = texture(tex, south2D).r;
     float eastHeight = texture(tex, east2D).r;
     float westHeight = texture(tex, west2D).r;

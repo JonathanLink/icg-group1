@@ -81,8 +81,11 @@ void main() {
     float tilingScaleGrassRock = 10;
     float tilingScaleSnow = 60;
 
-    float angle = abs(acos(dot(normal, vec3(0.0f, -1.0f, 0.0f))) );
+    float angle = dot(normal, vec3(0.0f, -1.0f, 0.0f));
     vec3 textureColor;
+    
+    
+
     if (fragHeight <= 0.39) { // sand
          textureColor = texture(sandTex, 6 * tilingScalaSand * uv_coords).rgb;
          textureColor = vec3(1.0f,0.0f,0.0f);
@@ -93,7 +96,16 @@ void main() {
         textureColor = texture(snowTex, 3 * tilingScaleSnow * uv_coords).rgb ;
         textureColor = vec3(0.0f,0.0f,1.0f);
     }
-    
+
+
+    /*if (angle < 0.2) {
+        color = vec4(1,0,0,0);
+    } else if (angle < 0.5) {
+        color = vec4(0,1,0,0);
+    } else if (angle < 1.0) {
+        color = vec4(0,0,1,0);
+    }*/
+
      // ============ Lightning part ==================
 
     // Ambient
