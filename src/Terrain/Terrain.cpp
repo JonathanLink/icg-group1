@@ -47,6 +47,9 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
    useShaders();
 
     // Set uniform variables for the vertex and fragment glsl files
+    GLuint modelLoc_id = glGetUniformLocation(pid, "model");
+    glUniformMatrix4fv(modelLoc_id, 1, GL_FALSE,  glm::value_ptr(model));
+
     GLuint modelViewLoc_id = glGetUniformLocation(pid, "modelView");
     glm::mat4 modelView = view * model;
     glUniformMatrix4fv(modelViewLoc_id, 1, GL_FALSE,  glm::value_ptr(modelView));
@@ -59,13 +62,22 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glm::float1 grid_size = (float)GRID_SIZE;
     glUniform1f(grid_size_id, grid_size);
 
+    // light vector
+    glm::vec3 lightPos = glm::vec3(5.0f, 5.0f, 0.0f);
+    GLint lightPosLoc = glGetUniformLocation(pid, "lightPos");
+    glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);  
+
+    // light color
+    glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    GLint lightColorLoc = glGetUniformLocation(pid, "lightColor");
+    glUniform3f(lightColorLoc, lightColor.x, lightColor.y, lightColor.z);  
+
 
     /* Bind textures */
     //Perlin Noise
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _textureId);
-    GLuint tex_id = glGetUniformLocation(pid, "tex");
-    glUniform1i(tex_id, 0);
+    glUniform1i(glGetUniformLocation(pid, "tex"), 0);
     //Grass
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, _grassTexId);

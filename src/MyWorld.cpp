@@ -24,6 +24,7 @@ void MyWorld::init() {
 }
 
 void MyWorld::render() {
+	//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe
 	_skybox.render(view, projection);
 	_terrain.render(view, projection); 
 }
