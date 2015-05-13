@@ -64,8 +64,12 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
 
     // light vector
     glm::vec3 lightPos = glm::vec3(5.0f, 5.0f, 0.0f);
-    _lightAngle += 0.01;
-    lightPos = glm::rotate(lightPos, _lightAngle, glm::vec3(0.0f, 1.0f, 0.0f));
+    float radius = 5.0f;
+    float xSun = radius * sin(_lightAngle * 180.0/3.14) + 5.0f;
+    float zSun = radius * cos(_lightAngle * 180.0/3.14);
+    //glm::vec3 lightPos = glm::vec3(xSun, 5.0f, zSun);
+    _lightAngle += 0.02;
+    //lightPos = glm::rotate(lightPos, _lightAngle, glm::vec3(0.0f, 1.0f, 0.0f));
     GLint lightPosLoc = glGetUniformLocation(pid, "lightPos");
     glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);  
 

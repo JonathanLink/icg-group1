@@ -28,7 +28,7 @@ float grassCoeff(float local_slope) {
     }
 }
 
-/*vec3 getNormal(vec2 fragPos) {
+vec3 getNormal(vec2 fragPos) {
     
     float delta = 1.0 / grid_size;
     // Create 2D vectors
@@ -62,38 +62,42 @@ float grassCoeff(float local_slope) {
     // Compute average normal vector
     vec3 avgNormal = (normalA + normalB) / 2.0f;
     //return vec3(0.0f, 0.0f, 1.0f);
-    return normalize(normalA);
+    return normalize(avgNormal);
     
 
     
-}*/
+}
 
 void main() {
 
+    //vec2 uvFragCoord = (gl_FragCoord.xy + vec2(0.5, 0.5) + vec2(1.0, 1.0)) * 0.5;
     //vec3 normal2 = getNormal(gl_FragCoord.xy);
+
+    //vec2 relFragPos = (fragPos.xz + vec2(1.0, 1.0)) * 0.5;
+    //vec3 normal2 = getNormal(relFragPos);
 
     // ============ Texturing part ==================
     float tilingScalaSand = 30;
     float tilingScaleGrassRock = 10;
     float tilingScaleSnow = 60;
 
-    float angle = abs( acos(dot(normal, vec3(0.0f, -1.0f, 0.0f))) );
+    float angle = abs(acos(dot(normal, vec3(0.0f, -1.0f, 0.0f))) );
     vec3 textureColor;
     if (fragHeight <= 0.39) { // sand
          textureColor = texture(sandTex, 6 * tilingScalaSand * uv_coords).rgb;
-         //textureColor = vec3(1.0f,0.0f,0.0f);
+         textureColor = vec3(1.0f,0.0f,0.0f);
     } else if (fragHeight <= 0.8) { // rock
         textureColor = mix(texture(rockTex, tilingScaleGrassRock * uv_coords).rgb, texture(grassTex, tilingScaleGrassRock * uv_coords).rgb, grassCoeff(1.0 - angle));
-        //textureColor = vec3(0.0f,1.0f,0.0f);
+        textureColor = vec3(0.0f,1.0f,0.0f);
     } else { // snow
         textureColor = texture(snowTex, 3 * tilingScaleSnow * uv_coords).rgb ;
-        //textureColor = vec3(0.0f,0.0f,1.0f);
+        textureColor = vec3(0.0f,0.0f,1.0f);
     }
     
      // ============ Lightning part ==================
 
     // Ambient
-    float ambientStrength = 0.2f;
+    float ambientStrength = 0.3f;
     vec3 ambient = ambientStrength * lightColor;
 
     // Diffuse
@@ -105,6 +109,9 @@ void main() {
     // Ambient + Diffuse
     vec3 result = (ambient + diffuse) * textureColor;
     color = vec4(result, 1.0f);
+
+
+    //===== DEBUG ====
 
     //color = vec4(mod(angle,2.0*M_PI) /(2.0*M_PI), mod(angle,2.0*M_PI) /(2.0*M_PI), mod(angle,2.0*M_PI) /(2.0*M_PI), 1.0f);
     //vec2 relFragPos = (fragPos.xz + vec2(1.0, 1.0)) * 0.5;

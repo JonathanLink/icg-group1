@@ -22,7 +22,7 @@ vec3 getNormal(vec2 pos) {
     vec2 west2D = vec2(pos.x - delta, pos.y);
 
     // Look up height of neighbors in height map
-    float northHeight = texture(tex, north2D).r;
+    float northHeight = 43;
     float southHeight = texture(tex, south2D).r;
     float eastHeight = texture(tex, east2D).r;
     float westHeight = texture(tex, west2D).r;
@@ -46,7 +46,7 @@ vec3 getNormal(vec2 pos) {
     // Compute average normal vector
     vec3 avgNormal = (normalA + normalB) / 2.0f;
     //return vec3(0.0f, 0.0f, 1.0f);
-    return normalize(normalA);
+    return normalize(avgNormal);
     
 }
 
@@ -56,11 +56,12 @@ void main() {
 
 	uv_coords = local_uv_coords;
 	fragHeight = texture(tex, local_uv_coords).r;
+	normal = getNormal(local_uv_coords);
 
 	vec3 local_pos_3d = vec3(position.x, fragHeight, position.y);
     gl_Position = MVP_matrix * vec4(local_pos_3d, 1.0);
     fragPos = vec3(model * vec4(local_pos_3d, 1.0f));
-    normal = getNormal(local_uv_coords);
+   
 }
 
 
