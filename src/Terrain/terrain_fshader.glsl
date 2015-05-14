@@ -19,14 +19,25 @@ uniform vec3 lightColor;
 out vec4 color;
 
 float grassCoeff(float local_slope) {
-    if (abs(local_slope) >= 0.7) {
+    if (local_slope >= 0.7) {
         return 0.0;
-    } else if (abs(local_slope) <= 0.3) {
-        return 1.0;
+    } else if (local_slope <= 0.3) {
+        return 0.45;
     } else {
         return local_slope * local_slope * local_slope;
     }
 }
+
+float sandCoeff(float local_slope) {
+    if (local_slope >= 0.6) {
+        return 0.2;
+    } else if (local_slope <= 0.4) {
+        return 0.55;
+    } else {
+        return local_slope * local_slope * local_slope;
+    }
+}
+
 
 vec3 getNormal(vec2 fragPos) {
     
@@ -75,24 +86,25 @@ void main() {
     //vec3 normal2 = getNormal(relFragPos);
 
     // ============ Texturing part ==================
-    float tilingScalaSand = 30;
-    float tilingScaleGrassRock = 10;
+    float tilingScaleSand = 30;
+    float tilingScaleRock = 10;
+    float tilingScaleGrass = 30;
     float tilingScaleSnow = 60;
 
     float angle = dot(normal, vec3(0.0f, -1.0f, 0.0f));
     vec3 textureColor;
     
     
+    float pseudoRN = angle / 7;
 
-    if (fragHeight <= 0.39) { // sand
-         textureColor = texture(sandTex, 6 * tilingScalaSand * uv_coords).rgb;
-         //textureColor = vec3(1.0f,0.0f,0.0f);
-    } else if (fragHeight <= 0.8) { // rock
-        textureColor = mix(texture(rockTex, tilingScaleGrassRock * uv_coords).rgb, texture(grassTex, tilingScaleGrassRock * uv_coords).rgb, grassCoeff(1.0 - angle));
-        //textureColor = vec3(0.0f,1.0f,0.0f);
+    if (fragHeight + pseudoRN <= 0.35 ) { // sand
+        textureColor = texture(sandTex, tilingScaleSand * uv_coords).rgb;
+    } else if (fragHeight + pseudoRN <= 0.37) {
+        textureColor = mix(texture(rockTex, tilingScaleRock * uv_coords).rgb, texture(sandTex, tilingScaleSand * uv_coords).rgb, (1 - ((fragHeight + pseudoRN) - 0.35) * 50));
+    } else if (fragHeight + pseudoRN <= 0.8) { // rock
+        textureColor = mix(texture(rockTex, tilingScaleRock * uv_coords).rgb, texture(grassTex, tilingScaleGrass * uv_coords).rgb, grassCoeff(1.0 - angle));
     } else { // snow
-        textureColor = texture(snowTex, 3 * tilingScaleSnow * uv_coords).rgb ;
-        //textureColor = vec3(0.0f,0.0f,1.0f);
+        textureColor = texture(snowTex, tilingScaleSnow * uv_coords).rgb ;
     }
 
 
