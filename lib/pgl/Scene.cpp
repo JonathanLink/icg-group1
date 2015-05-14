@@ -1,6 +1,6 @@
 #include "pgl/Scene.h"
 
-Scene::Scene() : camera(glm::vec3(0.0f, 5.0f, 10.0f)) {
+Scene::Scene() : camera(glm::vec3(10.0f, 26.0f, 10.0f)) {
     // Do nothing
 }
 
@@ -12,7 +12,7 @@ void Scene::renderScene() {
 
     view = camera.getViewMatrix();
     //projection = glm::perspective(camera.getZoom(), (GLfloat)getSceneAspectRatio(), 0.1f, 100.0f);
-    projection = glm::perspective(45.0f, (GLfloat)getSceneAspectRatio(), 0.1f, 100.0f);
+    projection = glm::perspective(45.0f, (GLfloat)getSceneAspectRatio(), 0.1f, 150.0f);
 
     render();
 }

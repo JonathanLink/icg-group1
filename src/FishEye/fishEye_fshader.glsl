@@ -10,7 +10,7 @@ out vec4 color;
 
 void main() {
 
-	float aperture = 178.0;
+	/*float aperture = 178.0;
 	float apertureHalf = 0.5 * aperture * (M_PI / 180.0);
 	float maxFactor = sin(apertureHalf);
 	vec2 uv;
@@ -30,7 +30,7 @@ void main() {
 	} else {
 		uv = uvCoord.xy;
 		color = vec4(0,0,0,1);
-	}
+	}*/
 
 	/*float b  = 0.1;
     const float LOG2 = 1.442695;

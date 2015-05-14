@@ -76,8 +76,8 @@ void Skybox::init() {
     _cubemapTextureId = loadCubemap(faces);
 
     // scale the skybox
-    model = glm::translate(model, glm::vec3(0.0f, 3.0f, 0.0f));
-    model = glm::scale(model, glm::vec3(7.0f, 7.0f, 7.0f));
+    model = glm::translate(model, glm::vec3(0.0f, 30.0f, 0.0f));
+    model = glm::scale(model, glm::vec3(55.0f, 55.0f, 55.0f));
 
 }
 

@@ -81,6 +81,7 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
 
     // camera position
     glm::vec3 cameraPos = scene->getCamera().getPosition();
+    //glm::vec3 cameraPos = glm::vec3(0.0f, 46.0f, 0.0f);
     GLint cameraPosLoc = glGetUniformLocation(pid, "cameraPos");
     glUniform3f(cameraPosLoc, cameraPos.x, cameraPos.y, cameraPos.z);  
 

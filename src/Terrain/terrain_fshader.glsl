@@ -94,14 +94,29 @@ void main() {
     */
     ////
 
-    float b  = 0.009;
-    float c = 0.5;
+    /*float b  = 0.02;
+    float c = 1;
     float distance = distance(cameraPos, fragPos);
     vec3 rayDir =  fragPos - cameraPos;
-    float fogAmount = c * exp(-cameraPos.y*b) * (1.0-exp( -distance*rayDir.y*b ))/rayDir.y;
+    float fogAmount = c * exp(-cameraPos.x*b) * (1.0 - exp( -distance * rayDir.x*b )) / rayDir.x;
+    fogAmount = clamp(fogAmount, 0, 1);
+    if (fogAmount > 0.8) {
+        fogAmount = 0.8;
+    } 
+    vec3  fogColor  = vec3(1,1,1);
+    color = vec4(mix( result, fogColor, 0.8*fogAmount ), 1.0f);
+    //color = vec4(fogAmount,fogAmount,fogAmount,1);*/
+
+
+
+    float distance = distance(cameraPos, fragPos);
+    float fogAmount = exp(distance * 0.009) - 1;
+    fogAmount = clamp(fogAmount, 0, 0.8);
     vec3  fogColor  = vec3(1,1,1);
     color = vec4(mix( result, fogColor, fogAmount ), 1.0f);
-    
+    //color = vec4(fogAmount,fogAmount,fogAmount,1);
+
+    // ******************
 
 
     /*
