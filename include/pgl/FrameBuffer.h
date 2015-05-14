@@ -6,7 +6,7 @@
 class FrameBuffer {
 public:
     FrameBuffer(GLuint width, GLuint height);
-    GLuint initTextureId();
+    GLuint initTextureId(GLint internalFormat);
     void bind();
     void unbind();
 
@@ -15,7 +15,7 @@ private:
     GLuint _width;
     GLuint _height;
 
-    GLuint generateAttachmentTexture(GLboolean depth, GLboolean stencil);
+    GLuint generateAttachmentTexture(GLboolean depth, GLboolean stencil, GLint internalFormat);
 };
 
 #endif

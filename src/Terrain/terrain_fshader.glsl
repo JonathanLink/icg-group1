@@ -15,6 +15,7 @@ uniform sampler2D sandTex;
 uniform sampler2D rockTex;
 uniform vec3 lightPos;
 uniform vec3 lightColor;
+uniform vec3 cameraPos;
 
 out vec4 color;
 
@@ -28,51 +29,8 @@ float grassCoeff(float local_slope) {
     }
 }
 
-vec3 getNormal(vec2 fragPos) {
-    
-    float delta = 1.0 / grid_size;
-    // Create 2D vectors
-    vec2 north2D = vec2(fragPos.x, fragPos.y + delta);
-    vec2 south2D = vec2(fragPos.x, fragPos.y - delta);
-    vec2 east2D = vec2(fragPos.x + delta, fragPos.y);
-    vec2 west2D = vec2(fragPos.x - delta, fragPos.y);
-
-    // Look up height of neighbors in height map
-    float northHeight = texture(tex, north2D).r;
-    float southHeight = texture(tex, south2D).r;
-    float eastHeight = texture(tex, east2D).r;
-    float westHeight = texture(tex, west2D).r;
-
-    // Create 3D vectors
-    vec3 north3D = vec3(north2D.x, northHeight, north2D.y);
-    vec3 south3D = vec3(south2D.x, southHeight, south2D.y);
-    vec3 east3D = vec3(east2D.x, eastHeight, east2D.y);
-    vec3 west3D = vec3(west2D.x, westHeight, west2D.y);
-
-    // First triangle normal (triangle: north-west-south)
-    vec3 v = north3D - west3D;
-    vec3 w = south3D - west3D;
-    vec3 normalA = normalize(cross(v, w));
-
-    // Second triangle normal (triangle: north-east-south)
-    vec3 v2 = north3D - east3D;
-    vec3 w2 = south3D - east3D;
-    vec3 normalB = normalize(cross(v2, w2));
-
-    // Compute average normal vector
-    vec3 avgNormal = (normalA + normalB) / 2.0f;
-    //return vec3(0.0f, 0.0f, 1.0f);
-    return normalize(avgNormal);
-    
-}
 
 void main() {
-
-    //vec2 uvFragCoord = (gl_FragCoord.xy + vec2(0.5, 0.5) + vec2(1.0, 1.0)) * 0.5;
-    //vec3 normal2 = getNormal(gl_FragCoord.xy);
-
-    //vec2 relFragPos = (fragPos.xz + vec2(1.0, 1.0)) * 0.5;
-    //vec3 normal2 = getNormal(relFragPos);
 
     // ============ Texturing part ==================
     float tilingScalaSand = 30;
@@ -82,29 +40,18 @@ void main() {
     float angle = dot(normal, vec3(0.0f, -1.0f, 0.0f));
     vec3 textureColor;
     
-    
 
     if (fragHeight <= 0.39) { // sand
          textureColor = texture(sandTex, 6 * tilingScalaSand * uv_coords).rgb;
-         //textureColor = vec3(1.0f,0.0f,0.0f);
     } else if (fragHeight <= 0.8) { // rock
         textureColor = mix(texture(rockTex, tilingScaleGrassRock * uv_coords).rgb, texture(grassTex, tilingScaleGrassRock * uv_coords).rgb, grassCoeff(1.0 - angle));
-        //textureColor = vec3(0.0f,1.0f,0.0f);
     } else { // snow
         textureColor = texture(snowTex, 3 * tilingScaleSnow * uv_coords).rgb ;
-        //textureColor = vec3(0.0f,0.0f,1.0f);
     }
 
 
-    /*if (angle < 0.2) {
-        color = vec4(1,0,0,0);
-    } else if (angle < 0.5) {
-        color = vec4(0,1,0,0);
-    } else if (angle < 1.0) {
-        color = vec4(0,0,1,0);
-    }*/
 
-     // ============ Lightning part ==================
+    // ============ Lightning part ==================
 
     // Ambient
     float ambientStrength = 0.3f;
@@ -118,14 +65,54 @@ void main() {
 
     // Ambient + Diffuse
     vec3 result = (ambient + diffuse) * textureColor;
-    color = vec4(result, 1.0f);
+    //color = vec4(result, 1.0f);
 
 
-    //===== DEBUG ====
+    // ============ Fog part =======================
+    /*float distance = distance(cameraPos, fragPos);
+    vec3 rayDir =  fragPos - cameraPos;
+    float b = 0.01;
+    float fogAmount = 1.0 - exp( -distance * b );
+    float sunAmount = max( dot( rayDir, lightPos ), 0.0 );
+    vec3  fogColor  = mix( vec3(0.5,0.6,0.7), // bluish
+                           vec3(1.0,0.9,0.7), // yellowish
+                           pow(sunAmount,8.0) );
+    color = vec4(mix( result, fogColor, fogAmount ), 1.0f);*/
+    ////
 
-    //color = vec4(mod(angle,2.0*M_PI) /(2.0*M_PI), mod(angle,2.0*M_PI) /(2.0*M_PI), mod(angle,2.0*M_PI) /(2.0*M_PI), 1.0f);
-    //vec2 relFragPos = (fragPos.xz + vec2(1.0, 1.0)) * 0.5;
-    //color = texture(tex, relFragPos);
+    /*float b  = 0.05;
+    float c = 0.5;
+    float distance = distance(cameraPos, fragPos);
+    vec3 rayDir =  fragPos - cameraPos;
+    float fogAmount = c * exp(-cameraPos.y*b) * (1.0-exp( -distance*rayDir.y*b ))/rayDir.y;
+    //vec3  fogColor  = vec3(1,1,1);
+     float sunAmount = max( dot( rayDir, lightPos ), 0.0 );
+    vec3  fogColor  = mix( vec3(0.5,0.6,0.7), // bluish
+                           vec3(1.0,1.0,1.0), // yellowish
+                           pow(sunAmount,2.0) );
+    color = vec4(mix( result, fogColor, fogAmount ), 1.0f);
+    */
+    ////
+
+    float b  = 0.009;
+    float c = 0.5;
+    float distance = distance(cameraPos, fragPos);
+    vec3 rayDir =  fragPos - cameraPos;
+    float fogAmount = c * exp(-cameraPos.y*b) * (1.0-exp( -distance*rayDir.y*b ))/rayDir.y;
+    vec3  fogColor  = vec3(1,1,1);
+    color = vec4(mix( result, fogColor, fogAmount ), 1.0f);
+    
+
+
+    /*
+    float b  = 0.01;
+    const float LOG2 = 1.442695;
+    float z = gl_FragCoord.z / gl_FragCoord.w;
+    float fogFactor = exp2( -b *  b * z * z * LOG2 );
+    fogFactor = clamp(fogFactor, 0.0, 1.0);
+    vec3  fogColor  = vec3(1,1,1);
+    color = vec4(mix(fogColor, result, fogFactor ), 1.0f);
+    */
 
     
 }

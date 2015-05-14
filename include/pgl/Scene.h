@@ -17,6 +17,7 @@ public:
     void setSceneWidth(GLuint width);
     void setSceneHeight(GLuint height);
     GLuint getSceneAspectRatio() const;
+    Camera getCamera();
 
 protected: 
     glm::mat4 view;

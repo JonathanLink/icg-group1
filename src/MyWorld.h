@@ -5,10 +5,7 @@
 #include "pgl/Skybox/Skybox.h"
 #include "Terrain/Terrain.h"
 #include "Perlin/Perlin.h"
-#include "Triangle/Triangle.h"
-#include "Square/Square.h"
-#include "Cube/Cube.h"
-
+#include "FishEye/FishEye.h"
 
 class MyWorld: public Scene {
 public:
@@ -17,16 +14,12 @@ public:
 	void render() override;
 	void cleanUp() override;
 
-	static const GLuint FRAMEBUFFER_WIDTH = 512;
-    static const GLuint FRAMEBUFFER_HEIGHT = 512;
 
 private:
 	Perlin _perlin;
 	Skybox _skybox;
 	Terrain _terrain;
-	Triangle _triangle;
-	Square _square;
-	Cube _cube;
+	FishEye _fishEye;
 
 };
 

@@ -29,7 +29,7 @@ void Terrain::init() {
 
     // Apply a rotation on the model matrix
     //model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+    model = glm::scale(model, glm::vec3(35, 35, 35));
 
 
     // Bind Grass Texture
@@ -68,7 +68,8 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     float xSun = radius * sin(_lightAngle * 180.0/3.14) + 5.0f;
     float zSun = radius * cos(_lightAngle * 180.0/3.14);
     glm::vec3 lightPos = glm::vec3(xSun, 5.0f, zSun);
-    _lightAngle += 0.0001;
+    _lightAngle = _lightAngle + 0.01 * (glfwGetTime() - _previousTime);
+    _previousTime = glfwGetTime();
     //lightPos = glm::rotate(lightPos, _lightAngle, glm::vec3(0.0f, 1.0f, 0.0f));
     GLint lightPosLoc = glGetUniformLocation(pid, "lightPos");
     glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);  
@@ -77,6 +78,11 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
     GLint lightColorLoc = glGetUniformLocation(pid, "lightColor");
     glUniform3f(lightColorLoc, lightColor.x, lightColor.y, lightColor.z);  
+
+    // camera position
+    glm::vec3 cameraPos = scene->getCamera().getPosition();
+    GLint cameraPosLoc = glGetUniformLocation(pid, "cameraPos");
+    glUniform3f(cameraPosLoc, cameraPos.x, cameraPos.y, cameraPos.z);  
 
 
     /* Bind textures */

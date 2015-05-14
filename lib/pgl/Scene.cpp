@@ -70,3 +70,8 @@ void Scene::updateCameraPosition() {
         camera.translate(Camera::RIGHT, deltaTime);
     }
 }
+
+ Camera Scene::getCamera() {
+    return camera;
+ }
+ 
