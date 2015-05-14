@@ -10,7 +10,7 @@ out vec4 color;
 
 void main() {
 
-	/*float aperture = 178.0;
+	float aperture = 178.0;
 	float apertureHalf = 0.5 * aperture * (M_PI / 180.0);
 	float maxFactor = sin(apertureHalf);
 	vec2 uv;
@@ -30,17 +30,7 @@ void main() {
 	} else {
 		uv = uvCoord.xy;
 		color = vec4(0,0,0,1);
-	}*/
-
-	/*float b  = 0.1;
-    const float LOG2 = 1.442695;
-    float z = gl_FragCoord.z / gl_FragCoord.w;
-    float fogFactor = exp2( -b *  b * z * z * LOG2 );
-    fogFactor = clamp(fogFactor, 0.0, 1.0);
-    vec3  fogColor  = vec3(1,1,1);
-
-    color = vec4(mix(fogColor, texture(tex, uvCoord).rgb, fogFactor ), 1.0f);
-    */
+	}
 
 	
 
