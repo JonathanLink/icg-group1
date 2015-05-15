@@ -89,7 +89,7 @@ void main() {
     float tilingScaleSand = 30;
     float tilingScaleRock = 10;
     float tilingScaleGrass = 30;
-    float tilingScaleSnow = 60;
+    float tilingScaleSnow = 30;
 
     float angle = dot(normal, vec3(0.0f, -1.0f, 0.0f));
     vec3 textureColor;
@@ -98,16 +98,23 @@ void main() {
     float sandHeight = 0.42;
     float sandHeightMixed = sandHeight + 0.05;
     float snowHeight = 0.93;
+    float snowHeightMixed = snowHeight + 0.05;
 
 
     if (fragHeight + pseudoRN <= sandHeight ) { // sand
         textureColor = texture(sandTex, tilingScaleSand * uv_coords).rgb;
     } else if (fragHeight + pseudoRN <= sandHeightMixed) {
-        textureColor = mix(texture(rockTex, tilingScaleRock * uv_coords).rgb, texture(sandTex, tilingScaleSand * uv_coords).rgb, (1 - ((fragHeight + pseudoRN) - sandHeight) * 1 / (sandHeightMixed - sandHeight)));
+        vec3 rockMixedGrass = mix(texture(rockTex, tilingScaleRock * uv_coords).rgb, texture(grassTex, tilingScaleGrass * uv_coords).rgb, grassCoeff(1.0 - angle));
+        
+        textureColor = mix(rockMixedGrass, texture(sandTex, tilingScaleSand * uv_coords).rgb, (1 - ((fragHeight + pseudoRN) - sandHeight) * 1 / (sandHeightMixed - sandHeight)));
     } else if (fragHeight + pseudoRN <= snowHeight) { // rock
         textureColor = mix(texture(rockTex, tilingScaleRock * uv_coords).rgb, texture(grassTex, tilingScaleGrass * uv_coords).rgb, grassCoeff(1.0 - angle));
-    } else { // snow
-        textureColor = texture(snowTex, tilingScaleSnow * uv_coords).rgb ;
+    } else if (fragHeight + pseudoRN <= snowHeightMixed) { // snow
+         vec3 rockMixedGrass = mix(texture(rockTex, tilingScaleRock * uv_coords).rgb, texture(grassTex, tilingScaleGrass * uv_coords).rgb, grassCoeff(1.0 - angle));
+
+        textureColor = mix(rockMixedGrass, texture(snowTex, tilingScaleSnow * uv_coords).rgb, (((fragHeight + pseudoRN) -snowHeight) * 1 / (snowHeightMixed - snowHeight)));
+    } else {
+        textureColor = texture(snowTex, tilingScaleSnow * uv_coords).rgb;
     }
 
 
