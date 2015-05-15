@@ -22,17 +22,17 @@ float grassCoeff(float local_slope) {
     if (local_slope >= 0.7) {
         return 0.0;
     } else if (local_slope <= 0.3) {
-        return 0.45;
+        return 0.7;
     } else {
         return local_slope * local_slope * local_slope;
     }
 }
 
 float snowCoeff(float local_slope) {
-    if (local_slope >= 0.5) {
+    if (local_slope >= 0.9) {
         return 0.0;
     } else { 
-        return 0.45;
+        return 1.0;
     } 
 }
 
@@ -46,7 +46,7 @@ void main() {
     // ============ Texturing part ==================
     float tilingScaleSand = 30;
     float tilingScaleRock = 10;
-    float tilingScaleGrass = 30;
+    float tilingScaleGrass = 15;
     float tilingScaleSnow = 30;
 
     float angle = dot(normal, vec3(0.0f, -1.0f, 0.0f));
@@ -60,11 +60,11 @@ void main() {
     vec3 rockMixedGrass = mix(rockTex, grassTex, grassCoeff(1.0 - angle));
     vec3 snowMixedRock = mix(rockTex, snowTex, snowCoeff(1 - angle));
 
-    float pseudoRN = angle / 7;
+    float pseudoRN = angle / 6;
     float sandHeight = 0.45;
     float sandHeightMixed = sandHeight + 0.05;
-    float snowHeight = 0.90;
-    float snowHeightMixed = snowHeight + 0.2;
+    float snowHeight = 0.87;
+    float snowHeightMixed = snowHeight + 0.1;
 
     if (fragHeight + pseudoRN <= sandHeight ) { 
         textureColor = sandTex;
@@ -72,14 +72,12 @@ void main() {
         textureColor = mix(rockMixedGrass, sandTex, (1 - ((fragHeight + pseudoRN) - sandHeight) * 1 / (sandHeightMixed - sandHeight)));
     } else if (fragHeight + pseudoRN <= snowHeight) {
         textureColor = rockMixedGrass;
+    } else if (fragHeight + pseudoRN <= snowHeightMixed) {   
+        textureColor = mix(rockMixedGrass, snowTex, snowCoeff(1 - angle)); 
     } else {
-        if ((fragHeight + rand(gl_FragCoord.xy) <= snowHeightMixed)) {
-            textureColor = mix(rockMixedGrass, snowTex, snowCoeff(1 - angle)); 
-        }
-        else {
-            textureColor = snowTex;
-        }
+        textureColor = mix(rockMixedGrass, snowTex, snowCoeff(1 - angle));
     }
+    
 
     // ============ Lightning part ==================
 
