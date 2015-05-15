@@ -56,15 +56,15 @@ void main() {
     vec3 rockTex = texture(rockTex, tilingScaleRock * uv_coords).rgb;
     vec3 grassTex = texture(grassTex, tilingScaleGrass * uv_coords).rgb;
     vec3 snowTex = texture(snowTex, tilingScaleSnow * uv_coords).rgb;
-
     vec3 rockMixedGrass = mix(rockTex, grassTex, grassCoeff(1.0 - angle));
     vec3 snowMixedRock = mix(rockTex, snowTex, snowCoeff(1 - angle));
+    vec3 snowMixedRockMixedGrass = mix(rockMixedGrass, snowTex, snowCoeff(1 - angle)); 
 
     float pseudoRN = angle / 6;
     float sandHeight = 0.45;
     float sandHeightMixed = sandHeight + 0.05;
     float snowHeight = 0.87;
-    float snowHeightMixed = snowHeight + 0.1;
+    float snowHeightMixed = snowHeight + 0.08;
 
     if (fragHeight + pseudoRN <= sandHeight ) { 
         textureColor = sandTex;
@@ -73,7 +73,7 @@ void main() {
     } else if (fragHeight + pseudoRN <= snowHeight) {
         textureColor = rockMixedGrass;
     } else if (fragHeight + pseudoRN <= snowHeightMixed) {   
-        textureColor = mix(rockMixedGrass, snowTex, snowCoeff(1 - angle)); 
+        textureColor = mix(snowTex, rockMixedGrass, 1 - ((fragHeight + pseudoRN) - snowHeight) * 1 / (snowHeightMixed - snowHeight));
     } else {
         textureColor = mix(rockMixedGrass, snowTex, snowCoeff(1 - angle));
     }
