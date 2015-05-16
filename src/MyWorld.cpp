@@ -10,6 +10,7 @@ void MyWorld::init() {
 	_skybox.setScene(this);
 	_perlin.setScene(this);
 	_terrain.setScene(this);
+	_water.setScene(this);
 
 
 	// Draw perlin noise in framebuffer we've just created
@@ -27,9 +28,11 @@ void MyWorld::render() {
 	//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe
 	_skybox.render(view, projection);
 	_terrain.render(view, projection); 
+	_water.render(view, projection);
 }
 
 void MyWorld::cleanUp() {
 	_skybox.cleanUp();
 	_terrain.cleanUp();
+	_water.cleanUp();
 }
