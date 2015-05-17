@@ -22,7 +22,7 @@ protected:
     glm::mat4 view;
     glm::mat4 projection;
     Camera camera;
-    bool keys[1024];
+    std::vector<bool> keys;
     GLfloat lastX;
     GLfloat lastY;
     bool firstMouse;
