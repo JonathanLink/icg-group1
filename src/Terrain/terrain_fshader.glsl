@@ -22,111 +22,64 @@ float grassCoeff(float local_slope) {
     if (local_slope >= 0.7) {
         return 0.0;
     } else if (local_slope <= 0.3) {
-        return 0.45;
+        return 0.7;
     } else {
         return local_slope * local_slope * local_slope;
     }
 }
 
-float sandCoeff(float local_slope) {
-    if (local_slope >= 0.6) {
-        return 0.2;
-    } else if (local_slope <= 0.4) {
-        return 0.55;
-    } else {
-        return local_slope * local_slope * local_slope;
-    }
+float snowCoeff(float local_slope) {
+    if (local_slope >= 0.9) {
+        return 0.0;
+    } else { 
+        return 1.0;
+    } 
 }
 
-
-vec3 getNormal(vec2 fragPos) {
-    
-    float delta = 1.0 / grid_size;
-    // Create 2D vectors
-    vec2 north2D = vec2(fragPos.x, fragPos.y + delta);
-    vec2 south2D = vec2(fragPos.x, fragPos.y - delta);
-    vec2 east2D = vec2(fragPos.x + delta, fragPos.y);
-    vec2 west2D = vec2(fragPos.x - delta, fragPos.y);
-
-    // Look up height of neighbors in height map
-    float northHeight = texture(tex, north2D).r;
-    float southHeight = texture(tex, south2D).r;
-    float eastHeight = texture(tex, east2D).r;
-    float westHeight = texture(tex, west2D).r;
-
-    // Create 3D vectors
-    vec3 north3D = vec3(north2D.x, northHeight, north2D.y);
-    vec3 south3D = vec3(south2D.x, southHeight, south2D.y);
-    vec3 east3D = vec3(east2D.x, eastHeight, east2D.y);
-    vec3 west3D = vec3(west2D.x, westHeight, west2D.y);
-
-    // First triangle normal (triangle: north-west-south)
-    vec3 v = north3D - west3D;
-    vec3 w = south3D - west3D;
-    vec3 normalA = normalize(cross(v, w));
-
-    // Second triangle normal (triangle: north-east-south)
-    vec3 v2 = north3D - east3D;
-    vec3 w2 = south3D - east3D;
-    vec3 normalB = normalize(cross(v2, w2));
-
-    // Compute average normal vector
-    vec3 avgNormal = (normalA + normalB) / 2.0f;
-    //return vec3(0.0f, 0.0f, 1.0f);
-    return normalize(avgNormal);
-    
+float rand(vec2 c){
+    float result = fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
+    return result;
 }
 
 void main() {
 
-    //vec2 uvFragCoord = (gl_FragCoord.xy + vec2(0.5, 0.5) + vec2(1.0, 1.0)) * 0.5;
-    //vec3 normal2 = getNormal(gl_FragCoord.xy);
-
-    //vec2 relFragPos = (fragPos.xz + vec2(1.0, 1.0)) * 0.5;
-    //vec3 normal2 = getNormal(relFragPos);
-
     // ============ Texturing part ==================
     float tilingScaleSand = 30;
     float tilingScaleRock = 10;
-    float tilingScaleGrass = 30;
+    float tilingScaleGrass = 15;
     float tilingScaleSnow = 30;
 
     float angle = dot(normal, vec3(0.0f, -1.0f, 0.0f));
     vec3 textureColor;
-    
-    float pseudoRN = angle / 7;
-    float sandHeight = 0.42;
+
+    vec3 sandTex = texture(sandTex, tilingScaleSand * uv_coords).rgb;
+    vec3 rockTex = texture(rockTex, tilingScaleRock * uv_coords).rgb;
+    vec3 grassTex = texture(grassTex, tilingScaleGrass * uv_coords).rgb;
+    vec3 snowTex = texture(snowTex, tilingScaleSnow * uv_coords).rgb;
+    vec3 rockMixedGrass = mix(rockTex, grassTex, grassCoeff(1.0 - angle));
+    vec3 snowMixedRock = mix(rockTex, snowTex, snowCoeff(1 - angle));
+    vec3 snowMixedRockMixedGrass = mix(rockMixedGrass, snowTex, snowCoeff(1 - angle)); 
+
+    float pseudoRN = angle / 6;
+    float sandHeight = 0.45;
     float sandHeightMixed = sandHeight + 0.05;
-    float snowHeight = 0.93;
-    float snowHeightMixed = snowHeight + 0.05;
+    float snowHeight = 0.87;
+    float snowHeightMixed = snowHeight + 0.08;
 
-
-    if (fragHeight + pseudoRN <= sandHeight ) { // sand
-        textureColor = texture(sandTex, tilingScaleSand * uv_coords).rgb;
+    if (fragHeight + pseudoRN <= sandHeight ) { 
+        textureColor = sandTex;
     } else if (fragHeight + pseudoRN <= sandHeightMixed) {
-        vec3 rockMixedGrass = mix(texture(rockTex, tilingScaleRock * uv_coords).rgb, texture(grassTex, tilingScaleGrass * uv_coords).rgb, grassCoeff(1.0 - angle));
-        
-        textureColor = mix(rockMixedGrass, texture(sandTex, tilingScaleSand * uv_coords).rgb, (1 - ((fragHeight + pseudoRN) - sandHeight) * 1 / (sandHeightMixed - sandHeight)));
-    } else if (fragHeight + pseudoRN <= snowHeight) { // rock
-        textureColor = mix(texture(rockTex, tilingScaleRock * uv_coords).rgb, texture(grassTex, tilingScaleGrass * uv_coords).rgb, grassCoeff(1.0 - angle));
-    } else if (fragHeight + pseudoRN <= snowHeightMixed) { // snow
-         vec3 rockMixedGrass = mix(texture(rockTex, tilingScaleRock * uv_coords).rgb, texture(grassTex, tilingScaleGrass * uv_coords).rgb, grassCoeff(1.0 - angle));
-
-        textureColor = mix(rockMixedGrass, texture(snowTex, tilingScaleSnow * uv_coords).rgb, (((fragHeight + pseudoRN) -snowHeight) * 1 / (snowHeightMixed - snowHeight)));
+        textureColor = mix(rockMixedGrass, sandTex, (1 - ((fragHeight + pseudoRN) - sandHeight) * 1 / (sandHeightMixed - sandHeight)));
+    } else if (fragHeight + pseudoRN <= snowHeight) {
+        textureColor = rockMixedGrass;
+    } else if (fragHeight + pseudoRN <= snowHeightMixed) {   
+        textureColor = mix(snowTex, rockMixedGrass, 1 - ((fragHeight + pseudoRN) - snowHeight) * 1 / (snowHeightMixed - snowHeight));
     } else {
-        textureColor = texture(snowTex, tilingScaleSnow * uv_coords).rgb;
+        textureColor = mix(rockMixedGrass, snowTex, snowCoeff(1 - angle));
     }
+    
 
-
-    /*if (angle < 0.2) {
-        color = vec4(1,0,0,0);
-    } else if (angle < 0.5) {
-        color = vec4(0,1,0,0);
-    } else if (angle < 1.0) {
-        color = vec4(0,0,1,0);
-    }*/
-
-     // ============ Lightning part ==================
+    // ============ Lightning part ==================
 
     // Ambient
     float ambientStrength = 0.3f;
@@ -148,6 +101,16 @@ void main() {
     //color = vec4(mod(angle,2.0*M_PI) /(2.0*M_PI), mod(angle,2.0*M_PI) /(2.0*M_PI), mod(angle,2.0*M_PI) /(2.0*M_PI), 1.0f);
     //vec2 relFragPos = (fragPos.xz + vec2(1.0, 1.0)) * 0.5;
     //color = texture(tex, relFragPos);
+
+    /*
+    if (angle < 0.2) {
+        color = vec4(1,0,0,0);
+    } else if (angle < 0.5) {
+        color = vec4(0,1,0,0);
+    } else if (angle < 1.0) {
+        color = vec4(0,0,1,0);
+    }
+    */
 
     
 }

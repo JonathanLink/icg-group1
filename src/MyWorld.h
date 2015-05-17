@@ -8,6 +8,7 @@
 #include "Triangle/Triangle.h"
 #include "Square/Square.h"
 #include "Cube/Cube.h"
+#include "Water/Water.h"
 
 
 class MyWorld: public Scene {
@@ -27,6 +28,7 @@ private:
 	Triangle _triangle;
 	Square _square;
 	Cube _cube;
+	Water _water;
 
 };
 
