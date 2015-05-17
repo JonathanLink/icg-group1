@@ -2,7 +2,7 @@
 
 Scene::Scene() : camera(glm::vec3(-0.967917f, 3.54413f, -1.45086f),
                         glm::vec3(-22.4157f, 36.1665f, 0.0f)) {
-    // Do nothing
+    keys.resize(1024, false);
 }
 
 void Scene::renderScene() {
@@ -70,4 +70,6 @@ void Scene::updateCameraPosition() {
     if(keys[GLFW_KEY_D]) {
         camera.translate(Camera::RIGHT, deltaTime);
     }
+
+
 }
