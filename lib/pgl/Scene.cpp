@@ -1,6 +1,7 @@
 #include "pgl/Scene.h"
 
-Scene::Scene() : camera(glm::vec3(0.0f, 5.0f, 10.0f)) {
+Scene::Scene() : camera(glm::vec3(-0.967917f, 3.54413f, -1.45086f),
+                        glm::vec3(-22.4157f, 36.1665f, 0.0f)) {
     // Do nothing
 }
 
