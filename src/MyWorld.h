@@ -6,6 +6,10 @@
 #include "Terrain/Terrain.h"
 #include "Perlin/Perlin.h"
 #include "FishEye/FishEye.h"
+#include "Triangle/Triangle.h"
+#include "Square/Square.h"
+#include "Cube/Cube.h"
+#include "Water/Water.h"
 
 class MyWorld: public Scene {
 public:
@@ -20,7 +24,10 @@ private:
 	Skybox _skybox;
 	Terrain _terrain;
 	FishEye _fishEye;
-
+	Triangle _triangle;
+	Square _square;
+	Cube _cube;
+	Water _water;
 };
 
 #endif // MYWORLD_H

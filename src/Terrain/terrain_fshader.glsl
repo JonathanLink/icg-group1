@@ -20,36 +20,63 @@ uniform vec3 cameraPos;
 out vec4 color;
 
 float grassCoeff(float local_slope) {
-    if (abs(local_slope) >= 0.7) {
+    if (local_slope >= 0.7) {
         return 0.0;
-    } else if (abs(local_slope) <= 0.3) {
-        return 1.0;
+    } else if (local_slope <= 0.3) {
+        return 0.7;
     } else {
         return local_slope * local_slope * local_slope;
     }
 }
 
+float snowCoeff(float local_slope) {
+    if (local_slope >= 0.9) {
+        return 0.0;
+    } else { 
+        return 1.0;
+    } 
+}
+
+float rand(vec2 c){
+    float result = fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
+    return result;
+}
 
 void main() {
-
     // ============ Texturing part ==================
-    float tilingScalaSand = 30;
-    float tilingScaleGrassRock = 10;
-    float tilingScaleSnow = 60;
+    float tilingScaleSand = 30;
+    float tilingScaleRock = 10;
+    float tilingScaleGrass = 15;
+    float tilingScaleSnow = 30;
 
     float angle = dot(normal, vec3(0.0f, -1.0f, 0.0f));
     vec3 textureColor;
-    
 
-    if (fragHeight <= 0.39) { // sand
-         textureColor = texture(sandTex, 6 * tilingScalaSand * uv_coords).rgb;
-    } else if (fragHeight <= 0.8) { // rock
-        textureColor = mix(texture(rockTex, tilingScaleGrassRock * uv_coords).rgb, texture(grassTex, tilingScaleGrassRock * uv_coords).rgb, grassCoeff(1.0 - angle));
-    } else { // snow
-        textureColor = texture(snowTex, 3 * tilingScaleSnow * uv_coords).rgb ;
+    vec3 sandTex = texture(sandTex, tilingScaleSand * uv_coords).rgb;
+    vec3 rockTex = texture(rockTex, tilingScaleRock * uv_coords).rgb;
+    vec3 grassTex = texture(grassTex, tilingScaleGrass * uv_coords).rgb;
+    vec3 snowTex = texture(snowTex, tilingScaleSnow * uv_coords).rgb;
+    vec3 rockMixedGrass = mix(rockTex, grassTex, grassCoeff(1.0 - angle));
+    vec3 snowMixedRock = mix(rockTex, snowTex, snowCoeff(1 - angle));
+    vec3 snowMixedRockMixedGrass = mix(rockMixedGrass, snowTex, snowCoeff(1 - angle)); 
+
+    float pseudoRN = angle / 6;
+    float sandHeight = 0.45;
+    float sandHeightMixed = sandHeight + 0.05;
+    float snowHeight = 0.87;
+    float snowHeightMixed = snowHeight + 0.08;
+
+    if (fragHeight + pseudoRN <= sandHeight ) { 
+        textureColor = sandTex;
+    } else if (fragHeight + pseudoRN <= sandHeightMixed) {
+        textureColor = mix(rockMixedGrass, sandTex, (1 - ((fragHeight + pseudoRN) - sandHeight) * 1 / (sandHeightMixed - sandHeight)));
+    } else if (fragHeight + pseudoRN <= snowHeight) {
+        textureColor = rockMixedGrass;
+    } else if (fragHeight + pseudoRN <= snowHeightMixed) {   
+        textureColor = mix(snowTex, rockMixedGrass, 1 - ((fragHeight + pseudoRN) - snowHeight) * 1 / (snowHeightMixed - snowHeight));
+    } else {
+        textureColor = mix(rockMixedGrass, snowTex, snowCoeff(1 - angle));
     }
-
-
 
     // ============ Lightning part ==================
 
@@ -129,5 +156,13 @@ void main() {
     color = vec4(mix(fogColor, result, fogFactor ), 1.0f);
     */
 
-    
+    /*
+    if (angle < 0.2) {
+        color = vec4(1,0,0,0);
+    } else if (angle < 0.5) {
+        color = vec4(0,1,0,0);
+    } else if (angle < 1.0) {
+        color = vec4(0,0,1,0);
+    }
+    */
 }

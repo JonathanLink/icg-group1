@@ -1,6 +1,8 @@
 #include "pgl/Scene.h"
 
-Scene::Scene() : camera(glm::vec3(10.0f, 26.0f, 10.0f)) {
+Scene::Scene() : camera(glm::vec3(-0.967917f, 3.54413f, -1.45086f),
+                        glm::vec3(-22.4157f, 36.1665f, 0.0f)) {
+    keys.resize(1024, false);
     _cameraMode = FLY;
 }
 
@@ -20,8 +22,6 @@ void Scene::renderScene() {
             //view = _cameraBezier.getViewMatrix();
             break;
     }
-
-
 
     //projection = glm::perspective(camera.getZoom(), (GLfloat)getSceneAspectRatio(), 0.1f, 100.0f);
     projection = glm::perspective(45.0f, (GLfloat)getSceneAspectRatio(), 0.1f, 200.0f);
@@ -81,6 +81,8 @@ void Scene::updateCameraPosition() {
     if(keys[GLFW_KEY_D]) {
         camera.translate(Camera::RIGHT, deltaTime);
     }
+
+
 }
 
  Camera Scene::getCamera() {
