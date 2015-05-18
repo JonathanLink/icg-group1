@@ -51,46 +51,15 @@ void Terrain::init() {
 
 
 void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
-   useShaders();
+    useShaders();
 
     // Set uniform variables for the vertex and fragment glsl files
-    GLuint modelLoc_id = glGetUniformLocation(pid, "model");
-    glUniformMatrix4fv(modelLoc_id, 1, GL_FALSE,  glm::value_ptr(model));
+    scene->setUniformVariables(pid, model, view, projection);
 
-    GLuint modelViewLoc_id = glGetUniformLocation(pid, "modelView");
-    glm::mat4 modelView = view * model;
-    glUniformMatrix4fv(modelViewLoc_id, 1, GL_FALSE,  glm::value_ptr(modelView));
-
-    GLuint mvpLoc_id = glGetUniformLocation(pid, "MVP_matrix");
-    glm::mat4 mvp = projection * modelView;
-    glUniformMatrix4fv(mvpLoc_id, 1, GL_FALSE,  glm::value_ptr(mvp));
-
+    // grid size uniform
     GLuint grid_size_id = glGetUniformLocation(pid, "grid_size");
     glm::float1 grid_size = (float)GRID_SIZE;
     glUniform1f(grid_size_id, grid_size);
-
-    // light vector
-    //glm::vec3 lightPos = glm::vec3(5.0f, 5.0f, 0.0f);
-    float radius = 5.0f;
-    float xSun = radius * sin(_lightAngle * 180.0/3.14) + 5.0f;
-    float zSun = radius * cos(_lightAngle * 180.0/3.14);
-    glm::vec3 lightPos = glm::vec3(xSun, 5.0f, zSun);
-    _lightAngle = _lightAngle + 0.01 * (glfwGetTime() - _previousTime);
-    _previousTime = glfwGetTime();
-    //lightPos = glm::rotate(lightPos, _lightAngle, glm::vec3(0.0f, 1.0f, 0.0f));
-    GLint lightPosLoc = glGetUniformLocation(pid, "lightPos");
-    glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);  
-
-    // light color
-    glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
-    GLint lightColorLoc = glGetUniformLocation(pid, "lightColor");
-    glUniform3f(lightColorLoc, lightColor.x, lightColor.y, lightColor.z);  
-
-    // camera position
-    glm::vec3 cameraPos = scene->getCamera().getPosition(); //getCameraPosition better!!!
-    //glm::vec3 cameraPos = glm::vec3(0.0f, 46.0f, 0.0f);
-    GLint cameraPosLoc = glGetUniformLocation(pid, "cameraPos");
-    glUniform3f(cameraPosLoc, cameraPos.x, cameraPos.y, cameraPos.z);  
 
 
     /* Bind textures */

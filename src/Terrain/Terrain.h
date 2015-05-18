@@ -22,7 +22,6 @@ private:
     GLuint _rockTexId;
     std::vector<GLfloat> _vertices;
     std::vector<GLuint> _indices;
-    double _lightAngle;
     double _previousTime;
 
     static const int GRID_SIZE = 512;

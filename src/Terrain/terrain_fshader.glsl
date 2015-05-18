@@ -96,73 +96,11 @@ void main() {
 
 
     // ============ Fog part =======================
-    /*float distance = distance(cameraPos, fragPos);
-    vec3 rayDir =  fragPos - cameraPos;
-    float b = 0.01;
-    float fogAmount = 1.0 - exp( -distance * b );
-    float sunAmount = max( dot( rayDir, lightPos ), 0.0 );
-    vec3  fogColor  = mix( vec3(0.5,0.6,0.7), // bluish
-                           vec3(1.0,0.9,0.7), // yellowish
-                           pow(sunAmount,8.0) );
-    color = vec4(mix( result, fogColor, fogAmount ), 1.0f);*/
-    ////
-
-    /*float b  = 0.05;
-    float c = 0.5;
-    float distance = distance(cameraPos, fragPos);
-    vec3 rayDir =  fragPos - cameraPos;
-    float fogAmount = c * exp(-cameraPos.y*b) * (1.0-exp( -distance*rayDir.y*b ))/rayDir.y;
-    //vec3  fogColor  = vec3(1,1,1);
-     float sunAmount = max( dot( rayDir, lightPos ), 0.0 );
-    vec3  fogColor  = mix( vec3(0.5,0.6,0.7), // bluish
-                           vec3(1.0,1.0,1.0), // yellowish
-                           pow(sunAmount,2.0) );
-    color = vec4(mix( result, fogColor, fogAmount ), 1.0f);
-    */
-    ////
-
-    /*float b  = 0.02;
-    float c = 1;
-    float distance = distance(cameraPos, fragPos);
-    vec3 rayDir =  fragPos - cameraPos;
-    float fogAmount = c * exp(-cameraPos.x*b) * (1.0 - exp( -distance * rayDir.x*b )) / rayDir.x;
-    fogAmount = clamp(fogAmount, 0, 1);
-    if (fogAmount > 0.8) {
-        fogAmount = 0.8;
-    } 
-    vec3  fogColor  = vec3(1,1,1);
-    color = vec4(mix( result, fogColor, 0.8*fogAmount ), 1.0f);
-    //color = vec4(fogAmount,fogAmount,fogAmount,1);*/
-
-
-
     float distance = distance(cameraPos, fragPos);
     float fogAmount = exp(distance * 0.009) - 1;
     fogAmount = clamp(fogAmount, 0, 0.8);
     vec3  fogColor  = vec3(1,1,1);
     color = vec4(mix( result, fogColor, fogAmount ), 1.0f);
-    //color = vec4(fogAmount,fogAmount,fogAmount,1);
+    
 
-    // ******************
-
-
-    /*
-    float b  = 0.01;
-    const float LOG2 = 1.442695;
-    float z = gl_FragCoord.z / gl_FragCoord.w;
-    float fogFactor = exp2( -b *  b * z * z * LOG2 );
-    fogFactor = clamp(fogFactor, 0.0, 1.0);
-    vec3  fogColor  = vec3(1,1,1);
-    color = vec4(mix(fogColor, result, fogFactor ), 1.0f);
-    */
-
-    /*
-    if (angle < 0.2) {
-        color = vec4(1,0,0,0);
-    } else if (angle < 0.5) {
-        color = vec4(0,1,0,0);
-    } else if (angle < 1.0) {
-        color = vec4(0,0,1,0);
-    }
-    */
 }

@@ -15,9 +15,7 @@ private:
     GLuint _vertexArrayId;
     GLuint _vertexBufferId;
     GLuint _elementBufferId;
-
     GLuint _textureId;
-   
     std::vector<GLfloat> _vertices;
     std::vector<GLuint> _indices;
     double _lightAngle;
@@ -35,6 +33,8 @@ private:
         double y;
         double indice;
     };
+
+    float _waterTime;
 
     void constructGrid();
 };

@@ -1,7 +1,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "glm/gtc/matrix_transform.hpp"
-
+#include "glm/gtc/type_ptr.hpp"
 #include "pgl/Scene.h"
 
 Scene::Scene() : camera(glm::vec3(-0.967917f, 20.54413f, -1.45086f),
@@ -11,11 +11,19 @@ Scene::Scene() : camera(glm::vec3(-0.967917f, 20.54413f, -1.45086f),
 }
 
 void Scene::renderScene() {
+    // update time
     deltaTime = glfwGetTime() - lastTime;
     lastTime = glfwGetTime();
 
-    updateCameraPosition();
+    // update light position
+    float radius = 5.0f;
+    float xSun = radius * sin(_lightAngle * 180.0/3.14) + 5.0f;
+    float zSun = radius * cos(_lightAngle * 180.0/3.14);
+    _lightPosition = glm::vec3(xSun, 5.0f, zSun);
+    _lightAngle = _lightAngle + 0.01 * deltaTime;
 
+    // update camera
+    updateCameraPosition();
     switch (_cameraMode) {
         case FLY:
             view = camera.getViewMatrix();
@@ -27,6 +35,7 @@ void Scene::renderScene() {
             break;
     }
 
+    // update projection
     //projection = glm::perspective(camera.getZoom(), (GLfloat)getSceneAspectRatio(), 0.1f, 100.0f);
     projection = glm::perspective(45.0f, (GLfloat)getSceneAspectRatio(), 0.1f, 200.0f);
 
@@ -85,11 +94,46 @@ void Scene::updateCameraPosition() {
     if(keys[GLFW_KEY_D]) {
         camera.translate(Camera::RIGHT, deltaTime);
     }
-
-
 }
 
- Camera Scene::getCamera() {
-    return camera;
- }
+void Scene::setUniformVariables(GLuint pid, const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &projection) {
+    GLuint modelLoc_id = glGetUniformLocation(pid, "model");
+    glUniformMatrix4fv(modelLoc_id, 1, GL_FALSE,  glm::value_ptr(model));
+
+    GLuint modelViewLoc_id = glGetUniformLocation(pid, "modelView");
+    glm::mat4 modelView = view * model;
+    glUniformMatrix4fv(modelViewLoc_id, 1, GL_FALSE,  glm::value_ptr(modelView));
+
+    GLuint mvpLoc_id = glGetUniformLocation(pid, "MVP_matrix");
+    glm::mat4 mvp = projection * modelView;
+    glUniformMatrix4fv(mvpLoc_id, 1, GL_FALSE,  glm::value_ptr(mvp));
+
+    // light vector
+    glm::vec3 lightPos = getLightPosition();
+    GLint lightPosLoc = glGetUniformLocation(pid, "lightPos");
+    glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);  
+
+    // light color
+    glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    GLint lightColorLoc = glGetUniformLocation(pid, "lightColor");
+    glUniform3f(lightColorLoc, lightColor.x, lightColor.y, lightColor.z);  
+
+    // camera position
+    glm::vec3 cameraPos = getCameraPosition();
+    GLint cameraPosLoc = glGetUniformLocation(pid, "cameraPos");
+    glUniform3f(cameraPosLoc, cameraPos.x, cameraPos.y, cameraPos.z);  
+}
+
+glm::vec3 Scene::getCameraPosition() {
+    return camera.getPosition();
+}
+
+glm::vec3 Scene::getLightPosition() {
+   return _lightPosition;
+}
+
+GLfloat Scene::getDeltaTime() {
+    return deltaTime;
+}
+
  
