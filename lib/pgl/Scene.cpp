@@ -4,7 +4,7 @@
 
 #include "pgl/Scene.h"
 
-Scene::Scene() : camera(glm::vec3(-0.967917f, 3.54413f, -1.45086f),
+Scene::Scene() : camera(glm::vec3(-0.967917f, 20.54413f, -1.45086f),
                         glm::vec3(-22.4157f, 36.1665f, 0.0f)) {
     keys.resize(1024, false);
     _cameraMode = FLY;

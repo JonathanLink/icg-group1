@@ -13,7 +13,7 @@ public:
         RIGHT
     };
 
-    const GLfloat SPEED = 2.5f;
+    const GLfloat SPEED = 10.0f;
     const GLfloat SENSITIVTY = 0.25f;
     const GLfloat ZOOM = 0.0f;
 
