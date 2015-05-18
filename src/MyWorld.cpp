@@ -29,8 +29,8 @@ void MyWorld::init() {
 void MyWorld::render() {
     //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe
 
-    FrameBuffer fishEyeFrameBuffer = FrameBuffer(800, 600);
-    GLuint fishEyeTextureId = fishEyeFrameBuffer.initTextureId(GL_RGB); 
+    //FrameBuffer fishEyeFrameBuffer = FrameBuffer(800, 600);
+    //GLuint fishEyeTextureId = fishEyeFrameBuffer.initTextureId(GL_RGB);
     //fishEyeFrameBuffer.bind();
         _skybox.render(view, projection);
         _terrain.render(view, projection); 

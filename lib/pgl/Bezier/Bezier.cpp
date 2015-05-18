@@ -100,7 +100,6 @@ glm::vec3 Bezier::samplePointAtTime(double time) {
 
 void Bezier::render(const glm::mat4 &view, const glm::mat4 &projection) {
 
-
 }
 
 void Bezier::cleanUp() {
