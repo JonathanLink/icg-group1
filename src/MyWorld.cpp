@@ -9,12 +9,8 @@ void MyWorld::init() {
     _skybox.setScene(this);
     _perlin.setScene(this);
     _terrain.setScene(this);
-    _fishEye.setScene(this);
-	
-	_skybox.setScene(this);
-	_perlin.setScene(this);
-	_terrain.setScene(this);
-	_water.setScene(this);
+    //_fishEye.setScene(this);
+
 
     // Draw perlin noise in framebuffer we've just created
     FrameBuffer perlinFrameBuffer = FrameBuffer(512, 512);
@@ -27,19 +23,19 @@ void MyWorld::init() {
 }
 
 void MyWorld::render() {
-    //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe
-
+    
     //FrameBuffer fishEyeFrameBuffer = FrameBuffer(800, 600);
     //GLuint fishEyeTextureId = fishEyeFrameBuffer.initTextureId(GL_RGB);
     //fishEyeFrameBuffer.bind();
-        _skybox.render(view, projection);
-        _terrain.render(view, projection); 
+    //    _skybox.render(view, projection);
+    //    _terrain.render(view, projection); 
     //fishEyeFrameBuffer.unbind();
 
     //_fishEye.setTexture(fishEyeTextureId);
     //_fishEye.render(view, projection);
 
     //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe
+    
     _skybox.render(view, projection);
     _terrain.render(view, projection);
     _water.render(view, projection);
