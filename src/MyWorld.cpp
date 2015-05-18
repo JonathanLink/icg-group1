@@ -6,33 +6,45 @@ MyWorld::MyWorld() {
 }
 
 void MyWorld::init() {
-	
-	_skybox.setScene(this);
-	_perlin.setScene(this);
-	_terrain.setScene(this);
-	_water.setScene(this);
+    _skybox.setScene(this);
+    _perlin.setScene(this);
+    _terrain.setScene(this);
+    _water.setScene(this);
+    //_fishEye.setScene(this);
 
 
-	// Draw perlin noise in framebuffer we've just created
-    FrameBuffer frameBuffer = FrameBuffer(FRAMEBUFFER_WIDTH,
-                                          FRAMEBUFFER_WIDTH);
-	GLuint textureId = frameBuffer.initTextureId(); 
-	frameBuffer.bind();
-		_perlin.render(view, projection);
-	frameBuffer.unbind();
+    // Draw perlin noise in framebuffer we've just created
+    FrameBuffer perlinFrameBuffer = FrameBuffer(512, 512);
+    GLuint perlinTextureId = perlinFrameBuffer.initTextureId(GL_R32F); 
+    perlinFrameBuffer.bind();
+        _perlin.render(view, projection);
+    perlinFrameBuffer.unbind();
 
-	_terrain.setTexture(textureId);
+    _terrain.setTexture(perlinTextureId);
 }
 
 void MyWorld::render() {
-	//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe
-	_skybox.render(view, projection);
-	_terrain.render(view, projection); 
-	_water.render(view, projection);
+    
+    //FrameBuffer fishEyeFrameBuffer = FrameBuffer(800, 600);
+    //GLuint fishEyeTextureId = fishEyeFrameBuffer.initTextureId(GL_RGB);
+    //fishEyeFrameBuffer.bind();
+    //    _skybox.render(view, projection);
+    //    _terrain.render(view, projection); 
+    //fishEyeFrameBuffer.unbind();
+
+    //_fishEye.setTexture(fishEyeTextureId);
+    //_fishEye.render(view, projection);
+
+    //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe
+    
+    _skybox.render(view, projection);
+    _terrain.render(view, projection);
+    _water.render(view, projection);
 }
 
 void MyWorld::cleanUp() {
-	_skybox.cleanUp();
-	_terrain.cleanUp();
-	_water.cleanUp();
+    _skybox.cleanUp();
+    _terrain.cleanUp();
+    _perlin.cleanUp();
+    _fishEye.cleanUp();
 }

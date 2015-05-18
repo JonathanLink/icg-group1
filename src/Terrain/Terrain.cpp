@@ -1,3 +1,10 @@
+#include <iostream>
+
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/ext.hpp"
+
 #include "Terrain.h"
 
 
@@ -29,7 +36,7 @@ void Terrain::init() {
 
     // Apply a rotation on the model matrix
     //model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+    model = glm::scale(model, glm::vec3(35, 35, 35));
 
 
     // Bind Grass Texture
@@ -44,39 +51,15 @@ void Terrain::init() {
 
 
 void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
-   useShaders();
+    useShaders();
 
     // Set uniform variables for the vertex and fragment glsl files
-    GLuint modelLoc_id = glGetUniformLocation(pid, "model");
-    glUniformMatrix4fv(modelLoc_id, 1, GL_FALSE,  glm::value_ptr(model));
+    scene->setUniformVariables(pid, model, view, projection);
 
-    GLuint modelViewLoc_id = glGetUniformLocation(pid, "modelView");
-    glm::mat4 modelView = view * model;
-    glUniformMatrix4fv(modelViewLoc_id, 1, GL_FALSE,  glm::value_ptr(modelView));
-
-    GLuint mvpLoc_id = glGetUniformLocation(pid, "MVP_matrix");
-    glm::mat4 mvp = projection * modelView;
-    glUniformMatrix4fv(mvpLoc_id, 1, GL_FALSE,  glm::value_ptr(mvp));
-
+    // grid size uniform
     GLuint grid_size_id = glGetUniformLocation(pid, "grid_size");
     glm::float1 grid_size = (float)GRID_SIZE;
     glUniform1f(grid_size_id, grid_size);
-
-    // light vector
-    //glm::vec3 lightPos = glm::vec3(5.0f, 5.0f, 0.0f);
-    float radius = 5.0f;
-    float xSun = radius * sin(_lightAngle * 180.0/3.14) + 5.0f;
-    float zSun = radius * cos(_lightAngle * 180.0/3.14);
-    glm::vec3 lightPos = glm::vec3(xSun, 5.0f, zSun);
-    _lightAngle += 0.0001;
-    //lightPos = glm::rotate(lightPos, _lightAngle, glm::vec3(0.0f, 1.0f, 0.0f));
-    GLint lightPosLoc = glGetUniformLocation(pid, "lightPos");
-    glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);  
-
-    // light color
-    glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
-    GLint lightColorLoc = glGetUniformLocation(pid, "lightColor");
-    glUniform3f(lightColorLoc, lightColor.x, lightColor.y, lightColor.z);  
 
 
     /* Bind textures */

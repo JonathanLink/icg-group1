@@ -1,3 +1,9 @@
+#include <GL/glew.h>
+#include <iostream>
+#include "glm/ext.hpp"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
 #include "pgl/Camera.h"
 
 Camera::Camera(glm::vec3 position, glm::vec3 rotation) {
@@ -9,6 +15,7 @@ Camera::Camera(glm::vec3 position, glm::vec3 rotation) {
     _mouseSensitivity = SENSITIVTY;
     updateCameraVectors();
 }
+
 
 glm::mat4 Camera::getViewMatrix() {
     return glm::lookAt(_position, _position + _front, _up);
@@ -85,5 +92,10 @@ void Camera::zoom(GLfloat yOffset) {
 
 GLfloat Camera::getZoom() {
     return _zoom;
+}
+
+glm::vec3 Camera::getPosition() {
+    //std::cout << glm::to_string(_position) << std::endl;
+    return _position;
 }
 

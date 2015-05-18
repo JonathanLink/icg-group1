@@ -39,25 +39,6 @@ vec3 getNormal(vec2 pos) {
 
 	return normalize(cross(south_to_north, south_to_west));
 
-
-
-    // ============= LINK ============
-    /*
-    // First triangle normal (triangle: north-west-south)
-    vec3 v = north3D - west3D;
-    vec3 w = south3D - west3D;
-    vec3 normalA = normalize(cross(v, w));
-
-    // Second triangle normal (triangle: north-east-south)
-    vec3 v2 = north3D - east3D;
-    vec3 w2 = south3D - east3D;
-    vec3 normalB = normalize(cross(v2, w2));
-
-    // Compute average normal vector
-    vec3 avgNormal = (normalA + normalB) / 2.0f;
-    //return vec3(0.0f, 0.0f, 1.0f);
-    return normalize(avgNormal);
-    */
     
 }
 

@@ -1,7 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "common.h"
+#include <GL/glew.h>
+#include "glm/glm.hpp"
 
 class Camera {
 public:
@@ -11,7 +12,8 @@ public:
         LEFT,
         RIGHT
     };
-    const GLfloat SPEED = 2.5f;
+
+    const GLfloat SPEED = 10.0f;
     const GLfloat SENSITIVTY = 0.25f;
     const GLfloat ZOOM = 0.0f;
 
@@ -21,6 +23,7 @@ public:
     void rotate(GLfloat xOffset, GLfloat yOffset);
     void zoom(GLfloat yOffset);
     GLfloat getZoom();
+    glm::vec3 getPosition();
 
 private:
     glm::vec3 _position;

@@ -2,7 +2,6 @@
 #define RENDER_OBJECT_H
 
 #include "pgl/external/stb_image.h"
-#include "common.h"
 #include "Scene.h"
 
 class RenderObject {

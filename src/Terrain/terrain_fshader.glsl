@@ -15,6 +15,8 @@ uniform sampler2D sandTex;
 uniform sampler2D rockTex;
 uniform vec3 lightPos;
 uniform vec3 lightColor;
+uniform vec3 cameraPos;
+uniform int fogEnabled;
 
 out vec4 color;
 
@@ -42,7 +44,6 @@ float rand(vec2 c){
 }
 
 void main() {
-
     // ============ Texturing part ==================
     float tilingScaleSand = 30;
     float tilingScaleRock = 10;
@@ -77,7 +78,6 @@ void main() {
     } else {
         textureColor = mix(rockMixedGrass, snowTex, snowCoeff(1 - angle));
     }
-    
 
     // ============ Lightning part ==================
 
@@ -93,24 +93,22 @@ void main() {
 
     // Ambient + Diffuse
     vec3 result = (ambient + diffuse) * textureColor;
-    color = vec4(result, 1.0f);
+    vec4 finalColor = vec4(result, 1.0f);
 
-
-    //===== DEBUG ====
-
-    //color = vec4(mod(angle,2.0*M_PI) /(2.0*M_PI), mod(angle,2.0*M_PI) /(2.0*M_PI), mod(angle,2.0*M_PI) /(2.0*M_PI), 1.0f);
-    //vec2 relFragPos = (fragPos.xz + vec2(1.0, 1.0)) * 0.5;
-    //color = texture(tex, relFragPos);
-
-    /*
-    if (angle < 0.2) {
-        color = vec4(1,0,0,0);
-    } else if (angle < 0.5) {
-        color = vec4(0,1,0,0);
-    } else if (angle < 1.0) {
-        color = vec4(0,0,1,0);
+    // ============ Fog part =======================
+    if (fogEnabled > 0.5) { // not == 1 to avoid float procession error
+        float distance = distance(cameraPos, fragPos);
+        float fogAmount = exp(distance * 0.009) - 1;
+        fogAmount = clamp(fogAmount, 0, 0.8);
+        vec3  fogColor  = vec3(1,1,1);
+        finalColor = vec4(mix( result, fogColor, fogAmount ), 1.0f);
     }
-    */
+    // =========== Camera underwater ? =======
+    if (cameraPos.y > 0.0 && cameraPos.y < 14.0) {
+        float alpha = exp(cameraPos.y * 0.04) - 1.0f;
+        alpha = clamp(alpha, 0, 1.0);
+        finalColor = mix( vec4(0.0f, 0.0f, 1.0f, 0.6f), finalColor, alpha );
+    }
 
-    
+    color = finalColor;
 }

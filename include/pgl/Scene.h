@@ -1,10 +1,16 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <pgl/common.h>
+#include <vector>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include "Camera.h"
 
 class Scene {
+
+enum CameraMode { FLY, FPS, BEZIER };
+
 public:
     Scene();
     virtual void init() = 0;
@@ -17,6 +23,11 @@ public:
     void setSceneWidth(GLuint width);
     void setSceneHeight(GLuint height);
     GLuint getSceneAspectRatio() const;
+    glm::vec3 getCameraPosition();
+    glm::vec3 getLightPosition();
+    void setUniformVariables(GLuint pid, const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &projection);
+    GLfloat getDeltaTime();
+    bool fogEnabled();
 
 protected: 
     glm::mat4 view;
@@ -33,6 +44,11 @@ private:
     void updateCameraPosition();
     GLuint _sceneWidth;
     GLuint _sceneHeight;
+    CameraMode _cameraMode;
+    double _lightAngle;
+    glm::vec3 _lightPosition;
+    bool _fog;
+
 };
 
 #endif
