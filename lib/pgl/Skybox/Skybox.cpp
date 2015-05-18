@@ -102,7 +102,10 @@ void Skybox::render(const glm::mat4 &view, const glm::mat4 &projection) {
 }
 
 void Skybox::cleanUp() {
-
+    std::cout << "CleanUp Skybox" << std::endl;
+    glDeleteBuffers(1, &_VBO);
+    glDeleteVertexArrays(1, &_VAO);
+    glDeleteProgram(pid);
 }
 
 GLuint Skybox::loadCubemap(std::vector<const GLchar*> faces) {

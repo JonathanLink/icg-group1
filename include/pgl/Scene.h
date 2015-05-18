@@ -3,8 +3,12 @@
 
 #include <pgl/common.h>
 #include "Camera.h"
+#include "Bezier/CameraBezier.h"
 
 class Scene {
+
+enum CameraMode { FLY, FPS, BEZIER };
+
 public:
     Scene();
     virtual void init() = 0;
@@ -34,6 +38,8 @@ private:
     void updateCameraPosition();
     GLuint _sceneWidth;
     GLuint _sceneHeight;
+    CameraMode _cameraMode;
+    CameraBezier _cameraBezier;
 };
 
 #endif
