@@ -107,7 +107,7 @@ void main() {
     if (cameraPos.y > 0.0 && cameraPos.y < 14.0) {
         float alpha = exp(cameraPos.y * 0.04) - 1.0f;
         alpha = clamp(alpha, 0, 1.0);
-        finalColor = mix( vec4(0.0f, 0.0f, 1.0f, 0.6f), finalColor, alpha );
+        finalColor = mix( vec4(0.0f, 78.0f/255.0f, 1.0f, 0.6f), finalColor, alpha );
     }
 
     color = finalColor;
