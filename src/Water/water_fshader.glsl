@@ -40,14 +40,13 @@ void main() {
     vec4 result = vec4((ambient + diffuse), 1.0f) * textureColor;
     vec4 finalColor = result;
 
-
     // ============ Fog part =======================
     if (fogEnabled > 0.5) { // not == 1 to avoid float procession error
 	    float distance = distance(cameraPos, fragPos);
 	    float fogAmount = exp(distance * 0.009) - 1;
 	    fogAmount = clamp(fogAmount, 0, 0.8);
 	    vec4  fogColor  = vec4(1,1,1,1);
-	    vec4 finalColor = mix( result, fogColor, fogAmount );
+	    finalColor = mix( result, fogColor, fogAmount );
     }
     color = finalColor;
 

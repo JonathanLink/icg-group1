@@ -93,9 +93,7 @@ void Skybox::render(const glm::mat4 &view, const glm::mat4 &projection) {
     
     useShaders();
 
-    glUniformMatrix4fv(glGetUniformLocation(pid, "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(pid, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-    glUniformMatrix4fv(glGetUniformLocation(pid, "model"), 1, GL_FALSE,  glm::value_ptr(model));
+    scene->setUniformVariables(pid, model, view, projection); 
 
     // skybox cube
     glBindVertexArray(_VAO);

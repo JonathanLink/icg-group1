@@ -3,15 +3,14 @@ in vec3 TexCoords;
 out vec4 color;
 
 uniform samplerCube skybox;
+uniform int fogEnabled;
 
 void main() {    
-	vec3 white = vec3(1.0f,1.0f,1.0f);
-    color =  vec4(mix(texture(skybox, TexCoords).rgb, white, 0.8), 1.0f);
-
-    /*float distance = 60;
-    float fogAmount = exp(distance * 0.009) - 1;
-    fogAmount = clamp(fogAmount, 0, 0.8);
-    vec3  fogColor  = vec3(1,1,1);
-    color = vec4(mix( texture(skybox, TexCoords).rgb, fogColor, fogAmount ), 1.0f);*/
+    vec3 white = vec3(1.0f,1.0f,1.0f);
+     float alpha = 0.0;
+     if (fogEnabled > 0.5) { // not == 1 to avoid float procession error
+        alpha = 0.8;
+     } 
+    color =  vec4(mix(texture(skybox, TexCoords).rgb, white, alpha), 1.0f);
 
 }
