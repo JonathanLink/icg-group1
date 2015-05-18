@@ -16,6 +16,7 @@ uniform sampler2D rockTex;
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 cameraPos;
+uniform int fogEnabled;
 
 out vec4 color;
 
@@ -92,15 +93,22 @@ void main() {
 
     // Ambient + Diffuse
     vec3 result = (ambient + diffuse) * textureColor;
-    //color = vec4(result, 1.0f);
-
+    vec4 finalColor = vec4(result, 1.0f);
 
     // ============ Fog part =======================
-    float distance = distance(cameraPos, fragPos);
-    float fogAmount = exp(distance * 0.009) - 1;
-    fogAmount = clamp(fogAmount, 0, 0.8);
-    vec3  fogColor  = vec3(1,1,1);
-    color = vec4(mix( result, fogColor, fogAmount ), 1.0f);
-    
+    if (fogEnabled > 0.5) { // not == 1 to avoid float procession error
+        float distance = distance(cameraPos, fragPos);
+        float fogAmount = exp(distance * 0.009) - 1;
+        fogAmount = clamp(fogAmount, 0, 0.8);
+        vec3  fogColor  = vec3(1,1,1);
+        finalColor = vec4(mix( result, fogColor, fogAmount ), 1.0f);
+    }
+    // =========== Camera underwater ? =======
+    if (cameraPos.y > 0.0 && cameraPos.y < 14.0) {
+        float alpha = exp(cameraPos.y * 0.04) - 1.0f;
+        alpha = clamp(alpha, 0, 1.0);
+        finalColor = mix( vec4(0.0f, 0.0f, 1.0f, 0.6f), finalColor, alpha );
+    }
 
+    color = finalColor;
 }

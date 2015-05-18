@@ -13,6 +13,8 @@ uniform float grid_size;
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 cameraPos;
+uniform float water_height;
+uniform int fogEnabled;
 
 out vec4 color;
 
@@ -36,16 +38,17 @@ void main() {
 
     // Ambient + Diffuse
     vec4 result = vec4((ambient + diffuse), 1.0f) * textureColor;
-    //color = vec4(result, 1.0f);
+    vec4 finalColor = result;
 
 
     // ============ Fog part =======================
-    float distance = distance(cameraPos, fragPos);
-    float fogAmount = exp(distance * 0.009) - 1;
-    fogAmount = clamp(fogAmount, 0, 0.8);
-    vec4  fogColor  = vec4(1,1,1,1);
-    color = mix( result, fogColor, fogAmount );
-    
-    //color = textureColor;
+    if (fogEnabled > 0.5) { // not == 1 to avoid float procession error
+	    float distance = distance(cameraPos, fragPos);
+	    float fogAmount = exp(distance * 0.009) - 1;
+	    fogAmount = clamp(fogAmount, 0, 0.8);
+	    vec4  fogColor  = vec4(1,1,1,1);
+	    vec4 finalColor = mix( result, fogColor, fogAmount );
+    }
+    color = finalColor;
 
 }

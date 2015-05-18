@@ -27,6 +27,7 @@ public:
     glm::vec3 getLightPosition();
     void setUniformVariables(GLuint pid, const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &projection);
     GLfloat getDeltaTime();
+    bool fogEnabled();
 
 protected: 
     glm::mat4 view;
@@ -46,6 +47,7 @@ private:
     CameraMode _cameraMode;
     double _lightAngle;
     glm::vec3 _lightPosition;
+    bool _fog;
 
 };
 

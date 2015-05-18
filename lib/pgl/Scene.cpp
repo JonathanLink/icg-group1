@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "pgl/Scene.h"
@@ -8,6 +9,7 @@ Scene::Scene() : camera(glm::vec3(-0.967917f, 20.54413f, -1.45086f),
                         glm::vec3(-22.4157f, 36.1665f, 0.0f)) {
     keys.resize(1024, false);
     _cameraMode = FLY;
+    _fog = true;
 }
 
 void Scene::renderScene() {
@@ -43,10 +45,15 @@ void Scene::renderScene() {
 }
 
 void Scene::keyCallback(GLFWwindow* /*window*/, int key, int /*scancode*/, int action, int /*mode*/) {
+    // camera
     if(action == GLFW_PRESS) {
         keys[key] = true;
     } else if (action == GLFW_RELEASE) {
         keys[key] = false;  
+    }
+    // fog
+    if(action == GLFW_PRESS && keys[GLFW_KEY_F]) {
+        _fog = !_fog;
     }
 }
 
@@ -122,6 +129,12 @@ void Scene::setUniformVariables(GLuint pid, const glm::mat4 &model, const glm::m
     glm::vec3 cameraPos = getCameraPosition();
     GLint cameraPosLoc = glGetUniformLocation(pid, "cameraPos");
     glUniform3f(cameraPosLoc, cameraPos.x, cameraPos.y, cameraPos.z);  
+
+    // fog
+    GLint fogEnabledLoc = glGetUniformLocation(pid, "fogEnabled");
+    int fogValue = (_fog) ? 1 : 0 ;
+    glUniform1i(fogEnabledLoc, fogValue);  
+
 }
 
 glm::vec3 Scene::getCameraPosition() {
@@ -134,6 +147,10 @@ glm::vec3 Scene::getLightPosition() {
 
 GLfloat Scene::getDeltaTime() {
     return deltaTime;
+}
+
+bool Scene::fogEnabled() {
+    return _fog;
 }
 
  

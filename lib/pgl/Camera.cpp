@@ -1,4 +1,6 @@
 #include <GL/glew.h>
+#include <iostream>
+#include "glm/ext.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -93,6 +95,7 @@ GLfloat Camera::getZoom() {
 }
 
 glm::vec3 Camera::getPosition() {
+    //std::cout << glm::to_string(_position) << std::endl;
     return _position;
 }
 
