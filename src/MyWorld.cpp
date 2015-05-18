@@ -9,6 +9,7 @@ void MyWorld::init() {
     _skybox.setScene(this);
     _perlin.setScene(this);
     _terrain.setScene(this);
+    _water.setScene(this);
     //_fishEye.setScene(this);
 
 

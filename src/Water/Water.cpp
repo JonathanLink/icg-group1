@@ -36,7 +36,7 @@ void Water::init() {
 
     // Apply a rotation on the model matrix
     //model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+    model = glm::scale(model, glm::vec3(35.0f, 35.0f, 35.0f));
 
 }   
 
@@ -83,9 +83,12 @@ void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glUniform1i(glGetUniformLocation(pid, "tex"), 0);
 
     // Draw
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glBindVertexArray(_vertexArrayId);
     glDrawElements(GL_TRIANGLE_STRIP, _indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+    glDisable(GL_BLEND);
 }
 
 void Water::cleanUp() {
