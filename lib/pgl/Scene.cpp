@@ -1,3 +1,7 @@
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include "glm/gtc/matrix_transform.hpp"
+
 #include "pgl/Scene.h"
 
 Scene::Scene() : camera(glm::vec3(-0.967917f, 3.54413f, -1.45086f),

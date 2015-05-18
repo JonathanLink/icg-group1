@@ -1,7 +1,6 @@
 #ifndef CAMERA_BEZIER_H
 #define CAMERA_BEZIER_H
 
-#include "../common.h"
 #include "Hull.h"
 #include "Bezier.h"
 
@@ -14,7 +13,6 @@ public:
 private:
     Bezier _cameraPositionCurve;
     Bezier _cameraLookCurve;
-
 };
 
 #endif

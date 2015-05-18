@@ -1,7 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "common.h"
+#include <GL/glew.h>
+#include "glm/glm.hpp"
 
 class Camera {
 public:

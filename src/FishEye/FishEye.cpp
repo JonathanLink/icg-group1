@@ -1,3 +1,4 @@
+#include <iostream>
 #include "FishEye.h"
 
 FishEye::FishEye() {

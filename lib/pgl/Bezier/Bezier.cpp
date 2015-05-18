@@ -1,3 +1,11 @@
+#include <iostream>
+
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/ext.hpp"
+
+#include "pgl/Bezier/Hull.h"
 #include "pgl/Bezier/Bezier.h"
 
 Bezier::Bezier() {
@@ -9,8 +17,6 @@ void Bezier::init() {
     std::cout << "Init Bezier" << std::endl;
 
     loadShaders( "../lib/pgl/Bezier/bezier_vshader.glsl", "../lib/pgl/Bezier/bezier_fshader.glsl" );
-
-    
 }
 
 void Bezier::bezier(Hull &hull, int depth) {
@@ -54,7 +60,7 @@ void Bezier::addHulls(const std::vector<Hull>& hulls) {
 
 void Bezier::computeParameterization() {
     double prevDist = 0.0;
-    for (int i = 1; i < _vertices.size(); ++i) {
+    for (unsigned int i = 1; i < _vertices.size(); ++i) {
         glm::vec3 vertice = _vertices.at(i);
         glm::vec3 prevPoint = _vertices.at(i - 1);
         double  dist = prevDist + distance(prevPoint, vertice);

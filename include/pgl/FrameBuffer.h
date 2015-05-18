@@ -1,8 +1,6 @@
 #ifndef FRAME_BUFFER_H
 #define FRAME_BUFFER_H
 
-#include "common.h"
-
 class FrameBuffer {
 public:
     FrameBuffer(GLuint width, GLuint height);

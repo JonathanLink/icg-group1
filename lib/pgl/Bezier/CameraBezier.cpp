@@ -1,5 +1,6 @@
-#include "pgl/Bezier/CameraBezier.h"
+#include "glm/gtc/matrix_transform.hpp"
 
+#include "pgl/Bezier/CameraBezier.h"
 
 CameraBezier::CameraBezier() {
     _cameraPositionCurve.init();

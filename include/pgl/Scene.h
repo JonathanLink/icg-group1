@@ -1,9 +1,11 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <pgl/common.h>
+#include <vector>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include "Camera.h"
-#include "Bezier/CameraBezier.h"
 
 class Scene {
 
@@ -39,7 +41,6 @@ private:
     GLuint _sceneWidth;
     GLuint _sceneHeight;
     CameraMode _cameraMode;
-    CameraBezier _cameraBezier;
 };
 
 #endif
