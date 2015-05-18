@@ -21,6 +21,18 @@ void MyWorld::init() {
     perlinFrameBuffer.unbind();
 
     _terrain.setTexture(perlinTextureId);
+
+    // set camera bezier
+    std::vector<Hull> cameraHulls;
+    cameraHulls.push_back(Hull(glm::vec3(0,23,-1), glm::vec3(0,20,-2), glm::vec3(0,20,-2), glm::vec3(0,20,-2)));
+
+    std::vector<Hull> lookHulls;
+    lookHulls.push_back(Hull(glm::vec3(4,22,-1), glm::vec3(0,21,-2), glm::vec3(-5,24,-2), glm::vec3(-9,10,2)));
+
+    CameraBezier cameraBezier;
+    cameraBezier.setHulls(cameraHulls, lookHulls);
+    setCameraBezier(cameraBezier);
+
 }
 
 void MyWorld::render() {
@@ -36,7 +48,7 @@ void MyWorld::render() {
     //_fishEye.render(view, projection);
 
     //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe
-    
+
     _skybox.render(view, projection);
     _terrain.render(view, projection);
     _water.render(view, projection);
@@ -48,3 +60,4 @@ void MyWorld::cleanUp() {
     _perlin.cleanUp();
     _fishEye.cleanUp();
 }
+

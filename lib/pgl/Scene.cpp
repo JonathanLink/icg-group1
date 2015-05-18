@@ -10,6 +10,7 @@ Scene::Scene() : camera(glm::vec3(-0.967917f, 20.54413f, -1.45086f),
     keys.resize(1024, false);
     _cameraMode = FLY;
     _fog = true;
+
 }
 
 void Scene::renderScene() {
@@ -25,15 +26,15 @@ void Scene::renderScene() {
     _lightAngle = _lightAngle + 0.01 * deltaTime;
 
     // update camera
-    updateCameraPosition();
     switch (_cameraMode) {
         case FLY:
+            updateFlyCameraPosition();
             view = camera.getViewMatrix();
             break;
         case FPS:
             break;
          case BEZIER:
-            //view = _cameraBezier.getViewMatrix();
+            view = _cameraBezier.getViewMatrix();
             break;
     }
 
@@ -54,6 +55,16 @@ void Scene::keyCallback(GLFWwindow* /*window*/, int key, int /*scancode*/, int a
     // fog
     if(action == GLFW_PRESS && keys[GLFW_KEY_F]) {
         _fog = !_fog;
+    }
+    // camera mode
+    if(action == GLFW_PRESS && keys[GLFW_KEY_KP_1]) {
+        _cameraMode = FLY;
+    }
+    if(action == GLFW_PRESS && keys[GLFW_KEY_KP_2]) {
+        _cameraMode = FPS;
+    }
+    if(action == GLFW_PRESS && keys[GLFW_KEY_KP_3]) {
+        _cameraMode = BEZIER;
     }
 }
 
@@ -88,7 +99,7 @@ GLuint Scene::getSceneAspectRatio() const {
     return _sceneWidth / _sceneHeight;
 }
 
-void Scene::updateCameraPosition() {
+void Scene::updateFlyCameraPosition() {
     if(keys[GLFW_KEY_W]) {
         camera.translate(Camera::FORWARD, deltaTime);
     }
@@ -151,6 +162,10 @@ GLfloat Scene::getDeltaTime() {
 
 bool Scene::fogEnabled() {
     return _fog;
+}
+
+void Scene::setCameraBezier(CameraBezier cameraBezier) {
+    _cameraBezier = cameraBezier;
 }
 
  

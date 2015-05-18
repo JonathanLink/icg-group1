@@ -13,11 +13,6 @@ Bezier::Bezier() {
 }
 
 
-void Bezier::init() {
-    std::cout << "Init Bezier" << std::endl;
-
-    loadShaders( "../lib/pgl/Bezier/bezier_vshader.glsl", "../lib/pgl/Bezier/bezier_fshader.glsl" );
-}
 
 void Bezier::bezier(Hull &hull, int depth) {
     Hull l;
@@ -97,15 +92,9 @@ glm::vec3 Bezier::samplePointAtTime(double time) {
     return glm::vec3();
 }
 
-
-void Bezier::render(const glm::mat4 &view, const glm::mat4 &projection) {
-
+std::vector<glm::vec3> Bezier::getVertices() {
+    return _vertices;
 }
-
-void Bezier::cleanUp() {
-    std::cout << "Cleanup Bezier" << std::endl;
-}
-
 
 
 

@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Camera.h"
+#include "Bezier/CameraBezier.h"
 
 class Scene {
 
@@ -28,6 +29,7 @@ public:
     void setUniformVariables(GLuint pid, const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &projection);
     GLfloat getDeltaTime();
     bool fogEnabled();
+    void setCameraBezier(CameraBezier cameraBezier);
 
 protected: 
     glm::mat4 view;
@@ -41,14 +43,14 @@ protected:
     GLfloat lastTime;
 
 private:
-    void updateCameraPosition();
+    void updateFlyCameraPosition();
     GLuint _sceneWidth;
     GLuint _sceneHeight;
     CameraMode _cameraMode;
     double _lightAngle;
     glm::vec3 _lightPosition;
     bool _fog;
-
+    CameraBezier _cameraBezier;
 };
 
 #endif
