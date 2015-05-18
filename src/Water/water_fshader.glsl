@@ -21,7 +21,7 @@ out vec4 color;
 
 void main() {
 
-    vec4 textureColor = vec4(0,0,1.0,0.3);
+    vec4 textureColor = vec4(0,128.0/255.0,1.0,0.3);
     
 
      // ============ Lightning part ==================
