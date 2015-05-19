@@ -116,10 +116,15 @@ void main() {
             finalColor = vec4(mix( result, fogColor, fogAmount ), 1.0f);
         }
         // =========== Camera underwater ? =======
-        if (cameraPos.y > 0.0 && cameraPos.y < 14.0) {
+        if (cameraPos.y > 0.0 && cameraPos.y < 13.5) {
             float alpha = exp(cameraPos.y * 0.04) - 1.0f;
             alpha = clamp(alpha, 0, 1.0);
             finalColor = mix( vec4(0.0f, 78.0f/255.0f, 1.0f, 0.6f), finalColor, alpha );
+        } else if (fragHeight < 0.375) {
+            // ============ Water depth part ==================
+            float alpha =  exp(fragHeight * 1.2f) - 1.0f;
+            alpha = clamp(alpha, 0, 1.0);
+            finalColor = mix( finalColor, vec4(0.0f, 78.0f/255.0f, 1.0f, 0.6f), alpha );
         }
 
     }

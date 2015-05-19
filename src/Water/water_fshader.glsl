@@ -54,7 +54,7 @@ void main() {
     	    vec4  fogColor  = vec4(1,1,1,1);
     	    finalColor = mix( result, fogColor, fogAmount );
         }
-
+        
         // ============ Reflection part ==================
 
         vec2 whSize = textureSize(tex_mirror, 0);
