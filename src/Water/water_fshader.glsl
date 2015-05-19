@@ -45,16 +45,7 @@ void main() {
         vec4 result = vec4((ambient + diffuse), 1.0f) * textureColor;
         finalColor = result;
 
-        // ============ Fog part =======================
 
-        if (fogEnabled > 0.5) { // not == 1 to avoid float procession error
-    	    float distance = distance(cameraPos, fragPos);
-    	    float fogAmount = exp(distance * 0.009) - 1;
-    	    fogAmount = clamp(fogAmount, 0, 0.8);
-    	    vec4  fogColor  = vec4(1,1,1,1);
-    	    finalColor = mix( result, fogColor, fogAmount );
-        }
-        
         // ============ Reflection part ==================
 
         vec2 whSize = textureSize(tex_mirror, 0);
@@ -68,6 +59,18 @@ void main() {
         vec3 terrainReflected = texture(tex_mirror, vec2(u,v)).rgb;
 
         finalColor.xyz = mix(finalColor.xyz, terrainReflected, 0.45);
+
+
+        // ============ Fog part =======================
+
+        if (fogEnabled > 0.5) { // not == 1 to avoid float procession error
+            float distance = distance(cameraPos, fragPos);
+            float fogAmount = exp(distance * 0.009) - 1;
+            fogAmount = clamp(fogAmount, 0, 0.8);
+            vec4  fogColor  = vec4(1,1,1,1);
+            finalColor = mix( result, fogColor, fogAmount );
+        }
+        
     }
 
     color = finalColor;
