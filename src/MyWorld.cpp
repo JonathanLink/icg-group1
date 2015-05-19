@@ -34,9 +34,9 @@ void MyWorld::init() {
     setCameraBezier(cameraBezier);
 }
 
-int i;
+
 void MyWorld::render() {
-    i++;
+   
     //FrameBuffer fishEyeFrameBuffer = FrameBuffer(800, 600);
     //GLuint fishEyeTextureId = fishEyeFrameBuffer.initTextureId(GL_RGB);
     //fishEyeFrameBuffer.bind();
@@ -48,17 +48,19 @@ void MyWorld::render() {
     //_fishEye.render(view, projection);
 
     //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe 
-    if (i % 2 == 0) {
-        //Draw terrain in framebuffer for water reflection
-        GLuint terrainReflectTextureId = terrainReflectFB.initTextureId(GL_RGBA);
-        terrainReflectFB.bind();
-            _terrain.render(glm::scale(view, glm::vec3(1, -1, 1)), projection);
-        terrainReflectFB.unbind();
-   _water.setTextureMirror(terrainReflectTextureId);
-    } 
+    
+    //Draw terrain in framebuffer for water reflection
+    GLuint terrainReflectTextureId = terrainReflectFB.initTextureId(GL_RGB);
+    terrainReflectFB.bind();
+        _terrain.render(glm::scale(view, glm::vec3(1, -1, 1)), projection);
+    terrainReflectFB.unbind();
+    _water.setTextureMirror(terrainReflectTextureId);
+
     _skybox.render(view, projection);
     _terrain.render(view, projection);
     _water.render(view, projection);
+
+    terrainReflectFB.cleanUp();
 
 }
 
@@ -67,6 +69,5 @@ void MyWorld::cleanUp() {
     _terrain.cleanUp();
     _perlin.cleanUp();
     _fishEye.cleanUp();
-    terrainReflectFB.cleanUp();
 }
 

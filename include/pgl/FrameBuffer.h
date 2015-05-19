@@ -11,6 +11,8 @@ public:
 
 private:
     GLuint _frameBufferObject;
+    GLuint _renderBufferObject;
+    GLuint _textureColorbuffer;
     GLuint _width;
     GLuint _height;
 
