@@ -7,6 +7,7 @@ public:
     GLuint initTextureId(GLint internalFormat);
     void bind();
     void unbind();
+    void cleanUp();
 
 private:
     GLuint _frameBufferObject;

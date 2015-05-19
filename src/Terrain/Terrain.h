@@ -36,6 +36,8 @@ private:
         double indice;
     };
 
+    bool reflection;
+
     void constructGrid();
 };
 

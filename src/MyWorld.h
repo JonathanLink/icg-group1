@@ -10,6 +10,7 @@
 #include "Square/Square.h"
 #include "Cube/Cube.h"
 #include "Water/Water.h"
+#include "pgl/FrameBuffer.h"
 
 class MyWorld: public Scene {
 public:
@@ -18,8 +19,8 @@ public:
 	void render() override;
 	void cleanUp() override;
 
-
 private:
+	FrameBuffer terrainReflectFB;
 	Perlin _perlin;
 	Skybox _skybox;
 	Terrain _terrain;
@@ -28,6 +29,7 @@ private:
 	Square _square;
 	Cube _cube;
 	Water _water;
+
 };
 
 #endif // MYWORLD_H

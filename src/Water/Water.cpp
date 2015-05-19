@@ -62,10 +62,16 @@ void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glUniform1f(water_height_id, waterHeight);
 
     /* Bind textures */
-    //Perlin Noise
+    //Terrain reflection
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, _textureId);
+    glBindTexture(GL_TEXTURE_2D, _perlinTextureId);
     glUniform1i(glGetUniformLocation(pid, "tex"), 0);
+
+
+    //Terrain reflection
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, _mirrorTextureId);
+    glUniform1i(glGetUniformLocation(pid, "tex_mirror"), 1);
 
 
     // Draw
@@ -82,7 +88,8 @@ void Water::cleanUp() {
     glDeleteVertexArrays(1, &_vertexArrayId);
     glDeleteBuffers(1, &_vertexBufferId);
     glDeleteBuffers(1, &_elementBufferId);
-    glDeleteTextures(1, &_textureId);
+    glDeleteTextures(1, &_perlinTextureId);
+    glDeleteTextures(1, &_mirrorTextureId);
     glDeleteProgram(pid);
 }
 
@@ -130,9 +137,11 @@ void Water::constructGrid() {
     }
 }
 
-void Water::setTexture(GLuint textureId) {
-    _textureId = textureId;
+void Water::setTexturePerlin(GLuint textureId) {
+    _perlinTextureId = textureId;
 }
 
-
+void Water::setTextureMirror(GLuint textureId) {
+    _mirrorTextureId = textureId;
+}
 

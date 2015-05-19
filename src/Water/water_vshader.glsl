@@ -4,12 +4,13 @@ layout (location = 0) in vec2 position;
 
 out vec2 uv_coords;
 out vec3 fragPos;
-out float fragHeight;
 out vec3 normal;
+out float fragHeight;
 
 uniform mat4 model;
 uniform mat4 MVP_matrix;
 uniform sampler2D tex;
+uniform sampler2D tex_mirror;
 uniform float grid_size;
 uniform float water_height;
 
@@ -34,21 +35,20 @@ vec3 getNormal(vec2 pos) {
     vec3 east3D = vec3(east2D.x, eastHeight, east2D.y);
     vec3 west3D = vec3(west2D.x, westHeight, west2D.y);
 
-
     vec3 south_to_north = north3D - south3D;
     vec3 south_to_west = west3D - south3D;
 
     return normalize(cross(south_to_north, south_to_west));
-
-    
 }
 
 void main() {
     
     vec2 local_uv_coords = (position + vec2(1.0, 1.0)) * 0.5;
 
-    uv_coords = local_uv_coords;
     fragHeight = texture(tex, local_uv_coords).r;
+
+    uv_coords = local_uv_coords;
+
     normal = getNormal(local_uv_coords);
     vec3 local_pos_3d = vec3(position.x, water_height, position.y); // 0.37 initially for the height
     gl_Position = MVP_matrix * vec4(local_pos_3d, 1.0);

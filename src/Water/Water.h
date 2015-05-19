@@ -9,13 +9,15 @@ public:
     void init() override;
     void render(const glm::mat4 &view, const glm::mat4 &projection) override;
     void cleanUp() override;
-    void setTexture(GLuint textureId);
+    void setTexturePerlin(GLuint textureId);
+    void setTextureMirror(GLuint textureId);
 
 private:
     GLuint _vertexArrayId;
     GLuint _vertexBufferId;
     GLuint _elementBufferId;
-    GLuint _textureId;
+    GLuint _perlinTextureId;
+    GLuint _mirrorTextureId;
     std::vector<GLfloat> _vertices;
     std::vector<GLuint> _indices;
 

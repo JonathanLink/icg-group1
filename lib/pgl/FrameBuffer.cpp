@@ -3,7 +3,6 @@
 
 #include "pgl/FrameBuffer.h"
 
-
 FrameBuffer::FrameBuffer(GLuint width, GLuint height): _width(width), _height(height) {
     // Do nothing
 }
@@ -47,7 +46,7 @@ void FrameBuffer::unbind() {
 GLuint FrameBuffer::generateAttachmentTexture(GLboolean depth, GLboolean stencil, GLint internalFormat) {
     GLenum attachmentType;
     if (!depth && !stencil) {
-        attachmentType = GL_RGB;
+        attachmentType = GL_RGBA;
     } else if (depth && !stencil) {
         attachmentType = GL_DEPTH_COMPONENT;
     } else if (!depth && stencil) {
@@ -74,3 +73,6 @@ GLuint FrameBuffer::generateAttachmentTexture(GLboolean depth, GLboolean stencil
 }
 
 
+void FrameBuffer::cleanUp() {
+    glDeleteFramebuffers(1, &_frameBufferObject);
+}

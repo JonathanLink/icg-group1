@@ -1,8 +1,8 @@
 #include "MyWorld.h"
-#include "pgl/FrameBuffer.h"
+#include "glm/gtc/matrix_transform.hpp"
 
-MyWorld::MyWorld() {
-    // Do nothing
+MyWorld::MyWorld() : terrainReflectFB(800, 600) {
+        
 }
 
 void MyWorld::init() {
@@ -12,7 +12,6 @@ void MyWorld::init() {
     _water.setScene(this);
     //_fishEye.setScene(this);
 
-
     // Draw perlin noise in framebuffer we've just created
     FrameBuffer perlinFrameBuffer = FrameBuffer(512, 512);
     GLuint perlinTextureId = perlinFrameBuffer.initTextureId(GL_R32F); 
@@ -20,6 +19,7 @@ void MyWorld::init() {
         _perlin.render(view, projection);
     perlinFrameBuffer.unbind();
 
+    _water.setTexturePerlin(perlinTextureId);
     _terrain.setTexture(perlinTextureId);
 
     // set camera bezier
@@ -32,11 +32,11 @@ void MyWorld::init() {
     CameraBezier cameraBezier;
     cameraBezier.setHulls(cameraHulls, lookHulls);
     setCameraBezier(cameraBezier);
-
 }
 
+int i;
 void MyWorld::render() {
-    
+    i++;
     //FrameBuffer fishEyeFrameBuffer = FrameBuffer(800, 600);
     //GLuint fishEyeTextureId = fishEyeFrameBuffer.initTextureId(GL_RGB);
     //fishEyeFrameBuffer.bind();
@@ -47,11 +47,19 @@ void MyWorld::render() {
     //_fishEye.setTexture(fishEyeTextureId);
     //_fishEye.render(view, projection);
 
-    //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe
-
+    //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe 
+    if (i % 2 == 0) {
+        //Draw terrain in framebuffer for water reflection
+        GLuint terrainReflectTextureId = terrainReflectFB.initTextureId(GL_RGBA);
+        terrainReflectFB.bind();
+            _terrain.render(glm::scale(view, glm::vec3(1, -1, 1)), projection);
+        terrainReflectFB.unbind();
+   _water.setTextureMirror(terrainReflectTextureId);
+    } 
     _skybox.render(view, projection);
     _terrain.render(view, projection);
     _water.render(view, projection);
+
 }
 
 void MyWorld::cleanUp() {
@@ -59,5 +67,6 @@ void MyWorld::cleanUp() {
     _terrain.cleanUp();
     _perlin.cleanUp();
     _fishEye.cleanUp();
+    terrainReflectFB.cleanUp();
 }
 

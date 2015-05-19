@@ -15,6 +15,12 @@ Camera::Camera(glm::vec3 position, glm::vec3 rotation) {
     updateCameraVectors();
 }
 
+glm::mat4 Camera::flipCam() {
+    glm::vec3 reversedPos = _position;
+    reversedPos.z = -_position.z;
+
+    return glm::lookAt(reversedPos, reversedPos + _front, _up);
+}
 
 glm::mat4 Camera::getViewMatrix() {
     return glm::lookAt(_position, _position + _front, _up);

@@ -47,6 +47,8 @@ void Terrain::init() {
     _sandTexId = gen2DTexture("../tex/sand.jpg", GL_RGB);
      // Bind Rock Texture
     _rockTexId = gen2DTexture("../tex/rock.jpg", GL_RGB);
+
+    reflection = false;
 }   
 
 
@@ -61,6 +63,10 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glm::float1 grid_size = (float)GRID_SIZE;
     glUniform1f(grid_size_id, grid_size);
 
+    // refletion boolean uniform
+    GLuint reflection_id = glGetUniformLocation(pid, "isReflection");
+    int reflection_value = (reflection) ? 0 : 1;
+    glUniform1i(reflection_id, reflection_value);
 
     /* Bind textures */
     //Perlin Noise
@@ -97,6 +103,10 @@ void Terrain::cleanUp() {
     glDeleteBuffers(1, &_vertexBufferId);
     glDeleteBuffers(1, &_elementBufferId);
     glDeleteTextures(1, &_textureId);
+    glDeleteTextures(1, &_snowTexId);
+    glDeleteTextures(1, &_sandTexId);
+    glDeleteTextures(1, &_grassTexId);
+    glDeleteTextures(1, &_rockTexId);
     glDeleteProgram(pid);
 }
 
