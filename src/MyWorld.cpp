@@ -1,7 +1,7 @@
 #include "MyWorld.h"
 #include "glm/gtc/matrix_transform.hpp"
 
-MyWorld::MyWorld() : terrainReflectFB(800, 600) {
+MyWorld::MyWorld() : _terrainReflectFB(800, 600) {
         
 }
 
@@ -50,17 +50,17 @@ void MyWorld::render() {
     //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe 
     
     //Draw terrain in framebuffer for water reflection
-    GLuint terrainReflectTextureId = terrainReflectFB.initTextureId(GL_RGB);
-    terrainReflectFB.bind();
+    GLuint terrainReflectTextureId = _terrainReflectFB.initTextureId(GL_RGB);
+    _terrainReflectFB.bind();
         _terrain.render(glm::scale(view, glm::vec3(1, -1, 1)), projection);
-    terrainReflectFB.unbind();
+    _terrainReflectFB.unbind();
     _water.setTextureMirror(terrainReflectTextureId);
 
     _skybox.render(view, projection);
     _terrain.render(view, projection);
     _water.render(view, projection);
 
-    terrainReflectFB.cleanUp();
+    _terrainReflectFB.cleanUp();
 
 }
 
