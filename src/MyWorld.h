@@ -20,7 +20,6 @@ public:
 	void cleanUp() override;
 
 private:
-	FrameBuffer terrainReflectFB;
 	Perlin _perlin;
 	Skybox _skybox;
 	Terrain _terrain;
@@ -29,6 +28,7 @@ private:
 	Square _square;
 	Cube _cube;
 	Water _water;
+	FrameBuffer _terrainReflectFB;
 
 };
 
