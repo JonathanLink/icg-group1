@@ -25,7 +25,7 @@ void main() {
     vec4 textureColor = vec4(0,128.0/255.0,1.0, 0.6);
     vec4 finalColor = vec4(1,1,1,1);
    
-    if (fragHeight > water_height) {
+    if (fragHeight > water_height) { // hide water if not a visible lake
         finalColor = vec4(0.0,0.0,0.0,0.0); 
     } else {
 
@@ -68,9 +68,9 @@ void main() {
             float fogAmount = exp(distance * 0.009) - 1;
             fogAmount = clamp(fogAmount, 0, 0.8);
             vec4  fogColor  = vec4(1,1,1,1);
-            finalColor = mix( result, fogColor, fogAmount );
+            finalColor = mix( finalColor, fogColor, fogAmount );
         }
-        
+
     }
 
     color = finalColor;

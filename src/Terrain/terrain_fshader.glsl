@@ -115,9 +115,8 @@ void main() {
             finalColor = mix( vec4(0.0f, 78.0f/255.0f, 1.0f, 0.6f), finalColor, alpha );
         } else if (fragHeight < 0.375) {
             // ============ Water depth part ==================
-            float alpha =  exp(fragHeight * 1.2f) - 1.0f;
-            alpha = clamp(alpha, 0, 1.0);
-            finalColor = mix( finalColor, vec4(0.0f, 78.0f/255.0f, 1.0f, 0.6f), alpha );
+            float alpha = 1.0f -fragHeight*(1.0f/0.375f) + 0.3;
+            finalColor = mix( finalColor, vec4(0.0f, 78.0f/255.0f, 1.0f, 1.0f),alpha );
         }
 
         // ============ Fog part =======================
@@ -125,7 +124,7 @@ void main() {
             float distance = distance(cameraPos, fragPos);
             float fogAmount = exp(distance * 0.009) - 1;
             fogAmount = clamp(fogAmount, 0, 0.8);
-            vec4  fogColor  = vec4(1,1,1, 1);
+            vec4  fogColor  = vec4(1,1,1,1);
             finalColor = mix( finalColor, fogColor, fogAmount );
         }
 
