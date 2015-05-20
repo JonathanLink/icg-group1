@@ -24,6 +24,7 @@ public:
     void zoom(GLfloat yOffset);
     GLfloat getZoom();
     glm::vec3 getPosition();
+    void setHeight(float height);
 
 private:
     glm::vec3 _position;

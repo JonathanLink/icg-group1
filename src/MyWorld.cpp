@@ -70,9 +70,26 @@ void MyWorld::cleanUp() {
 }
 
 void MyWorld::updateFpsCameraPosition() {
+    updateFlyCameraPosition();
+    glm::vec3 cameraPosition = camera.getPosition();
+    glm::vec2 pos_2d(cameraPosition.x, cameraPosition.z);
+    std::cout << "2D position: " << pos_2d.x << ", " << pos_2d.y << std::endl;
+    glm::vec2 pos_texture(
+        (pos_2d.x / 35.0 + 1.0) * 0.5,
+        (pos_2d.y / 35.0 + 1.0) * 0.5
+    );
 
+    //std::cout << "Texture position: " << pos_texture.x << ", " << pos_texture.y << std::endl;
+    float normalizedHeight = getHeight(pos_texture.x * 512.0, pos_texture.y * 512.0);
+    //std::cout << "Height: " << normalizedHeight << std::endl;
+    float height = (normalizedHeight + 0.05) * 35.0;
+    camera.setHeight(height);
 }
 
-float MyWorld::getHeight(int x, int y) {
-    return _heightMap[x + 512 * y];
+float MyWorld::getHeight(unsigned int x, unsigned int y) {
+    if (x >= 0 && x < 512 && y >= 0 && y < 512) {
+        return _heightMap[x + 512 * y];
+    } else {
+        return 0.0;
+    }
 }

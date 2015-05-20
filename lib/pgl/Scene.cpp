@@ -33,7 +33,8 @@ void Scene::renderScene() {
         }
 
         case FPS: {
-            //updateFpsCameraPosition();
+            updateFpsCameraPosition();
+            view = camera.getViewMatrix();
             break;
         }
         case BEZIER: {

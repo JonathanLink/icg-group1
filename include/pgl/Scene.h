@@ -42,7 +42,7 @@ protected:
     GLfloat deltaTime;
     GLfloat lastTime;
 
-private:
+protected:
     void updateFlyCameraPosition();
     virtual void updateFpsCameraPosition() = 0;
     GLuint _sceneWidth;

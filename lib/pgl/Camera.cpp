@@ -98,3 +98,6 @@ glm::vec3 Camera::getPosition() {
     return _position;
 }
 
+void Camera::setHeight(float height) {
+    _position.y = height;
+}
