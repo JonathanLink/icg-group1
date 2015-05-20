@@ -20,6 +20,11 @@ public:
 
 
 private:
+	void updateFpsCameraPosition() override;
+	float getHeight(int x, int y);
+
+	float* _heightMap;
+
 	Perlin _perlin;
 	Skybox _skybox;
 	Terrain _terrain;

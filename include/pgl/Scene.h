@@ -13,7 +13,7 @@ class Scene {
 enum CameraMode { FLY, FPS, BEZIER };
 
 public:
-    Scene();
+    Scene(glm::vec3 camera_position, glm::vec3 camera_rotation);
     virtual void init() = 0;
     virtual void render() = 0;
     virtual void cleanUp() = 0;
@@ -44,6 +44,7 @@ protected:
 
 private:
     void updateFlyCameraPosition();
+    virtual void updateFpsCameraPosition() = 0;
     GLuint _sceneWidth;
     GLuint _sceneHeight;
     CameraMode _cameraMode;

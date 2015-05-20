@@ -1,7 +1,8 @@
 #include "MyWorld.h"
 #include "pgl/FrameBuffer.h"
 
-MyWorld::MyWorld() {
+MyWorld::MyWorld(): Scene(glm::vec3(-0.967917f, 20.54413f, -1.45086f),
+                          glm::vec3(-22.4157f, 36.1665f, 0.0f)) {
     // Do nothing
 }
 
@@ -14,11 +15,18 @@ void MyWorld::init() {
 
 
     // Draw perlin noise in framebuffer we've just created
-    FrameBuffer perlinFrameBuffer = FrameBuffer(512, 512);
+    const unsigned int FRAME_BUFFER_WIDTH = 512;
+    const unsigned int FRAME_BUFFER_HEIGHT = 512;
+    FrameBuffer perlinFrameBuffer = FrameBuffer(FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT);
     GLuint perlinTextureId = perlinFrameBuffer.initTextureId(GL_R32F); 
     perlinFrameBuffer.bind();
         _perlin.render(view, projection);
     perlinFrameBuffer.unbind();
+
+    _heightMap = new float[512 * 512];
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, perlinTextureId);
+    glGetTexImage(GL_TEXTURE_2D, 0, GL_RED, GL_FLOAT, _heightMap);
 
     _terrain.setTexture(perlinTextureId);
 
@@ -61,3 +69,10 @@ void MyWorld::cleanUp() {
     _fishEye.cleanUp();
 }
 
+void MyWorld::updateFpsCameraPosition() {
+
+}
+
+float MyWorld::getHeight(int x, int y) {
+    return _heightMap[x + 512 * y];
+}

@@ -5,8 +5,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "pgl/Scene.h"
 
-Scene::Scene() : camera(glm::vec3(-0.967917f, 20.54413f, -1.45086f),
-                        glm::vec3(-22.4157f, 36.1665f, 0.0f)) {
+Scene::Scene(glm::vec3 camera_position, glm::vec3 camera_rotation) : camera(camera_position, camera_rotation) {
     keys.resize(1024, false);
     _cameraMode = FLY;
     _fog = true;
@@ -27,15 +26,24 @@ void Scene::renderScene() {
 
     // update camera
     switch (_cameraMode) {
-        case FLY:
+        case FLY: {
             updateFlyCameraPosition();
             view = camera.getViewMatrix();
             break;
-        case FPS:
+        }
+
+        case FPS: {
+            //updateFpsCameraPosition();
             break;
-         case BEZIER:
+        }
+        case BEZIER: {
             view = _cameraBezier.getViewMatrix();
             break;
+        }
+
+        default: {
+
+        }
     }
 
     // update projection
