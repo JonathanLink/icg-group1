@@ -11,6 +11,7 @@ uniform mat4 model;
 uniform mat4 MVP_matrix;
 uniform sampler2D tex;
 uniform float grid_size;
+uniform int isReflected;
 
 vec3 getNormal(vec2 pos) {
     
@@ -43,14 +44,25 @@ vec3 getNormal(vec2 pos) {
 }
 
 void main() {
-	
-	vec2 local_uv_coords = (position + vec2(1.0, 1.0)) * 0.5;
+
+    vec2 position2 = position;
+
+    if (isReflected > 0.5) {
+        position2.y *= -1;
+    }
+
+	vec2 local_uv_coords = (position2 + vec2(1.0, 1.0)) * 0.5;
+
 
 	uv_coords = local_uv_coords;
 	fragHeight = texture(tex, local_uv_coords).r;
 	normal = getNormal(local_uv_coords);
 
-	vec3 local_pos_3d = vec3(position.x, fragHeight, position.y);
+    if (isReflected > 0.5) {
+       fragHeight = -fragHeight;
+    }
+
+	vec3 local_pos_3d = vec3(position2.x, fragHeight, position2.y);
     gl_Position = MVP_matrix * vec4(local_pos_3d, 1.0);
     fragPos = vec3(model * vec4(local_pos_3d, 1.0f));
    

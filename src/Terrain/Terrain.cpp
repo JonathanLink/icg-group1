@@ -38,7 +38,6 @@ void Terrain::init() {
     //model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     model = glm::scale(model, glm::vec3(35, 35, 35));
 
-
     // Bind Grass Texture
     _grassTexId = gen2DTexture("../tex/grass.jpg", GL_RGB);
      // Bind Snow Texture
@@ -55,8 +54,15 @@ void Terrain::init() {
 void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     useShaders();
 
+
+
     // Set uniform variables for the vertex and fragment glsl files
-    scene->setUniformVariables(pid, model, view, projection);
+    if (!reflection) {
+        scene->setUniformVariables(pid, model, view, projection);
+    } else {
+        glm::mat4 mirror(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 2 * 0.37, 0, 0, 0, 1);
+        scene->setUniformVariables(pid, model, view, projection);
+    }
 
     // grid size uniform
     GLuint grid_size_id = glGetUniformLocation(pid, "grid_size");
@@ -158,5 +164,7 @@ void Terrain::setTexture(GLuint textureId) {
     _textureId = textureId;
 }
 
-
+void Terrain::setReflection(bool reflection) {
+    this->reflection = reflection;
+}
 

@@ -55,11 +55,11 @@ void main() {
         float u = gl_FragCoord.x / window_width;
         float v = gl_FragCoord.y / window_height;
 
+        v = 1 - v;
 
         vec3 terrainReflected = texture(tex_mirror, vec2(u,v)).rgb;
 
-        finalColor.xyz = mix(finalColor.xyz, terrainReflected, 0.45);
-
+        finalColor.xyz = mix(finalColor.xyz, terrainReflected, 0.5);
 
         // ============ Fog part =======================
 
@@ -70,7 +70,6 @@ void main() {
             vec4  fogColor  = vec4(1,1,1,1);
             finalColor = mix( finalColor, fogColor, fogAmount );
         }
-
     }
 
     color = finalColor;

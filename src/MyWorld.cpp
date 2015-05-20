@@ -52,7 +52,9 @@ void MyWorld::render() {
     //Draw terrain in framebuffer for water reflection
     GLuint terrainReflectTextureId = _terrainReflectFB.initTextureId(GL_RGB);
     _terrainReflectFB.bind();
-        _terrain.render(glm::scale(view, glm::vec3(1, -1, 1)), projection);
+        _terrain.setReflection(true);
+        _terrain.render(view, projection);
+        _terrain.setReflection(false);
     _terrainReflectFB.unbind();
     _water.setTextureMirror(terrainReflectTextureId);
 
