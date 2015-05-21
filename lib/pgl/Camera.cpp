@@ -30,6 +30,11 @@ void Camera::updateCameraVectors() {
     _up = glm::normalize(glm::cross(_right, _front));
 }
 
+void Camera::move(glm::vec3 direction, GLfloat deltaTime) {
+    GLfloat velocity = _movementSpeed * deltaTime;
+    _position += direction * velocity;
+}
+
 void Camera::translate(CameraMovement direction, GLfloat deltaTime) {
     GLfloat velocity = _movementSpeed * deltaTime;
     switch(direction) {
@@ -101,3 +106,4 @@ glm::vec3 Camera::getPosition() {
 void Camera::setHeight(float height) {
     _position.y = height;
 }
+

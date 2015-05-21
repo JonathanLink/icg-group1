@@ -19,6 +19,7 @@ public:
 
     Camera(glm::vec3 position, glm::vec3 rotation);
     glm::mat4 getViewMatrix();
+    void move(glm::vec3 direction, GLfloat deltaTime);
     void translate(CameraMovement direction, GLfloat deltaTime);
     void rotate(GLfloat xOffset, GLfloat yOffset);
     void zoom(GLfloat yOffset);

@@ -109,17 +109,41 @@ GLuint Scene::getSceneAspectRatio() const {
 }
 
 void Scene::updateFlyCameraPosition() {
-    if(keys[GLFW_KEY_W]) {
-        camera.translate(Camera::FORWARD, deltaTime);
-    }
-    if(keys[GLFW_KEY_S]) {
-        camera.translate(Camera::BACKWARD, deltaTime);
-    }
-    if(keys[GLFW_KEY_A]) {
-        camera.translate(Camera::LEFT, deltaTime);
-    }
-    if(keys[GLFW_KEY_D]) {
-        camera.translate(Camera::RIGHT, deltaTime);
+    if (keys[GLFW_KEY_W] || keys[GLFW_KEY_S] || keys[GLFW_KEY_A] || keys[GLFW_KEY_D]) {
+        _isInerting = false;
+
+        glm::vec3 oldCameraPosition = camera.getPosition();
+        if(keys[GLFW_KEY_W]) {
+            camera.translate(Camera::FORWARD, deltaTime);
+        }
+        if(keys[GLFW_KEY_S]) {
+            camera.translate(Camera::BACKWARD, deltaTime);
+        }
+        if(keys[GLFW_KEY_A]) {
+            camera.translate(Camera::LEFT, deltaTime);
+        }
+        if(keys[GLFW_KEY_D]) {
+            camera.translate(Camera::RIGHT, deltaTime);
+        }
+
+        // Save last direction of the camera
+        glm::vec3 newCameraPosition = camera.getPosition();
+        _lastDirection = glm::normalize(newCameraPosition - oldCameraPosition);
+    } else if (glm::length(_lastDirection) > 0.0 && !_isInerting) {
+        // If camera moved at previous call and we're not already inerting
+        _isInerting = true;
+        _initialInertionTime = glfwGetTime();
+    } else if (_isInerting) {
+        GLfloat timeSinceInertionStart = glfwGetTime() - _initialInertionTime;
+        if (timeSinceInertionStart <= 2.0) {
+            // Compute speed malus, decreasing from 1 to 0 until end of inertion
+            GLfloat speedMalus = 1.0 - timeSinceInertionStart / 2.0;
+            camera.move(_lastDirection, deltaTime * speedMalus);
+        } else {
+            _isInerting = false;
+            // After inertion, the camera is not moving anymore
+            _lastDirection = glm::vec3(0.0, 0.0, 0.0);
+        }
     }
 }
 

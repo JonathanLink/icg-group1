@@ -45,6 +45,10 @@ protected:
 protected:
     void updateFlyCameraPosition();
     virtual void updateFpsCameraPosition() = 0;
+    bool _isInerting = false;
+    GLfloat _initialInertionTime = 0.0;
+    glm::vec3 _lastDirection;
+
     GLuint _sceneWidth;
     GLuint _sceneHeight;
     CameraMode _cameraMode;
