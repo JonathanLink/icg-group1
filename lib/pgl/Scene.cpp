@@ -9,7 +9,6 @@ Scene::Scene(glm::vec3 camera_position, glm::vec3 camera_rotation) : camera(came
     keys.resize(1024, false);
     _cameraMode = FLY;
     _fog = true;
-
 }
 
 void Scene::renderScene() {

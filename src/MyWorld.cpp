@@ -83,7 +83,23 @@ void MyWorld::updateFpsCameraPosition() {
     float normalizedHeight = getHeight(pos_texture.x * 512.0, pos_texture.y * 512.0);
     //std::cout << "Height: " << normalizedHeight << std::endl;
     float height = (normalizedHeight + 0.05) * 35.0;
-    camera.setHeight(height);
+    if(keys[GLFW_KEY_SPACE] && !_hasJumped) {
+        _hasJumped = true;
+        _jumpStartTime = glfwGetTime();
+        _jumpStartHeight = height;
+    }
+
+    if (_hasJumped) {
+        GLfloat timeSinceJump = glfwGetTime() - _jumpStartTime;
+        if (timeSinceJump <= 4.0) {
+            GLfloat jumpHeight = 9 - pow(3 * timeSinceJump - 3, 2.0) + _jumpStartHeight;
+            camera.setHeight(std::max(jumpHeight, height));
+        } else {
+            _hasJumped = false;
+        }
+    } else {
+        camera.setHeight(height);
+    }
 }
 
 float MyWorld::getHeight(unsigned int x, unsigned int y) {

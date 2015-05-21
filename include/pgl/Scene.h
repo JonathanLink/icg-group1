@@ -50,6 +50,10 @@ protected:
     GLfloat _initialInertionTime = 0.0;
     glm::vec3 _lastDirection;
 
+    GLfloat _jumpStartTime = 0.0;
+    GLfloat _jumpStartHeight = 0.0;
+    bool _hasJumped = false;
+
     GLuint _sceneWidth;
     GLuint _sceneHeight;
     CameraMode _cameraMode;
