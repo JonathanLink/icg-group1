@@ -28,6 +28,7 @@ void Scene::renderScene() {
     switch (_cameraMode) {
         case FLY: {
             updateFlyCameraPosition();
+            updateInertia();
             view = camera.getViewMatrix();
             break;
         }
@@ -129,7 +130,11 @@ void Scene::updateFlyCameraPosition() {
         // Save last direction of the camera
         glm::vec3 newCameraPosition = camera.getPosition();
         _lastDirection = glm::normalize(newCameraPosition - oldCameraPosition);
-    } else if (glm::length(_lastDirection) > 0.0 && !_isInerting) {
+    }
+}
+
+void Scene::updateInertia() {
+    if (glm::length(_lastDirection) > 0.0 && !_isInerting) {
         // If camera moved at previous call and we're not already inerting
         _isInerting = true;
         _initialInertionTime = glfwGetTime();
@@ -146,6 +151,7 @@ void Scene::updateFlyCameraPosition() {
         }
     }
 }
+
 
 void Scene::setUniformVariables(GLuint pid, const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &projection) {
     GLuint modelLoc_id = glGetUniformLocation(pid, "model");
@@ -200,5 +206,3 @@ bool Scene::fogEnabled() {
 void Scene::setCameraBezier(CameraBezier cameraBezier) {
     _cameraBezier = cameraBezier;
 }
-
- 

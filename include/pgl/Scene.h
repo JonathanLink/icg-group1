@@ -45,6 +45,7 @@ protected:
 protected:
     void updateFlyCameraPosition();
     virtual void updateFpsCameraPosition() = 0;
+    void updateInertia();
     bool _isInerting = false;
     GLfloat _initialInertionTime = 0.0;
     glm::vec3 _lastDirection;
