@@ -96,5 +96,10 @@ std::vector<glm::vec3> Bezier::getVertices() {
     return _vertices;
 }
 
+void Bezier::clear() {
+    _hulls.clear();
+    _vertices.clear();
+}
+
 
 

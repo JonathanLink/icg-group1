@@ -10,6 +10,7 @@ public:
     void addHulls(const std::vector<Hull>& hulls);
     glm::vec3 samplePointAtTime(double time);
     std::vector<glm::vec3> getVertices(); 
+    void clear();
 
 private:
     void bezier(Hull &hull, int depth=0);

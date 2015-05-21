@@ -57,6 +57,7 @@ void Camera::translate(CameraMovement direction, GLfloat deltaTime) {
             // Do nothing
         }
     }
+    //std::cout << "cam pos: x= " << _position.x << " y= " << _position.y << " z = " << _position.z << std::endl;
 }
 
 void Camera::rotate(GLfloat xOffset, GLfloat yOffset) {
