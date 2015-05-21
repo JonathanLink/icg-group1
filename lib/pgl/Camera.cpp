@@ -17,7 +17,7 @@ Camera::Camera(glm::vec3 position, glm::vec3 rotation) {
 
 glm::mat4 Camera::flipCam() {
     glm::vec3 reversedPos = _position;
-    reversedPos.z = -_position.z;
+    reversedPos.y = -_position.y;
 
     return glm::lookAt(reversedPos, reversedPos + _front, _up);
 }

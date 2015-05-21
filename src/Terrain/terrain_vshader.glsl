@@ -58,7 +58,7 @@ void main() {
 	normal = getNormal(local_uv_coords);
 
     if (isReflected > 0.5) {
-       fragHeight = -fragHeight;
+       //fragHeight = -fragHeight;
     }
 
 	vec3 local_pos_3d = vec3(position2.x, fragHeight, position2.y);

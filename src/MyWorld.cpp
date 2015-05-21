@@ -53,6 +53,7 @@ void MyWorld::render() {
     GLuint terrainReflectTextureId = _terrainReflectFB.initTextureId(GL_RGB);
     _terrainReflectFB.bind();
         _terrain.setReflection(true);
+        //this->camera.flipCam();
         _terrain.render(view, projection);
         _terrain.setReflection(false);
     _terrainReflectFB.unbind();
@@ -60,6 +61,7 @@ void MyWorld::render() {
 
     _skybox.render(view, projection);
     _terrain.render(view, projection);
+        
     _water.render(view, projection);
 
     _terrainReflectFB.cleanUp();

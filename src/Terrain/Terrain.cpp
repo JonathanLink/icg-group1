@@ -53,6 +53,11 @@ void Terrain::init() {
 
 void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     useShaders();
+    //glm::mat4 mirror(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, 5*20*0.37, 0, 1);
+
+    float h = (model * glm::vec4(0, 0.37, 0, 1)).y;
+
+    glm::mat4 mirror = glm::translate(glm::mat4(1.0f), glm::vec3(0,2*h, 0)) * glm::scale(glm::vec3(1, -1, 1));
 
     // Set uniform variables for the vertex and fragment glsl files
     if (!reflection) {
@@ -63,8 +68,7 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
         glEnable(GL_CLIP_PLANE0);
         glClipPlane(GL_CLIP_PLANE0, plane);
         
-        glm::mat4 mirror(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 2 * 0.37, 0, 0, 0, 1);
-        scene->setUniformVariables(pid, model, view, projection);
+        scene->setUniformVariables(pid, mirror * model,  view , projection);
     }
 
     // grid size uniform

@@ -6,6 +6,7 @@ out vec2 uv_coords;
 out vec3 fragPos;
 out vec3 normal;
 out float fragHeight;
+out vec2 frag_coord;
 
 uniform mat4 model;
 uniform mat4 MVP_matrix;
@@ -49,11 +50,15 @@ void main() {
 
     uv_coords = local_uv_coords;
 
+
+
     normal = getNormal(local_uv_coords);
-    vec3 local_pos_3d = vec3(position.x, water_height, position.y); // 0.37 initially for the height
+    vec3 local_pos_3d = vec3(position.x, 0.37, position.y); // 0.37 initially for the height
     gl_Position = MVP_matrix * vec4(local_pos_3d, 1.0);
     fragPos = vec3(model * vec4(local_pos_3d, 1.0f));
-   
+
+    frag_coord = vec2(0.5* (gl_Position.x / gl_Position.w + 1.0), 0.5* (gl_Position.y / gl_Position.w + 1.0) );
+
 }
 
 

@@ -6,6 +6,7 @@ in vec2 uv_coords;
 in vec3 fragPos;
 in vec3 normal;
 in float fragHeight;
+in vec2 frag_coord;
 
 uniform sampler2D tex;
 uniform sampler2D tex_mirror;
@@ -14,6 +15,7 @@ uniform float grid_size;
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 cameraPos;
+uniform mat4 MVP_matrix;
 uniform float water_height;
 uniform int fogEnabled;
 
@@ -25,9 +27,9 @@ void main() {
     vec4 textureColor = vec4(0,128.0/255.0,1.0, 0.6);
     vec4 finalColor = vec4(1,1,1,1);
    
-    if (fragHeight > water_height) { // hide water if not a visible lake
-        finalColor = vec4(0.0,0.0,0.0,0.0); 
-    } else {
+   // if (fragHeight > water_height) { // hide water if not a visible lake
+     //   finalColor = vec4(0.0,0.0,0.0,0.0); 
+    //} else {
 
         // ============ Lightning part ==================
 
@@ -41,6 +43,8 @@ void main() {
         float diff = max(dot(norm, lightDir), 0.0);
         vec3 diffuse = diff * lightColor;
 
+        ambient = vec3(0.0);
+        diffuse = vec3(0.5);
         // Ambient + Diffuse
         vec4 result = vec4((ambient + diffuse), 1.0f) * textureColor;
         finalColor = result;
@@ -49,15 +53,16 @@ void main() {
         // ============ Reflection part ==================
 
         vec2 whSize = textureSize(tex_mirror, 0);
-        float window_width = whSize.x;
-        float window_height = whSize.y;
+        float texture_width = whSize.x;
+        float texture_height = whSize.y;
 
-        float u = gl_FragCoord.x / window_width;
-        float v = gl_FragCoord.y / window_height;
+        float u = gl_FragCoord.x / texture_width;
+        float v = gl_FragCoord.y / texture_height;
+        vec2 uv = gl_FragCoord.xy / vec2(texture_width, texture_height);
 
-        v = 1 - v;
+        //v = 1 - v;
 
-        vec3 terrainReflected = texture(tex_mirror, vec2(u,v)).rgb;
+        vec3 terrainReflected = texture(tex_mirror, uv).rgb;
 
         finalColor.xyz = mix(finalColor.xyz, terrainReflected, 0.5);
 
@@ -70,7 +75,8 @@ void main() {
             vec4  fogColor  = vec4(1,1,1,1);
             finalColor = mix( finalColor, fogColor, fogAmount );
         }
-    }
+       // finalColor = vec4(texture(tex_mirror, uv).rgb, 1.0);
+//    }
 
     color = finalColor;
 }
