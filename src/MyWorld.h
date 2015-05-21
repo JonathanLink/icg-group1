@@ -21,7 +21,7 @@ public:
 
 private:
 	void updateFpsCameraPosition() override;
-	float getHeight(int x, int y);
+	float getHeight(unsigned int x, unsigned int y);
 
 	float* _heightMap;
 
