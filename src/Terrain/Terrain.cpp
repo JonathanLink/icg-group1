@@ -54,12 +54,15 @@ void Terrain::init() {
 void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     useShaders();
 
-
-
     // Set uniform variables for the vertex and fragment glsl files
     if (!reflection) {
         scene->setUniformVariables(pid, model, view, projection);
     } else {
+
+        double plane[4] = {0.0, 1.0, 0.0, 0.0}; //water at y=0
+        glEnable(GL_CLIP_PLANE0);
+        glClipPlane(GL_CLIP_PLANE0, plane);
+        
         glm::mat4 mirror(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 2 * 0.37, 0, 0, 0, 1);
         scene->setUniformVariables(pid, model, view, projection);
     }
@@ -101,6 +104,10 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glBindVertexArray(_vertexArrayId);
     glDrawElements(GL_TRIANGLE_STRIP, _indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+
+    if (reflection) {
+        glDisable(GL_CLIP_PLANE0);
+    }
 }
 
 void Terrain::cleanUp() {

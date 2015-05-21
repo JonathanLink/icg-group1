@@ -63,7 +63,6 @@ void MyWorld::render() {
     _water.render(view, projection);
 
     _terrainReflectFB.cleanUp();
-
 }
 
 void MyWorld::cleanUp() {
