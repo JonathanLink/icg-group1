@@ -14,6 +14,7 @@ uniform sampler2D tex;
 uniform sampler2D tex_mirror;
 uniform float grid_size;
 uniform float water_height;
+uniform float time;
 
 vec3 getNormal(vec2 pos) {
     
@@ -50,8 +51,22 @@ void main() {
 
     uv_coords = local_uv_coords;
 
+
+    float CONST_PI = 3.14;
+    float timeValue = time;
+
+    float amplitude = 0.005;
+    float spatialFrequency = 5 * 2.0 * CONST_PI;
+    float timeFrequency = 0.3 * 2.0 * CONST_PI;
+    float phase = CONST_PI / 4.0 + local_uv_coords.x + local_uv_coords.y;
+
+    float heightSine = amplitude * sin(spatialFrequency * (local_uv_coords.x + local_uv_coords.y) + timeFrequency * timeValue);
+
+    float heightWater = amplitude * sin(spatialFrequency * sqrt(local_uv_coords.x * local_uv_coords.x + local_uv_coords.y * local_uv_coords.y) + timeFrequency * timeValue);
+
+
     normal = getNormal(local_uv_coords);
-    vec3 local_pos_3d = vec3(position.x, 0.37, position.y); // 0.37 initially for the height
+    vec3 local_pos_3d = vec3(position.x, water_height + heightWater, position.y); // 0.37 initially for the height
     gl_Position = MVP_matrix * vec4(local_pos_3d, 1.0);
     fragPos = vec3(model * vec4(local_pos_3d, 1.0f));
 

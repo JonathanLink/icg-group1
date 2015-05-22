@@ -12,6 +12,7 @@ uniform mat4 MVP_matrix;
 uniform sampler2D tex;
 uniform float grid_size;
 uniform int isReflected;
+uniform float water_height;
 
 vec3 getNormal(vec2 pos) {
     

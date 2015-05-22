@@ -45,7 +45,7 @@ void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
 
     // Set uniform variables for the vertex and fragment glsl files
     scene->setUniformVariables(pid, model, view, projection); 
-    
+
     // grid size uniform
     GLuint grid_size_id = glGetUniformLocation(pid, "grid_size");
     glm::float1 grid_size = (float)GRID_SIZE;
@@ -53,12 +53,19 @@ void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
 
     // water height uniform
     GLuint water_height_id = glGetUniformLocation(pid, "water_height");
-    _waterTime += 0.3 * scene->getDeltaTime();
+    //Todo constante a FIXER
+    float waterHeight = 0.37;
+    glUniform1f(water_height_id, waterHeight);
 
-    float waterHeight = 0.37 + (fabs(sin(_waterTime)) * 0.01);
+    //_waterTime += 0.3 * scene->getDeltaTime();
     //float waterHeight = sin(_waterTime * 3.14/180.0); // POUR PASSER EN MODE RECHAUFFEMENT CLIMATQUE - et mettre 1.0 au lieu de 0.3 (ligne 57)
     //std::cout << _waterTime << " waterHeight: " << waterHeight << " >"<< fabs(sin(_waterTime)) <<std::endl;
-    glUniform1f(water_height_id, waterHeight);
+   
+
+    //time uniform
+    GLuint time_id = glGetUniformLocation(pid, "time");
+    glm::float1 time_size = glfwGetTime();
+    glUniform1f(time_id, time_size);
 
     /* Bind textures */
     //Terrain reflection

@@ -66,7 +66,7 @@ void main() {
         if(texture(tex_mirror, rfl_uv).rgb != vec3(0.0, 0.0, 0.0) ) {
             vec3 terrainReflected = texture(tex_mirror, rfl_uv).rgb;
 
-            //finalColor.xyz = mix(finalColor.xyz, terrainReflected, 0.5);
+            finalColor.xyz = mix(finalColor.xyz, terrainReflected, 0.5);
         }
 
         // ============ Fog part =======================

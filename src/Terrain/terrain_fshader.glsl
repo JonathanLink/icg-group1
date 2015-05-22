@@ -18,7 +18,7 @@ uniform vec3 lightColor;
 uniform vec3 cameraPos;
 uniform int fogEnabled;
 uniform int isReflected;
-
+uniform float water_height;
 
 out vec4 color;
 
@@ -49,7 +49,7 @@ void main() {
    
     vec4 finalColor = vec4(1.0, 0.0,0.0, 0.5);
    
-    if (fragHeight < 0.37 && !(isReflected > 0.5)) {
+    if (fragHeight < water_height && !(isReflected > 0.5)) {
         discard;
     } else {
 
