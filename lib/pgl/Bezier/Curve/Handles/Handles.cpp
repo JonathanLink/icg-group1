@@ -7,6 +7,7 @@ Handles::Handles() {
 }
 
 void Handles::setHandles(const std::vector<Hull> &cameraHulls, Scene *scene) {
+    clear();
     
     for (int i = 0; i < cameraHulls.size(); ++i) {
         Hull currentHull = cameraHulls[i];

@@ -18,20 +18,22 @@ void Bezier::bezier(Hull &hull, int depth) {
     Hull l;
     Hull r;
 
+    if (depth == 0) { std::cout << ">: " << hull.p1().x << " depth=" << depth << std::endl; }
+
     //--- endpoints
     l.p1() = hull.p1();
     r.p4() = hull.p4();
 
     //--- one-in
-    l.p2() = (hull.p1() + hull.p2()) / 2.0;
-    r.p3() = (hull.p3() + hull.p4()) / 2.0;
+    l.p2() = (hull.p1() + hull.p2()) / 2.0f;
+    r.p3() = (hull.p3() + hull.p4()) / 2.0f;
 
     //--- interior
-    l.p3() = ( l.p2() + (hull.p2() + hull.p3())/2.0 )/2.0;
-    r.p2() = ( r.p3() + (hull.p2() + hull.p3())/2.0 )/2.0;
+    l.p3() = ( l.p2() + (hull.p2() + hull.p3())/2.0f )/2.0f;
+    r.p2() = ( r.p3() + (hull.p2() + hull.p3())/2.0f )/2.0f;
 
     //--- middle
-    l.p4() = ( l.p3() + r.p2() ) / 2.0;
+    l.p4() = ( l.p3() + r.p2() ) / 2.0f;
     r.p1() = l.p4();
 
     //--- recursion v.s. draw
@@ -41,21 +43,32 @@ void Bezier::bezier(Hull &hull, int depth) {
     } else {
         _vertices.push_back(l.p1());
     }
+
+   /* if (hull.p4().x > 100) {
+        std::cout << "WTF 2: " << hull.p4().x << " depth=" << depth << std::endl;
+    } else if (depth == 5) {
+        std::cout << ">: " << hull.p4().x << " depth=" << depth << std::endl;
+    }*/
+
     _vertices.push_back(hull.p4());
 }
 
 
-void Bezier::addHulls(const std::vector<Hull>& hulls) {
-    _hulls  = hulls;
-    for (std::size_t i = 0; i != _hulls.size(); ++i) {
-        bezier(_hulls[i]);
+void Bezier::addHulls(std::vector<Hull> hulls) {
+    clear();
+    for (int i = 0; i < hulls.size(); ++i) {
+        
+        std::cout << "hulls.size()" << hulls.size() << std::endl;
+    
+        bezier(hulls[i]);
     }
     computeParameterization();
+
 }
 
 void Bezier::computeParameterization() {
     double prevDist = 0.0;
-    for (unsigned int i = 1; i < _vertices.size(); ++i) {
+    for (int  i = 1; i < _vertices.size(); ++i) {
         glm::vec3 vertice = _vertices.at(i);
         glm::vec3 prevPoint = _vertices.at(i - 1);
         double  dist = prevDist + distance(prevPoint, vertice);
@@ -97,8 +110,8 @@ std::vector<glm::vec3> Bezier::getVertices() {
 }
 
 void Bezier::clear() {
-    _hulls.clear();
     _vertices.clear();
+    _param.clear();
 }
 
 

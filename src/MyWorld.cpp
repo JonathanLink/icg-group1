@@ -30,10 +30,9 @@ void MyWorld::init() {
     _terrain.setTexture(perlinTextureId);
 
     // Bezier init
-    setCameraBezier(_cameraBezier);
     _bezierEditModeEnabled = false;
     _bezierCurve.setScene(this);
-    _bezierCurve2.setScene(this);
+    //_bezierCurve2.setScene(this);
     _handle1 = glm::vec3(0,23,-1);
     _handle2 = _handle1;
     _handle3 = _handle1;
@@ -49,22 +48,27 @@ void MyWorld::buildBezierCurve() {
     // Set camera bezier for path 1
     // ***********************************
     std::vector<Hull> cameraHulls;
-    //cameraHulls.push_back(Hull(_handle1, _handle2, _handle3, _handle4));
-    cameraHulls.push_back(Hull(_handle1, glm::vec3(0,20,-2), glm::vec3(0,20,-2), glm::vec3(12,42,-1)));
-    cameraHulls.push_back(Hull(glm::vec3(12,42,-1), glm::vec3(2,23,-5), glm::vec3(3,10,-3), glm::vec3(3,23,-2)));
+    cameraHulls.clear();
+    cameraHulls.push_back(Hull(_handle1, _handle2, _handle3, _handle4));
+    //cameraHulls.push_back(Hull(glm::vec3(0,23,-1), glm::vec3(0,20,-2), glm::vec3(0,20,-2), glm::vec3(0,20,-2)));
+    //cameraHulls.push_back(Hull(glm::vec3(12,42,-1), glm::vec3(2,23,-5), glm::vec3(3,10,-3), glm::vec3(3,23,-2)));
 
     std::vector<Hull> lookHulls;
-    lookHulls.push_back(Hull(glm::vec3(0,25,10), glm::vec3(-43,20,10), glm::vec3(43,20,10), glm::vec3(0,20,0)));
+    lookHulls.clear();
+    lookHulls.push_back(Hull(glm::vec3(1,22,-1), glm::vec3(1,21,-2), glm::vec3(1,20,-2), glm::vec3(1,20,2)));
 
-    _cameraBezier.clear();
+
     _cameraBezier.setHulls(cameraHulls, lookHulls);
+    setCameraBezier(_cameraBezier);
 
-    _bezierHandles.clear();
+
     _bezierCurve.setPoints(_cameraBezier.getCameraCurvePoints());
+
     _bezierHandles.setHandles(cameraHulls, this);
 
 
-    _bezierCurve2.setPoints(_cameraBezier.getLookCurvePoints());
+    //_bezierCurve2.setPoints(_cameraBezier.getLookCurvePoints());
+
 }
 
 void MyWorld::render() {
