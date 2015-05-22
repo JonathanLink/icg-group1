@@ -12,6 +12,7 @@ uniform mat4 MVP_matrix;
 uniform sampler2D tex;
 uniform float grid_size;
 uniform int isReflected;
+uniform float time;
 uniform float water_height;
 
 vec3 getNormal(vec2 pos) {
@@ -50,7 +51,25 @@ void main() {
 	fragHeight = texture(tex, local_uv_coords).r;
 	normal = getNormal(local_uv_coords);
 
-	vec3 local_pos_3d = vec3(position.x, fragHeight, position.y);
+    //0 = true #logic
+    float heightWater = 0;
+    if (isReflected < 0.5) {
+        
+        float CONST_PI = 3.14;
+        float timeValue = time;
+        float amplitude = 0.005;
+        float spatialFrequency = 3 * 2.0 * CONST_PI;
+        float timeFrequency = 0.3 * 2.0 * CONST_PI;
+        float phase = CONST_PI / 4.0 + local_uv_coords.x + local_uv_coords.y;
+
+        float heightSine = amplitude * sin(spatialFrequency * (local_uv_coords.x + local_uv_coords.y) + timeFrequency * timeValue);
+
+        heightWater = abs(amplitude * sin(spatialFrequency * sqrt(local_uv_coords.x * local_uv_coords.x + local_uv_coords.y * local_uv_coords.y) 
+            + timeFrequency * timeValue));
+    }
+
+
+	vec3 local_pos_3d = vec3(position.x, fragHeight - heightWater, position.y);
     gl_Position = MVP_matrix * vec4(local_pos_3d, 1.0);
 
     fragPos = vec3(model * vec4(local_pos_3d, 1.0f));

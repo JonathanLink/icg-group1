@@ -81,13 +81,17 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     GLuint reflection_id = glGetUniformLocation(pid, "isReflected");
     int reflection_value = (reflection) ? 0 : 1;
     glUniform1i(reflection_id, reflection_value);
-    
+
     // water height uniform
     GLuint water_height_id = glGetUniformLocation(pid, "water_height");
     //Todo constante a FIXER
     float waterHeight = 0.37;; 
     glUniform1f(water_height_id, waterHeight);
 
+    //time uniform
+    GLuint time_id = glGetUniformLocation(pid, "time");
+    glm::float1 time_size = glfwGetTime();
+    glUniform1f(time_id, time_size);
 
     /* Bind textures */
     //Perlin Noise

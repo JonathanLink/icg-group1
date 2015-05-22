@@ -59,8 +59,7 @@ void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
 
     //_waterTime += 0.3 * scene->getDeltaTime();
     //float waterHeight = sin(_waterTime * 3.14/180.0); // POUR PASSER EN MODE RECHAUFFEMENT CLIMATQUE - et mettre 1.0 au lieu de 0.3 (ligne 57)
-    //std::cout << _waterTime << " waterHeight: " << waterHeight << " >"<< fabs(sin(_waterTime)) <<std::endl;
-   
+    //std::cout << _waterTime << " waterHeight: " << waterHeight << " >"<< fabs(sin(_waterTime)) <<std::endl;   
 
     //time uniform
     GLuint time_id = glGetUniformLocation(pid, "time");
