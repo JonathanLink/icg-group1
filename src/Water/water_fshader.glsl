@@ -34,7 +34,7 @@ void main() {
         // ============ Lightning part ==================
 
         // Ambient
-        float ambientStrength = 0.2f;
+        float ambientStrength = 0.5f;
         vec3 ambient = ambientStrength * lightColor;
 
         // Diffuse
@@ -66,7 +66,7 @@ void main() {
         if(texture(tex_mirror, rfl_uv).rgb != vec3(0.0, 0.0, 0.0) ) {
             vec3 terrainReflected = texture(tex_mirror, rfl_uv).rgb;
 
-            finalColor.xyz = mix(finalColor.xyz, terrainReflected, 0.5);
+            //finalColor.xyz = mix(finalColor.xyz, terrainReflected, 0.5);
         }
 
         // ============ Fog part =======================

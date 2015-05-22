@@ -111,12 +111,14 @@ void main() {
         if (cameraPos.y > 0.0 && cameraPos.y < 13.5) {
             float alpha = exp(cameraPos.y * 0.04) - 1.0f;
             alpha = clamp(alpha, 0, 1.0);
-            finalColor = mix( vec4(0.0f, 78.0f/255.0f, 1.0f, 0.6f), finalColor, alpha);
-        } else if (fragHeight < 0.37) {
+            finalColor = mix( vec4(0,128.0/255.0, 1.0, 0.5), finalColor, alpha);
+        } /*else if ( (cameraPos.x < -35 || cameraPos.x > 35) && (cameraPos.z < -35 || cameraPos.z > 35)) {
             // ============ Water depth part ==================
-            float alpha = 1.0f - fragHeight*(1.0f/0.375f) + 0.3;
-            finalColor = mix( finalColor, vec4(0.0f, 78.0f/255.0f, 1.0f, 1.0f), alpha);
-        }
+            float alpha = 1.0f - fragHeight*(1.0f/0.37f) + 0.3;
+            if (fragHeight < 0.36) {
+                finalColor = mix( finalColor, vec4(0,128.0/255.0, 1.0, 0.5), alpha);
+            }
+        }*/
 
         // ============ Fog part =======================
         if (fogEnabled > 0.5 && (isReflected > 0.5)) { // not == 1 to avoid float procession error
