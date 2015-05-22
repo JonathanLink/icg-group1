@@ -5,6 +5,11 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/ext.hpp"
+
 #include "Camera.h"
 #include "Bezier/CameraBezier.h"
 
@@ -31,9 +36,12 @@ public:
     bool fogEnabled();
     void setCameraBezier(CameraBezier cameraBezier);
 
-    Camera camera;
+    glm::float1 getReflectTime();
+    void setReflectTime(glm::float1 t);
 
 protected: 
+    Camera camera;
+
     glm::mat4 view;
     glm::mat4 projection;
     std::vector<bool> keys;
@@ -52,6 +60,7 @@ private:
     glm::vec3 _lightPosition;
     bool _fog;
     CameraBezier _cameraBezier;
+    glm::float1 reflectTime;
 };
 
 #endif

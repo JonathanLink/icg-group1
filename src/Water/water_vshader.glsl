@@ -51,19 +51,19 @@ void main() {
 
     uv_coords = local_uv_coords;
 
-    float CONST_PI = 3.14;
+    float CONST_PI = 3.1415926535897932384626433832795;
     float timeValue = time;
 
     float amplitude = 0.005;
-    float spatialFrequency = 3 * 2.0 * CONST_PI;
+    float spatialFrequency = 4 * 2.0 * CONST_PI;
     float timeFrequency = 0.3 * 2.0 * CONST_PI;
     float phase = CONST_PI / 4.0 + local_uv_coords.x + local_uv_coords.y;
 
     float heightSine = amplitude * sin(spatialFrequency * (local_uv_coords.x + local_uv_coords.y) +
      timeFrequency * timeValue);
 
-    float heightWater = abs(amplitude * sin(spatialFrequency * sqrt(local_uv_coords.x * local_uv_coords.x +
-     local_uv_coords.y * local_uv_coords.y) + timeFrequency * timeValue));
+    float heightWater = amplitude - amplitude * sin(spatialFrequency * sqrt(local_uv_coords.x * local_uv_coords.x +
+     local_uv_coords.y * local_uv_coords.y) + timeFrequency * timeValue);
 
 
     normal = getNormal(local_uv_coords);

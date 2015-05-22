@@ -53,22 +53,14 @@ void Terrain::init() {
 
 void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     useShaders();
-    //glm::mat4 mirror(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, 5*20*0.37, 0, 1);
 
     float h = (model * glm::vec4(0, 0.37, 0, 1)).y;
-
     glm::mat4 mirror = glm::translate(glm::mat4(1.0f), glm::vec3(0, 2*h, 0)) * glm::scale(glm::vec3(1, -1, 1));
-
+   
     // Set uniform variables for the vertex and fragment glsl files
     if (!reflection) {
         scene->setUniformVariables(pid, model, view, projection);
-
     } else {
-
-       /* double plane[4] = {0.0, 1, 0.0, 100}; //water at y=0
-        //glEnable(GL_CLIP_PLANE0);
-        glClipPlane(GL_CLIP_PLANE0, plane);
-        */
         scene->setUniformVariables(pid, mirror * model,  view , projection);
     }
 
@@ -91,6 +83,9 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     //time uniform
     GLuint time_id = glGetUniformLocation(pid, "time");
     glm::float1 time_size = glfwGetTime();
+    if (reflection) {
+        scene->setReflectTime(time_size);
+    }
     glUniform1f(time_id, time_size);
 
     /* Bind textures */
@@ -114,19 +109,11 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glActiveTexture(GL_TEXTURE4);
     glBindTexture(GL_TEXTURE_2D, _rockTexId);
     glUniform1i(glGetUniformLocation(pid, "rockTex"), 4);
-
-
-    // Draw
- //   glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+ 
     glBindVertexArray(_vertexArrayId);
     glDrawElements(GL_TRIANGLE_STRIP, _indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
-    glDisable(GL_BLEND);
-
-    if (reflection) {
-    //glDisable(GL_CLIP_PLANE0);
-    }
+ 
 }
 
 void Terrain::cleanUp() {

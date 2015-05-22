@@ -71,4 +71,3 @@ void MyWorld::cleanUp() {
     _perlin.cleanUp();
     _fishEye.cleanUp();
 }
-

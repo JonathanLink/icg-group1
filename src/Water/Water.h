@@ -34,8 +34,6 @@ private:
         double indice;
     };
 
-    float _waterTime;
-
     void constructGrid();
 };
 

@@ -36,7 +36,7 @@ void Water::init() {
     // Apply a rotation on the model matrix
     //model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     model = glm::scale(model, glm::vec3(35.0f, 35.0f, 35.0f));
-    _waterTime = 0.0;
+    
 }   
 
 
@@ -57,13 +57,9 @@ void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
     float waterHeight = 0.37;
     glUniform1f(water_height_id, waterHeight);
 
-    //_waterTime += 0.3 * scene->getDeltaTime();
-    //float waterHeight = sin(_waterTime * 3.14/180.0); // POUR PASSER EN MODE RECHAUFFEMENT CLIMATQUE - et mettre 1.0 au lieu de 0.3 (ligne 57)
-    //std::cout << _waterTime << " waterHeight: " << waterHeight << " >"<< fabs(sin(_waterTime)) <<std::endl;   
-
     //time uniform
     GLuint time_id = glGetUniformLocation(pid, "time");
-    glm::float1 time_size = glfwGetTime();
+    glm::float1 time_size = scene->getReflectTime();
     glUniform1f(time_id, time_size);
 
     /* Bind textures */
