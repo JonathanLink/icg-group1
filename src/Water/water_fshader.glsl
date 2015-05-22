@@ -24,7 +24,7 @@ out vec4 color;
 
 void main() {
 
-    vec4 textureColor = vec4(0,128.0/255.0,1.0, 0.6);
+    vec4 textureColor = vec4(0,128.0/255.0, 1.0, 0.5);
     vec4 finalColor = vec4(0,0,0,0);
    
     if (fragHeight >= water_height) { // hide water if not a visible lake
@@ -34,7 +34,7 @@ void main() {
         // ============ Lightning part ==================
 
         // Ambient
-        float ambientStrength = 0.3f;
+        float ambientStrength = 0.2f;
         vec3 ambient = ambientStrength * lightColor;
 
         // Diffuse
@@ -42,8 +42,8 @@ void main() {
         vec3 lightDir = normalize(lightPos - fragPos);  
         float diff = max(dot(norm, lightDir), 0.0);
         vec3 diffuse = diff * lightColor;
-
         // Ambient + Diffuse
+
         vec4 result = vec4((ambient + diffuse), 1.0f) * textureColor;
         finalColor = result;
 
@@ -60,10 +60,14 @@ void main() {
         v = 1 - v;
 
         vec2 rfl_uv = gl_FragCoord.xy / vec2(texture_width, texture_height);
+        //Check if the tex_mirror is empty (=> black) then we absolutely don't want to merge it 
+        //Because it will darken the whole scene
 
-        vec3 terrainReflected = texture(tex_mirror, rfl_uv).rgb;
+        if(texture(tex_mirror, rfl_uv).rgb != vec3(0.0, 0.0, 0.0) ) {
+            vec3 terrainReflected = texture(tex_mirror, rfl_uv).rgb;
 
-        finalColor.xyz = mix(finalColor.xyz, terrainReflected, 0.5);
+            finalColor.xyz = mix(finalColor.xyz, terrainReflected, 0.5);
+        }
 
         // ============ Fog part =======================
 
@@ -74,7 +78,7 @@ void main() {
             vec4  fogColor  = vec4(1,1,1,1);
             finalColor = mix( finalColor, fogColor, fogAmount );
         }
-        //finalColor = vec4(terrainReflected, 1.0);
+     
     }
 
     color = finalColor;

@@ -107,16 +107,15 @@ void main() {
         vec3 result = (ambient + diffuse) * textureColor;
         finalColor = vec4(result, alpha);
 
-
         // =========== Camera underwater ? =======
         if (cameraPos.y > 0.0 && cameraPos.y < 13.5) {
             float alpha = exp(cameraPos.y * 0.04) - 1.0f;
             alpha = clamp(alpha, 0, 1.0);
-            finalColor = mix( vec4(0.0f, 78.0f/255.0f, 1.0f, 0.6f), finalColor, alpha );
-        } else if (fragHeight < 0.375) {
+            finalColor = mix( vec4(0.0f, 78.0f/255.0f, 1.0f, 0.6f), finalColor, alpha);
+        } else if (fragHeight < 0.37) {
             // ============ Water depth part ==================
-            float alpha = 1.0f -fragHeight*(1.0f/0.375f) + 0.3;
-            finalColor = mix( finalColor, vec4(0.0f, 78.0f/255.0f, 1.0f, 1.0f),alpha );
+            float alpha = 1.0f - fragHeight*(1.0f/0.375f) + 0.3;
+            finalColor = mix( finalColor, vec4(0.0f, 78.0f/255.0f, 1.0f, 1.0f), alpha);
         }
 
         // ============ Fog part =======================
@@ -127,9 +126,7 @@ void main() {
             vec4  fogColor  = vec4(1,1,1,1);
             finalColor = mix( finalColor, fogColor, fogAmount );
         }
-
     }
     
-
     color = finalColor;
 }

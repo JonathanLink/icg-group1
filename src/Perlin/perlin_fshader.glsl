@@ -25,11 +25,11 @@ float noise(vec2 p, float freq ){
 
 float fbm(vec2 x) {
     float v = 0.0;
-    float a = 0.8;
+    float a = 0.6;
     vec2 shift = vec2(100);
     // Rotate to reduce axial bias
     mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.50));
-    int NUM_OCTAVES = 5;
+    int NUM_OCTAVES = 7;
     for (int i = 0; i < NUM_OCTAVES; ++i) {
         float noise = noise(x, 5);
         v += a * noise;
