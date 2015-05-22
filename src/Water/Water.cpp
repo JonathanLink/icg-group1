@@ -20,7 +20,6 @@ void Water::init() {
     glGenVertexArrays(1, &_vertexArrayId);
     glGenBuffers(1, &_vertexBufferId);
     glGenBuffers(1, &_elementBufferId);
-
     glBindVertexArray(_vertexArrayId);
         // vertices
         glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
@@ -67,12 +66,10 @@ void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glBindTexture(GL_TEXTURE_2D, _perlinTextureId);
     glUniform1i(glGetUniformLocation(pid, "tex"), 0);
 
-
     //Terrain reflection
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, _mirrorTextureId);
     glUniform1i(glGetUniformLocation(pid, "tex_mirror"), 1);
-
 
     // Draw
     glEnable(GL_BLEND);

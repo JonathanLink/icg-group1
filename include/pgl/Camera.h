@@ -24,7 +24,6 @@ public:
     void zoom(GLfloat yOffset);
     GLfloat getZoom();
     glm::vec3 getPosition();
-    glm::mat4 flipCam();
 
 private:
     glm::vec3 _position;

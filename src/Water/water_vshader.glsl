@@ -50,8 +50,6 @@ void main() {
 
     uv_coords = local_uv_coords;
 
-
-
     normal = getNormal(local_uv_coords);
     vec3 local_pos_3d = vec3(position.x, 0.37, position.y); // 0.37 initially for the height
     gl_Position = MVP_matrix * vec4(local_pos_3d, 1.0);

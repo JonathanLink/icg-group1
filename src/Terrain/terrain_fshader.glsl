@@ -47,10 +47,10 @@ float rand(vec2 c){
 
 void main() {
    
-    vec4 finalColor = vec4(0.0,0.0,0.0, 0.0);
+    vec4 finalColor = vec4(1.0, 0.0,0.0, 0.5);
    
-    if (fragHeight <= 0.35 && (isReflected > 0.5)) {
-        //Do nothing
+    if (fragHeight < 0.37 && !(isReflected > 0.5)) {
+        discard;
     } else {
 
         // ============ Texturing part ==================
@@ -129,6 +129,7 @@ void main() {
         }
 
     }
+    
 
     color = finalColor;
 }
