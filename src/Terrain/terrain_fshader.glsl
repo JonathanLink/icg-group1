@@ -120,7 +120,7 @@ void main() {
         }
 
         // ============ Fog part =======================
-        if (fogEnabled > 0.5) { // not == 1 to avoid float procession error
+        if (fogEnabled > 0.5 && (isReflected > 0.5)) { // not == 1 to avoid float procession error
             float distance = distance(cameraPos, fragPos);
             float fogAmount = exp(distance * 0.009) - 1;
             fogAmount = clamp(fogAmount, 0, 0.8);
