@@ -5,8 +5,9 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/ext.hpp"
 
-#include "Terrain.h"
+#include "pgl/Constants.h"
 
+#include "Terrain.h"
 
 Terrain::Terrain() {
     // Do nothing
@@ -17,6 +18,7 @@ void Terrain::init() {
     loadShaders( "../src/Terrain/terrain_vshader.glsl", "../src/Terrain/terrain_fshader.glsl" );
 
     constructGrid();
+    
     glGenVertexArrays(1, &_vertexArrayId);
     glGenBuffers(1, &_vertexBufferId);
     glGenBuffers(1, &_elementBufferId);
@@ -36,7 +38,10 @@ void Terrain::init() {
 
     // Apply a rotation on the model matrix
     //model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::scale(model, glm::vec3(35, 35, 35));
+    const float terrainScale = Constants::getTerrainScale();
+    model = glm::scale(model, glm::vec3(terrainScale,
+                                        terrainScale,
+                                        terrainScale));
 
     // Bind Grass Texture
     _grassTexId = gen2DTexture("../tex/grass.jpg", GL_RGB);

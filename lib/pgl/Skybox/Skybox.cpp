@@ -5,6 +5,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/ext.hpp"
 
+#include "pgl/Constants.h"
 #include "pgl/Skybox/Skybox.h"
 
 Skybox::Skybox() {
@@ -83,8 +84,10 @@ void Skybox::init() {
     _cubemapTextureId = loadCubemap(faces);
 
     // scale the skybox
-    model = glm::translate(model, glm::vec3(0.0f, 30.0f, 0.0f));
-    model = glm::scale(model, glm::vec3(55.0f, 55.0f, 55.0f));
+    const glm::vec3 skyboxTranslate = Constants::getSkyboxTranslate();
+    model = glm::translate(model, skyboxTranslate);
+    const float skyboxScale = Constants::getSkyboxScale();
+    model = glm::scale(model, glm::vec3(skyboxScale, skyboxScale, skyboxScale));
 
 }
 

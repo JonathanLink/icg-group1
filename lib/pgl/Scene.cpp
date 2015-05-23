@@ -54,7 +54,7 @@ void Scene::renderScene() {
     render();
 }
 
-void Scene::keyCallback(GLFWwindow* /*window*/, int key, int /*scancode*/, int action, int /*mode*/) {
+void Scene::keyCallback(GLFWwindow* /*window*/, int key, int scancode, int action, int mode) {
     // camera
     if(action == GLFW_PRESS) {
         keys[key] = true;
@@ -65,7 +65,11 @@ void Scene::keyCallback(GLFWwindow* /*window*/, int key, int /*scancode*/, int a
     if(action == GLFW_PRESS && keys[GLFW_KEY_F]) {
         _fog = !_fog;
     }
+
     // camera mode
+    if(action == GLFW_PRESS && keys[GLFW_KEY_C]) {
+        _cameraMode = (CameraMode)((_cameraMode + 1) % 3);
+    }
     if(action == GLFW_PRESS && keys[GLFW_KEY_1]) {
         _cameraMode = FLY;
     }
@@ -75,6 +79,8 @@ void Scene::keyCallback(GLFWwindow* /*window*/, int key, int /*scancode*/, int a
     if(action == GLFW_PRESS && keys[GLFW_KEY_3]) {
         _cameraMode = BEZIER;
     }
+
+    keyCallback(key, scancode, action, mode);
 }
 
 void Scene::mouseCallback(GLFWwindow* /*window*/, double xpos, double ypos) {

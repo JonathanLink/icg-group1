@@ -2,6 +2,7 @@
 #define SCENE_H
 
 #include <vector>
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -22,6 +23,7 @@ public:
     virtual void init() = 0;
     virtual void render() = 0;
     virtual void cleanUp() = 0;
+    virtual void keyCallback(int key, int scancode, int action, int mode) = 0;
     void renderScene();
     void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode); 
     void mouseCallback(GLFWwindow* window, double xpos, double ypos);
