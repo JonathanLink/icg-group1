@@ -1,7 +1,7 @@
 #ifndef PERLIN_H
 #define PERLIN_H
 
-#include "pgl/RenderObject.h"
+#include "../RenderObject.h"
 
 class Perlin: public RenderObject {
 public:

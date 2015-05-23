@@ -1,9 +1,11 @@
+#include <iostream>
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <iostream>
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include "pgl/Scene.h"
+
+#include "Scene.h"
 
 Scene::Scene(glm::vec3 camera_position, glm::vec3 camera_rotation) : camera(camera_position, camera_rotation) {
     keys.resize(1024, false);

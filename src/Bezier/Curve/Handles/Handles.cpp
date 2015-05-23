@@ -1,6 +1,6 @@
 
 
-#include "pgl/Bezier/Curve/Handles/Handles.h"
+#include "Handles.h"
 
 Handles::Handles() {
     // Do nothing

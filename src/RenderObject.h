@@ -1,7 +1,7 @@
 #ifndef RENDER_OBJECT_H
 #define RENDER_OBJECT_H
 
-#include "pgl/external/stb_image.h"
+#include "../libs/stb_image.h"
 #include "Scene.h"
 
 class RenderObject {

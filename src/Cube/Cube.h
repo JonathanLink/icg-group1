@@ -1,7 +1,7 @@
 #ifndef CUBE_H
 #define CUBE_H
 
-#include "pgl/RenderObject.h"
+#include "../RenderObject.h"
 
 class Cube: public RenderObject {
 public:

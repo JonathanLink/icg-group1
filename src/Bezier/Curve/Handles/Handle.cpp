@@ -3,7 +3,7 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-#include "pgl/Bezier/Curve/Handles/Handle.h"
+#include "Handle.h"
 
 Handle::Handle() {
     // Do nothing

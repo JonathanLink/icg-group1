@@ -1,4 +1,4 @@
-#include "pgl/Window.h"
+#include "Window.h"
 #include "MyWorld.h"
 
 int main() {

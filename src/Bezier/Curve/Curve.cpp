@@ -3,7 +3,7 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-#include "pgl/Bezier/Curve/Curve.h"
+#include "Curve.h"
 
 Curve::Curve() {
     // Do nothing

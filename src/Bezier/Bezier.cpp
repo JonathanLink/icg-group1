@@ -5,14 +5,12 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/ext.hpp"
 
-#include "pgl/Bezier/Hull.h"
-#include "pgl/Bezier/Bezier.h"
+#include "Hull.h"
+#include "Bezier.h"
 
 Bezier::Bezier() {
     // Do nothing
 }
-
-
 
 void Bezier::bezier(Hull &hull, int depth) {
     Hull l;

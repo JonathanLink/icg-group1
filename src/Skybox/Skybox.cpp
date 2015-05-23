@@ -5,8 +5,8 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/ext.hpp"
 
-#include "pgl/Constants.h"
-#include "pgl/Skybox/Skybox.h"
+#include "../Constants.h"
+#include "Skybox.h"
 
 Skybox::Skybox() {
     // Do nothing

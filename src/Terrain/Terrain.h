@@ -1,7 +1,7 @@
 #ifndef TERRAIN_H
 #define TERRAIN_H
 
-#include "pgl/RenderObject.h"
+#include "../RenderObject.h"
 
 class Terrain: public RenderObject {
 public:
