@@ -1,7 +1,7 @@
 #ifndef SKYBOX_H
 #define SKYBOX_H
 
-#include "../RenderObject.h"
+#include "../Scene/RenderObject.h"
 
 class Skybox: public RenderObject {
 public:

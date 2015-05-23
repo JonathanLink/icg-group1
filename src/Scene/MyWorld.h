@@ -2,15 +2,15 @@
 #define MYWORLD_H
 
 #include "Scene.h"
-#include "Skybox/Skybox.h"
-#include "Bezier/Curve/Curve.h"
-#include "Bezier/Curve/Handles/Handles.h"
-#include "Terrain/Terrain.h"
-#include "Perlin/Perlin.h"
-#include "FishEye/FishEye.h"
-#include "Cube/Cube.h"
-#include "Water/Water.h"
-#include "FrameBuffer.h"
+#include "../Skybox/Skybox.h"
+#include "../Bezier/Curve/Curve.h"
+#include "../Bezier/Curve/Handles/Handles.h"
+#include "../Terrain/Terrain.h"
+#include "../Perlin/Perlin.h"
+#include "../FishEye/FishEye.h"
+#include "../Cube/Cube.h"
+#include "../Water/Water.h"
+#include "../FrameBuffer/FrameBuffer.h"
 
 
 class MyWorld: public Scene {

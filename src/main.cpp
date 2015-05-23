@@ -1,5 +1,5 @@
-#include "Window.h"
-#include "MyWorld.h"
+#include "Window/Window.h"
+#include "Scene/MyWorld.h"
 
 int main() {
     Window& window = Window::getInstance();

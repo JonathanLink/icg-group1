@@ -1,7 +1,7 @@
 #ifndef HANDLE_H
 #define HANDLE_H
 
-#include "../../../RenderObject.h"
+#include "../../../Scene/RenderObject.h"
 
 class Handle: public RenderObject {
 public:

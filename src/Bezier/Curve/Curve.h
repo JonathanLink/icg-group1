@@ -1,7 +1,7 @@
 #ifndef CURVE_H
 #define CURVE_H
 
-#include "../../RenderObject.h"
+#include "../../Scene/RenderObject.h"
 
 class Curve: public RenderObject {
 public:

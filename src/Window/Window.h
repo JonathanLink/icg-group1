@@ -1,7 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "Scene.h"
+#include "../Scene/Scene.h"
 
 class Window {
 public:

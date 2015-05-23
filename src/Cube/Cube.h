@@ -1,7 +1,7 @@
 #ifndef CUBE_H
 #define CUBE_H
 
-#include "../RenderObject.h"
+#include "../Scene/RenderObject.h"
 
 class Cube: public RenderObject {
 public:

@@ -5,7 +5,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/ext.hpp"
 
-#include "../Constants.h"
+#include "../Constants/Constants.h"
 
 #include "Terrain.h"
 
