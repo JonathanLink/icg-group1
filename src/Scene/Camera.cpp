@@ -2,12 +2,10 @@
 
 #include <GL/glew.h>
 #include "glm/ext.hpp"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 
 #include "Camera.h"
 
-Camera::Camera(glm::vec3 position, glm::vec3 rotation) {
+Camera::Camera(const glm::vec3& position, const glm::vec3& rotation) {
     _position = position;
     _rotation = rotation;
     _worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -32,7 +30,7 @@ void Camera::updateCameraVectors() {
     _up = glm::normalize(glm::cross(_right, _front));
 }
 
-void Camera::move(glm::vec3 direction, GLfloat deltaTime) {
+void Camera::move(const glm::vec3& direction, GLfloat deltaTime) {
     GLfloat velocity = _movementSpeed * deltaTime;
     _position += direction * velocity;
 }

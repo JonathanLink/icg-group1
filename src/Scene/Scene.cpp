@@ -7,7 +7,7 @@
 
 #include "Scene.h"
 
-Scene::Scene(glm::vec3 camera_position, glm::vec3 camera_rotation) : camera(camera_position, camera_rotation) {
+Scene::Scene(const glm::vec3& camera_position, const glm::vec3& camera_rotation) : camera(camera_position, camera_rotation) {
     keys.resize(1024, false);
     _cameraMode = FLY;
     _fog = true;

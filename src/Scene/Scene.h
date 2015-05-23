@@ -19,7 +19,7 @@ class Scene {
 enum CameraMode { FLY, FPS, BEZIER };
 
 public:
-    Scene(glm::vec3 camera_position, glm::vec3 camera_rotation);
+    Scene(const glm::vec3& camera_position, const glm::vec3& camera_rotation);
     virtual void init() = 0;
     virtual void render() = 0;
     virtual void cleanUp() = 0;
