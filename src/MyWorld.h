@@ -20,6 +20,11 @@ public:
 	void cleanUp() override;
 
 private:
+	void updateFpsCameraPosition() override;
+	float getHeight(unsigned int x, unsigned int y);
+
+	float* _heightMap;
+
 	Perlin _perlin;
 	Skybox _skybox;
 	Terrain _terrain;
@@ -29,8 +34,6 @@ private:
 	Cube _cube;
 	Water _water;
 	FrameBuffer _terrainReflectFB;
-
-
 };
 
 #endif // MYWORLD_H

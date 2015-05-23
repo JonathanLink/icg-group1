@@ -1,8 +1,10 @@
 #include "MyWorld.h"
 #include "glm/gtc/matrix_transform.hpp"
 
-MyWorld::MyWorld() : _terrainReflectFB(800, 600) {
-        
+MyWorld::MyWorld(): Scene(glm::vec3(-0.967917f, 20.54413f, -1.45086f),
+                          glm::vec3(-22.4157f, 36.1665f, 0.0f)),
+                    _terrainReflectFB(800, 600) {
+    // Do nothing
 }
 
 void MyWorld::init() {
@@ -13,11 +15,19 @@ void MyWorld::init() {
     //_fishEye.setScene(this);
 
     // Draw perlin noise in framebuffer we've just created
-    FrameBuffer perlinFrameBuffer = FrameBuffer(512, 512);
+    const unsigned int FRAME_BUFFER_WIDTH = 512;
+    const unsigned int FRAME_BUFFER_HEIGHT = 512;
+    FrameBuffer perlinFrameBuffer = FrameBuffer(FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT);
     GLuint perlinTextureId = perlinFrameBuffer.initTextureId(GL_R32F); 
     perlinFrameBuffer.bind();
         _perlin.render(view, projection);
     perlinFrameBuffer.unbind();
+
+    // Save height map in memory
+    _heightMap = new float[512 * 512];
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, perlinTextureId);
+    glGetTexImage(GL_TEXTURE_2D, 0, GL_RED, GL_FLOAT, _heightMap);
 
     _water.setTexturePerlin(perlinTextureId);
     _terrain.setTexture(perlinTextureId);
@@ -70,4 +80,45 @@ void MyWorld::cleanUp() {
     _terrain.cleanUp();
     _perlin.cleanUp();
     _fishEye.cleanUp();
+}
+
+void MyWorld::updateFpsCameraPosition() {
+    updateFlyCameraPosition();
+    glm::vec3 cameraPosition = camera.getPosition();
+    glm::vec2 pos_2d(cameraPosition.x, cameraPosition.z);
+    std::cout << "2D position: " << pos_2d.x << ", " << pos_2d.y << std::endl;
+    glm::vec2 pos_texture(
+        (pos_2d.x / 35.0 + 1.0) * 0.5,
+        (pos_2d.y / 35.0 + 1.0) * 0.5
+    );
+
+    //std::cout << "Texture position: " << pos_texture.x << ", " << pos_texture.y << std::endl;
+    float normalizedHeight = getHeight(pos_texture.x * 512.0, pos_texture.y * 512.0);
+    //std::cout << "Height: " << normalizedHeight << std::endl;
+    float height = (normalizedHeight + 0.05) * 35.0;
+    if(keys[GLFW_KEY_SPACE] && !_hasJumped) {
+        _hasJumped = true;
+        _jumpStartTime = glfwGetTime();
+        _jumpStartHeight = height;
+    }
+
+    if (_hasJumped) {
+        GLfloat timeSinceJump = glfwGetTime() - _jumpStartTime;
+        if (timeSinceJump <= 4.0) {
+            GLfloat jumpHeight = 9 - pow(3 * timeSinceJump - 3, 2.0) + _jumpStartHeight;
+            camera.setHeight(std::max(jumpHeight, height));
+        } else {
+            _hasJumped = false;
+        }
+    } else {
+        camera.setHeight(height);
+    }
+}
+
+float MyWorld::getHeight(unsigned int x, unsigned int y) {
+    if (x >= 0 && x < 512 && y >= 0 && y < 512) {
+        return _heightMap[x + 512 * y];
+    } else {
+        return 0.0;
+    }
 }
