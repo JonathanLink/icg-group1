@@ -50,7 +50,7 @@ void Bezier::bezier(Hull &hull, int depth) {
 
 void Bezier::addHulls(std::vector<Hull> hulls) {
     clear();
-    for (int i = 0; i < hulls.size(); ++i) {
+    for (unsigned int i = 0; i < hulls.size(); ++i) {
         bezier(hulls[i]);
     }
     computeParameterization();
@@ -59,7 +59,7 @@ void Bezier::addHulls(std::vector<Hull> hulls) {
 
 void Bezier::computeParameterization() {
     double prevDist = 0.0;
-    for (int  i = 1; i < _vertices.size(); ++i) {
+    for (unsigned int  i = 1; i < _vertices.size(); ++i) {
         glm::vec3 vertice = _vertices.at(i);
         glm::vec3 prevPoint = _vertices.at(i - 1);
         double  dist = prevDist + distance(prevPoint, vertice);

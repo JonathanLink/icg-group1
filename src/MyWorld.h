@@ -10,6 +10,7 @@
 #include "FishEye/FishEye.h"
 #include "Cube/Cube.h"
 #include "Water/Water.h"
+#include "pgl/FrameBuffer.h"
 
 
 class MyWorld: public Scene {
@@ -24,11 +25,10 @@ public:
 	void cleanUp() override;
 	void keyCallback(int key, int scancode, int action, int mode) override;
 
-
 private:
 	void updateFpsCameraPosition() override;
-	float getHeight(int x, int y);
 	void buildBezierCurve();
+	float getHeight(unsigned int x, unsigned int y);
 
 	float* _heightMap;
 
@@ -52,8 +52,8 @@ private:
 	glm::vec3 _handle2;
 	glm::vec3 _handle3;
 	glm::vec3 _handle4;
-	
 
+	FrameBuffer _terrainReflectFB;
 };
 
 #endif // MYWORLD_H

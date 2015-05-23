@@ -21,7 +21,6 @@ void Water::init() {
     glGenVertexArrays(1, &_vertexArrayId);
     glGenBuffers(1, &_vertexBufferId);
     glGenBuffers(1, &_elementBufferId);
-
     glBindVertexArray(_vertexArrayId);
         // vertices
         glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
@@ -38,7 +37,7 @@ void Water::init() {
     // Apply a rotation on the model matrix
     //model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     model = glm::scale(model, glm::vec3(35.0f, 35.0f, 35.0f));
-    _waterTime = 0.0;
+    
 }   
 
 
@@ -47,7 +46,7 @@ void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
 
     // Set uniform variables for the vertex and fragment glsl files
     scene->setUniformVariables(pid, model, view, projection); 
-    
+
     // grid size uniform
     GLuint grid_size_id = glGetUniformLocation(pid, "grid_size");
     glm::float1 grid_size = (float)GRID_SIZE;
@@ -55,19 +54,25 @@ void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
 
     // water height uniform
     GLuint water_height_id = glGetUniformLocation(pid, "water_height");
-    _waterTime += 0.3 * scene->getDeltaTime();
-
-    float waterHeight = 0.37 + (fabs(sin(_waterTime)) * 0.01);
-    //float waterHeight = sin(_waterTime * 3.14/180.0); // POUR PASSER EN MODE RECHAUFFEMENT CLIMATQUE - et mettre 1.0 au lieu de 0.3 (ligne 57)
-    //std::cout << _waterTime << " waterHeight: " << waterHeight << " >"<< fabs(sin(_waterTime)) <<std::endl;
+    //Todo constante a FIXER
+    float waterHeight = 0.37;
     glUniform1f(water_height_id, waterHeight);
 
+    //time uniform
+    GLuint time_id = glGetUniformLocation(pid, "time");
+    glm::float1 time_size = scene->getReflectTime();
+    glUniform1f(time_id, time_size);
+
     /* Bind textures */
-    //Perlin Noise
+    //Terrain reflection
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, _textureId);
+    glBindTexture(GL_TEXTURE_2D, _perlinTextureId);
     glUniform1i(glGetUniformLocation(pid, "tex"), 0);
 
+    //Terrain reflection
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, _mirrorTextureId);
+    glUniform1i(glGetUniformLocation(pid, "tex_mirror"), 1);
 
     // Draw
     glEnable(GL_BLEND);
@@ -83,7 +88,8 @@ void Water::cleanUp() {
     glDeleteVertexArrays(1, &_vertexArrayId);
     glDeleteBuffers(1, &_vertexBufferId);
     glDeleteBuffers(1, &_elementBufferId);
-    glDeleteTextures(1, &_textureId);
+    glDeleteTextures(1, &_perlinTextureId);
+    glDeleteTextures(1, &_mirrorTextureId);
     glDeleteProgram(pid);
 }
 
@@ -131,9 +137,11 @@ void Water::constructGrid() {
     }
 }
 
-void Water::setTexture(GLuint textureId) {
-    _textureId = textureId;
+void Water::setTexturePerlin(GLuint textureId) {
+    _perlinTextureId = textureId;
 }
 
-
+void Water::setTextureMirror(GLuint textureId) {
+    _mirrorTextureId = textureId;
+}
 
