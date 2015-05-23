@@ -1,8 +1,5 @@
+#include "pgl/Constants.h"
 #include "MyWorld.h"
-
-#include "pgl/FrameBuffer.h"
-#include "glm/ext.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 
 MyWorld::MyWorld(): Scene(glm::vec3(-0.967917f, 20.54413f, -1.45086f),
                           glm::vec3(-22.4157f, 36.1665f, 0.0f)),
@@ -187,16 +184,17 @@ void MyWorld::updateFpsCameraPosition() {
     updateFlyCameraPosition();
     glm::vec3 cameraPosition = camera.getPosition();
     glm::vec2 pos_2d(cameraPosition.x, cameraPosition.z);
-    std::cout << "2D position: " << pos_2d.x << ", " << pos_2d.y << std::endl;
+    //std::cout << "2D position: " << pos_2d.x << ", " << pos_2d.y << std::endl;
+    const float terrainScale = Constants::getTerrainScale();
     glm::vec2 pos_texture(
-        (pos_2d.x / 35.0 + 1.0) * 0.5,
-        (pos_2d.y / 35.0 + 1.0) * 0.5
+        (pos_2d.x / terrainScale + 1.0) * 0.5,
+        (pos_2d.y / terrainScale + 1.0) * 0.5
     );
 
     //std::cout << "Texture position: " << pos_texture.x << ", " << pos_texture.y << std::endl;
-    float normalizedHeight = getHeight(pos_texture.x * 512.0, pos_texture.y * 512.0);
+    float normalizedHeight = getHeight(pos_texture.x * FRAME_BUFFER_PERLIN_WIDTH, pos_texture.y * FRAME_BUFFER_PERLIN_HEIGHT);
     //std::cout << "Height: " << normalizedHeight << std::endl;
-    float height = (normalizedHeight + 0.05) * 35.0;
+    float height = (normalizedHeight + 0.05) * terrainScale;
     if(keys[GLFW_KEY_SPACE] && !_hasJumped) {
         _hasJumped = true;
         _jumpStartTime = glfwGetTime();

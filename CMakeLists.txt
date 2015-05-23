@@ -15,7 +15,7 @@ file(GLOB_RECURSE LIB_SOURCES "${LIB_PATH}/*.cpp")
 file(GLOB_RECURSE SOURCES "${SRC_PATH}/*.cpp")
 file(GLOB_RECURSE PRIVATE_HEADERS "${SRC_PATH}/*.h")
 file(GLOB_RECURSE SHADERS "${SRC_PATH}/*.glsl")
-add_executable(${PROJECT_NAME} ${LIB_SOURCES} ${SOURCES} ${HEADERS} ${PRIVATE_HEADERS} ${SHADERS})
+add_executable(${PROJECT_NAME} ${LIB_SOURCES} ${SOURCES} ${HEADERS} ${PRIVATE_HEADERS} ${SHADERS} include/pgl/Constants.h)
 
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
