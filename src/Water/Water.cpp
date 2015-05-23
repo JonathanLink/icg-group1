@@ -37,10 +37,9 @@ void Water::init() {
 
     // Apply a rotation on the model matrix
     //model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    const float terrainScale = Constants::getTerrainScale();
-    model = glm::scale(model, glm::vec3(terrainScale,
-                                        terrainScale,
-                                        terrainScale));
+    model = glm::scale(model, glm::vec3(Constants::TERRAIN_SCALE,
+                                        Constants::TERRAIN_SCALE,
+                                        Constants::TERRAIN_SCALE));
     
 }   
 

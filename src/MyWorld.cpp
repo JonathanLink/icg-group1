@@ -185,16 +185,15 @@ void MyWorld::updateFpsCameraPosition() {
     glm::vec3 cameraPosition = camera.getPosition();
     glm::vec2 pos_2d(cameraPosition.x, cameraPosition.z);
     //std::cout << "2D position: " << pos_2d.x << ", " << pos_2d.y << std::endl;
-    const float terrainScale = Constants::getTerrainScale();
     glm::vec2 pos_texture(
-        (pos_2d.x / terrainScale + 1.0) * 0.5,
-        (pos_2d.y / terrainScale + 1.0) * 0.5
+        (pos_2d.x / Constants::TERRAIN_SCALE + 1.0) * 0.5,
+        (pos_2d.y / Constants::TERRAIN_SCALE + 1.0) * 0.5
     );
 
     //std::cout << "Texture position: " << pos_texture.x << ", " << pos_texture.y << std::endl;
     float normalizedHeight = getHeight(pos_texture.x * FRAME_BUFFER_PERLIN_WIDTH, pos_texture.y * FRAME_BUFFER_PERLIN_HEIGHT);
     //std::cout << "Height: " << normalizedHeight << std::endl;
-    float height = (normalizedHeight + 0.05) * terrainScale;
+    float height = (normalizedHeight + 0.05) * Constants::TERRAIN_SCALE;
     if(keys[GLFW_KEY_SPACE] && !_hasJumped) {
         _hasJumped = true;
         _jumpStartTime = glfwGetTime();
