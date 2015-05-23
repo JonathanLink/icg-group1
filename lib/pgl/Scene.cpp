@@ -70,15 +70,6 @@ void Scene::keyCallback(GLFWwindow* /*window*/, int key, int scancode, int actio
     if(action == GLFW_PRESS && keys[GLFW_KEY_C]) {
         _cameraMode = (CameraMode)((_cameraMode + 1) % 3);
     }
-    if(action == GLFW_PRESS && keys[GLFW_KEY_1]) {
-        _cameraMode = FLY;
-    }
-    if(action == GLFW_PRESS && keys[GLFW_KEY_2]) {
-        _cameraMode = FPS;
-    }
-    if(action == GLFW_PRESS && keys[GLFW_KEY_3]) {
-        _cameraMode = BEZIER;
-    }
 
     keyCallback(key, scancode, action, mode);
 }
