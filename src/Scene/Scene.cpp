@@ -39,6 +39,7 @@ void Scene::renderScene() {
             view = camera.getViewMatrix();
             break;
         }
+
         case BEZIER: {
             view = _cameraBezier.getViewMatrix();
             break;

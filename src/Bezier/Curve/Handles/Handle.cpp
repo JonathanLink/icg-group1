@@ -11,7 +11,7 @@ Handle::Handle() {
 
 void Handle::init() {
     std::cout << "Init Handle" << std::endl;
-    loadShaders( "../lib/pgl/Bezier/Curve/Handles/handle_vshader.glsl", "../lib/pgl/Bezier/Curve/Handles/handle_fshader.glsl" );
+    loadShaders( "../src/Bezier/Curve/Handles/handle_vshader.glsl", "../src/Bezier/Curve/Handles/handle_fshader.glsl" );
 
     glGenVertexArrays(1, &_vertexArrayId);
 

@@ -16,7 +16,7 @@ Skybox::Skybox() {
 void Skybox::init() {
     std::cout << "Init Skybox" << std::endl;
 
-    loadShaders( "../lib/pgl/Skybox/skybox_vshader.glsl", "../lib/pgl/Skybox/skybox_fshader.glsl" );
+    loadShaders( "../src/Skybox/skybox_vshader.glsl", "../src/Skybox/skybox_fshader.glsl" );
 
     GLfloat vertices[] = {
         // Positions          
