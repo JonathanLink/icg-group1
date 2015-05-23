@@ -29,7 +29,9 @@ void Scene::renderScene() {
     switch (_cameraMode) {
         case FLY: {
             updateFlyCameraPosition();
-            updateInertia();
+            if (_isInertiaEnabled) {
+                updateInertia();
+            }
             view = camera.getViewMatrix();
             break;
         }

@@ -56,6 +56,7 @@ protected:
 protected:
     void updateFlyCameraPosition();
     virtual void updateFpsCameraPosition() = 0;
+    bool _isInertiaEnabled = true;
     void updateInertia();
     bool _isInerting = false;
     GLfloat _initialInertionTime = 0.0;
