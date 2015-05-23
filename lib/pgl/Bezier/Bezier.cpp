@@ -44,12 +44,6 @@ void Bezier::bezier(Hull &hull, int depth) {
         _vertices.push_back(l.p1());
     }
 
-   /* if (hull.p4().x > 100) {
-        std::cout << "WTF 2: " << hull.p4().x << " depth=" << depth << std::endl;
-    } else if (depth == 5) {
-        std::cout << ">: " << hull.p4().x << " depth=" << depth << std::endl;
-    }*/
-
     _vertices.push_back(hull.p4());
 }
 
@@ -57,9 +51,6 @@ void Bezier::bezier(Hull &hull, int depth) {
 void Bezier::addHulls(std::vector<Hull> hulls) {
     clear();
     for (int i = 0; i < hulls.size(); ++i) {
-        
-        std::cout << "hulls.size()" << hulls.size() << std::endl;
-    
         bezier(hulls[i]);
     }
     computeParameterization();

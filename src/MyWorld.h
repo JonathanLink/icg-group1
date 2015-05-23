@@ -40,6 +40,8 @@ private:
 	Water _water;
 
 	// Bezier 
+	glm::vec3 _delta;
+	float _step;
 	bool _bezierEditModeEnabled;
 	CameraBezier _cameraBezier;
 	Curve _bezierCurve;

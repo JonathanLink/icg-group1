@@ -32,7 +32,7 @@ glm::mat4 CameraBezier::getViewMatrix() {
     glm::vec3 cameraPosition = _cameraPositionCurve.samplePointAtTime(t);
     glm::vec3 cameraLook = _cameraLookCurve.samplePointAtTime(t);
     glm::vec3 cameraUp(0.0f, 1.0f, 0.0f);
-    std::cout << "t=" << t << " pos: "<< glm::to_string(cameraLook) << std::endl;
+    //std::cout << "t=" << t << " pos: "<< glm::to_string(cameraLook) << std::endl;
     return glm::lookAt(cameraPosition, cameraLook, cameraUp);
 }
 

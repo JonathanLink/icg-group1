@@ -30,6 +30,7 @@ void MyWorld::init() {
     _terrain.setTexture(perlinTextureId);
 
     // Bezier init
+    _step = 0.5;
     _bezierEditModeEnabled = false;
     _bezierCurve.setScene(this);
     //_bezierCurve2.setScene(this);
@@ -50,12 +51,15 @@ void MyWorld::buildBezierCurve() {
     std::vector<Hull> cameraHulls;
     cameraHulls.clear();
     cameraHulls.push_back(Hull(_handle1, _handle2, _handle3, _handle4));
+    //cameraHulls.push_back(Hull(glm::vec3(34.299995, 76.900009, -0.999998), glm::vec3(14.699999, 81.800011, -1.000000), glm::vec3(-16.400002, 80.399986, -5.100000), glm::vec3(-28.700003, 84.499985, -1.000000)));
     //cameraHulls.push_back(Hull(glm::vec3(0,23,-1), glm::vec3(0,20,-2), glm::vec3(0,20,-2), glm::vec3(0,20,-2)));
     //cameraHulls.push_back(Hull(glm::vec3(12,42,-1), glm::vec3(2,23,-5), glm::vec3(3,10,-3), glm::vec3(3,23,-2)));
 
     std::vector<Hull> lookHulls;
     lookHulls.clear();
-    lookHulls.push_back(Hull(glm::vec3(1,22,-1), glm::vec3(1,21,-2), glm::vec3(1,20,-2), glm::vec3(1,20,2)));
+    //lookHulls.push_back(Hull(glm::vec3(0,0,0), glm::vec3(0,0,0), glm::vec3(0,0,0), glm::vec3(0,0,0)));
+    lookHulls.push_back(Hull(glm::vec3(0, 80, 0), glm::vec3(0, 80, 0), glm::vec3(0, 80, 0), glm::vec3(0, 80, 0)));
+    
 
 
     _cameraBezier.setHulls(cameraHulls, lookHulls);
@@ -107,14 +111,12 @@ void MyWorld::cleanUp() {
 
 }
 
-glm::vec3 delta;
 void MyWorld::keyCallback(int key, int /*scancode*/, int action, int /*mode*/) {
     
     // bezier edit mode logic
-    float step = 0.5;
-    glm::vec3 deltaX(step,0,0);
-    glm::vec3 deltaY(0,step,0);
-    glm::vec3 deltaZ(0,0,step);
+    glm::vec3 deltaX(_step,0,0);
+    glm::vec3 deltaY(0,_step,0);
+    glm::vec3 deltaZ(0,0,_step);
 
     if(action == GLFW_PRESS && keys[GLFW_KEY_B]) {
         _bezierEditModeEnabled = ! _bezierEditModeEnabled;
@@ -123,40 +125,54 @@ void MyWorld::keyCallback(int key, int /*scancode*/, int action, int /*mode*/) {
     
     if (_bezierEditModeEnabled) {
 
-        if(action == GLFW_PRESS && keys[GLFW_KEY_U]) {
+        if (action == GLFW_PRESS && keys[GLFW_KEY_U]) {
              std::cout << "HANDLE 1" << std::endl;
             _selectedHandle = &_handle1;
-        } else if(action == GLFW_PRESS && keys[GLFW_KEY_I]) {
+        } else if (action == GLFW_PRESS && keys[GLFW_KEY_I]) {
              std::cout << "HANDLE 2" << std::endl;
             _selectedHandle = &_handle2;
-        } else if(action == GLFW_PRESS && keys[GLFW_KEY_O]) {
+        } else if (action == GLFW_PRESS && keys[GLFW_KEY_O]) {
             std::cout << "HANDLE 3" << std::endl;
             _selectedHandle = &_handle3;
-        } else if(action == GLFW_PRESS && keys[GLFW_KEY_P]) {
+        } else if (action == GLFW_PRESS && keys[GLFW_KEY_P]) {
             std::cout << "HANDLE 4" << std::endl;
             _selectedHandle = &_handle4;
         }
 
 
-        if(action == GLFW_PRESS && keys[GLFW_KEY_X]) {
-            delta = deltaX;
+        if (action == GLFW_PRESS && keys[GLFW_KEY_X]) {
+            _delta = deltaX;
             std::cout << "BEZIER EDIT SELECTED AXE = X " << std::endl;
         } else if (action == GLFW_PRESS && keys[GLFW_KEY_Z]) {
-            delta = deltaY;
+            _delta = deltaY;
             std::cout << "BEZIER EDIT SELECTED AXE = Y " << std::endl;
-        } else if(action == GLFW_PRESS && keys[GLFW_KEY_Y]) {
-            delta = deltaZ;
+        } else if (action == GLFW_PRESS && keys[GLFW_KEY_Y]) {
+            _delta = deltaZ;
             std::cout << "BEZIER EDIT SELECTED AXE = Z " << std::endl;
         }
 
 
-        if(action == GLFW_PRESS && keys[GLFW_KEY_UP]) {
-            *_selectedHandle = *_selectedHandle - delta;
+        if (action == GLFW_PRESS  && keys[GLFW_KEY_UP]) {
+            *_selectedHandle = *_selectedHandle - _delta;
             buildBezierCurve();
-        } else if(action == GLFW_PRESS && keys[GLFW_KEY_DOWN]) {
-            *_selectedHandle = *_selectedHandle + delta;
+        } else if (action == GLFW_PRESS  && keys[GLFW_KEY_DOWN]) {
+            *_selectedHandle = *_selectedHandle + _delta;
             buildBezierCurve();
         }
+
+        if (action == GLFW_PRESS  && keys[GLFW_KEY_LEFT]) {
+            _step += 0.2;
+            std::cout << "BEZIER EDIT step = " << _step << std::endl;
+        } else if (action == GLFW_PRESS  && keys[GLFW_KEY_RIGHT]) {
+            _step -= 0.2;
+            if (_step < 0) _step = 0;
+            std::cout << "BEZIER EDIT step = " << _step << std::endl;
+        }
+
+        if (action == GLFW_PRESS && keys[GLFW_KEY_ENTER]) {
+            std::cout << glm::to_string(_handle1) << ", " << glm::to_string(_handle2) << ", " << glm::to_string(_handle3) << ", " << glm::to_string(_handle4) << std::endl;
+        }
+
     }
 
 }
