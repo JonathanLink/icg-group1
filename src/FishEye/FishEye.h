@@ -1,7 +1,7 @@
 #ifndef FISH_EYE_H
 #define FISH_EYE_H
 
-#include "pgl/RenderObject.h"
+#include "../Scene/RenderObject.h"
 
 class FishEye: public RenderObject {
 public:

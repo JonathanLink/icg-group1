@@ -1,7 +1,7 @@
 #ifndef WATER_H
 #define WATER_H
 
-#include "pgl/RenderObject.h"
+#include "../Scene/RenderObject.h"
 
 class Water: public RenderObject {
 public:

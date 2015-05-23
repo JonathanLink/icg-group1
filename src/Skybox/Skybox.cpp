@@ -5,8 +5,8 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/ext.hpp"
 
-#include "pgl/Constants.h"
-#include "pgl/Skybox/Skybox.h"
+#include "../Constants/Constants.h"
+#include "Skybox.h"
 
 Skybox::Skybox() {
     // Do nothing
@@ -16,7 +16,7 @@ Skybox::Skybox() {
 void Skybox::init() {
     std::cout << "Init Skybox" << std::endl;
 
-    loadShaders( "../lib/pgl/Skybox/skybox_vshader.glsl", "../lib/pgl/Skybox/skybox_fshader.glsl" );
+    loadShaders( "../src/Skybox/skybox_vshader.glsl", "../src/Skybox/skybox_fshader.glsl" );
 
     GLfloat vertices[] = {
         // Positions          

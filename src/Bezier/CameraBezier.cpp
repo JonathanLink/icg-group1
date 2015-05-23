@@ -1,8 +1,10 @@
 #include <iostream>
+
 #include <GLFW/glfw3.h>
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/ext.hpp"
-#include "pgl/Bezier/CameraBezier.h"
+
+#include "CameraBezier.h"
 
 
 CameraBezier::CameraBezier() {

@@ -1,9 +1,11 @@
+#include <iostream>
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <iostream>
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include "pgl/Scene.h"
+
+#include "Scene.h"
 
 Scene::Scene(glm::vec3 camera_position, glm::vec3 camera_rotation) : camera(camera_position, camera_rotation) {
     keys.resize(1024, false);
@@ -37,13 +39,14 @@ void Scene::renderScene() {
             view = camera.getViewMatrix();
             break;
         }
+
         case BEZIER: {
             view = _cameraBezier.getViewMatrix();
             break;
         }
 
         default: {
-
+            // Do nothing
         }
     }
 
@@ -61,6 +64,7 @@ void Scene::keyCallback(GLFWwindow* /*window*/, int key, int scancode, int actio
     } else if (action == GLFW_RELEASE) {
         keys[key] = false;  
     }
+
     // fog
     if(action == GLFW_PRESS && keys[GLFW_KEY_F]) {
         _fog = !_fog;

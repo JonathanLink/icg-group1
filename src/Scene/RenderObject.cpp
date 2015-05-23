@@ -1,6 +1,6 @@
-#include "pgl/RenderObject.h"
+#include "RenderObject.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include "pgl/external/stb_image.h"
+#include "../libs/stb_image.h"
 #include <string>
 #include <fstream>
 #include <sstream>

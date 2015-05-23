@@ -12,7 +12,7 @@
 #include "glm/ext.hpp"
 
 #include "Camera.h"
-#include "Bezier/CameraBezier.h"
+#include "../Bezier/CameraBezier.h"
 
 class Scene {
 

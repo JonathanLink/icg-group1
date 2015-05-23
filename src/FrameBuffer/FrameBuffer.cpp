@@ -1,7 +1,7 @@
 #include <iostream>
 #include <GL/glew.h>
 
-#include "pgl/FrameBuffer.h"
+#include "FrameBuffer.h"
 
 FrameBuffer::FrameBuffer(GLuint width, GLuint height): _width(width), _height(height) {
     // Do nothing

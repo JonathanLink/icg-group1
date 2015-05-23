@@ -3,7 +3,7 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-#include "pgl/Bezier/Curve/Curve.h"
+#include "Curve.h"
 
 Curve::Curve() {
     // Do nothing
@@ -11,7 +11,7 @@ Curve::Curve() {
 
 void Curve::init() {
     std::cout << "Init Curve" << std::endl;
-    loadShaders( "../lib/pgl/Bezier/Curve/curve_vshader.glsl", "../lib/pgl/Bezier/Curve/curve_fshader.glsl" );
+    loadShaders( "../src/Bezier/Curve/curve_vshader.glsl", "../src/Bezier/Curve/curve_fshader.glsl" );
 
     glGenVertexArrays(1, &_vertexArrayId);
     glGenBuffers(1, &_vertexBufferId);

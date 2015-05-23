@@ -1,5 +1,5 @@
 #include <iostream>
-#include "pgl/Window.h"
+#include "Window.h"
 
 Window::Window(GLuint width, GLuint height, const char* title) {
     _windowWidth = width;
