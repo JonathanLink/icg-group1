@@ -12,6 +12,7 @@ void MyWorld::init() {
     _perlin.setScene(this);
     _terrain.setScene(this);
     _water.setScene(this);
+    _particles.setScene(this);
     //_fishEye.setScene(this);
 
     // Draw perlin noise in framebuffer we've just created
@@ -69,7 +70,6 @@ void MyWorld::buildBezierCurve() {
 
 
 void MyWorld::render() {
-   
     //FrameBuffer fishEyeFrameBuffer = FrameBuffer(800, 600);
     //GLuint fishEyeTextureId = fishEyeFrameBuffer.initTextureId(GL_RGB);
     //fishEyeFrameBuffer.bind();
@@ -95,6 +95,8 @@ void MyWorld::render() {
     _terrain.render(view, projection);
     _water.render(view, projection);
 
+    _particles.render(view, projection);
+
     _bezierCurve.render(view, projection);
     _bezierHandles.render(view, projection);
     //_bezierCurve2.render(view, projection);
@@ -107,6 +109,7 @@ void MyWorld::cleanUp() {
     _terrain.cleanUp();
     _perlin.cleanUp();
     _fishEye.cleanUp();
+    _particles.cleanUp();
     _bezierCurve.cleanUp();
     _bezierCurve2.cleanUp();
     _bezierHandles.cleanUp();
