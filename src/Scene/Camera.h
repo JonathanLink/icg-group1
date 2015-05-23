@@ -17,9 +17,9 @@ public:
     const GLfloat SENSITIVTY = 0.25f;
     const GLfloat ZOOM = 0.0f;
 
-    Camera(glm::vec3 position, glm::vec3 rotation);
+    Camera(const glm::vec3& position, const glm::vec3& rotation);
     glm::mat4 getViewMatrix();
-    void move(glm::vec3 direction, GLfloat deltaTime);
+    void move(const glm::vec3& direction, GLfloat deltaTime);
     void translate(CameraMovement direction, GLfloat deltaTime);
     void rotate(GLfloat xOffset, GLfloat yOffset);
     void zoom(GLfloat yOffset);

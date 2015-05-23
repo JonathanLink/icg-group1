@@ -19,8 +19,6 @@ private:
     Bezier _cameraLookCurve;
     std::vector<Hull> _cameraHulls;
     std::vector<Hull> _lookHulls;
-
-
 };
 
 #endif

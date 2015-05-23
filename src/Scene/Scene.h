@@ -19,7 +19,7 @@ class Scene {
 enum CameraMode { FLY, FPS, BEZIER };
 
 public:
-    Scene(glm::vec3 camera_position, glm::vec3 camera_rotation);
+    Scene(const glm::vec3& camera_position, const glm::vec3& camera_rotation);
     virtual void init() = 0;
     virtual void render() = 0;
     virtual void cleanUp() = 0;
@@ -56,6 +56,7 @@ protected:
 protected:
     void updateFlyCameraPosition();
     virtual void updateFpsCameraPosition() = 0;
+    bool _isInertiaEnabled = true;
     void updateInertia();
     bool _isInerting = false;
     GLfloat _initialInertionTime = 0.0;

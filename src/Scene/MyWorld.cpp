@@ -120,6 +120,11 @@ void MyWorld::keyCallback(int key, int /*scancode*/, int action, int /*mode*/) {
 
     if(action == GLFW_PRESS && keys[GLFW_KEY_B]) {
         _bezierEditModeEnabled = ! _bezierEditModeEnabled;
+
+        _isInertiaEnabled = ! _isInertiaEnabled;
+        // Reset inertia
+        _isInerting = false;
+        _lastDirection = glm::vec3(0.0, 0.0, 0.0);
         std::cout << "BEZIER EDIT MODE = " << _bezierEditModeEnabled << std::endl;
     }
     
