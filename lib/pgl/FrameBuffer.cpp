@@ -3,7 +3,6 @@
 
 #include "pgl/FrameBuffer.h"
 
-
 FrameBuffer::FrameBuffer(GLuint width, GLuint height): _width(width), _height(height) {
     // Do nothing
 }
@@ -14,22 +13,21 @@ GLuint FrameBuffer::initTextureId(GLint internalFormat) {
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBufferObject);
 
     // Create a color attchment texture
-    GLuint textureColorbuffer = generateAttachmentTexture(false, false, internalFormat);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+    _textureColorbuffer = generateAttachmentTexture(false, false, internalFormat);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _textureColorbuffer, 0);
 
     // Create a renderbuffer object for depth and stencil attachment
-    GLuint renderBufferObject;
-    glGenRenderbuffers(1, &renderBufferObject);
-    glBindRenderbuffer(GL_RENDERBUFFER, renderBufferObject);
+    glGenRenderbuffers(1, &_renderBufferObject);
+    glBindRenderbuffer(GL_RENDERBUFFER, _renderBufferObject);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, _width, _height);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH24_STENCIL8, _width, _height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _renderBufferObject);
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete :-/" << std::endl;
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
-    return textureColorbuffer;
+    return _textureColorbuffer;
 }
 
 
@@ -47,7 +45,7 @@ void FrameBuffer::unbind() {
 GLuint FrameBuffer::generateAttachmentTexture(GLboolean depth, GLboolean stencil, GLint internalFormat) {
     GLenum attachmentType;
     if (!depth && !stencil) {
-        attachmentType = GL_RGB;
+        attachmentType = GL_RGBA;
     } else if (depth && !stencil) {
         attachmentType = GL_DEPTH_COMPONENT;
     } else if (!depth && stencil) {
@@ -74,3 +72,8 @@ GLuint FrameBuffer::generateAttachmentTexture(GLboolean depth, GLboolean stencil
 }
 
 
+void FrameBuffer::cleanUp() {
+    glDeleteTextures(1, &_textureColorbuffer);
+    glDeleteRenderbuffers(1, &_renderBufferObject);
+    glDeleteFramebuffers(1, &_frameBufferObject);
+}

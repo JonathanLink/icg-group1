@@ -205,3 +205,11 @@ bool Scene::fogEnabled() {
 void Scene::setCameraBezier(CameraBezier cameraBezier) {
     _cameraBezier = cameraBezier;
 }
+
+glm::float1 Scene :: getReflectTime() {
+    return reflectTime;
+}
+
+void Scene :: setReflectTime(glm::float1 t) {
+    reflectTime = t;
+}

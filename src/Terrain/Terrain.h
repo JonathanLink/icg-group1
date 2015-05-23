@@ -10,6 +10,7 @@ public:
     void render(const glm::mat4 &view, const glm::mat4 &projection) override;
     void cleanUp() override;
     void setTexture(GLuint textureId);
+    void setReflection(bool reflection);
 
 private:
     GLuint _vertexArrayId;
@@ -35,6 +36,8 @@ private:
         double y;
         double indice;
     };
+
+    bool reflection;
 
     void constructGrid();
 };

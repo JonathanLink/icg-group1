@@ -1,8 +1,9 @@
 #include "MyWorld.h"
-#include "pgl/FrameBuffer.h"
+#include "glm/gtc/matrix_transform.hpp"
 
 MyWorld::MyWorld(): Scene(glm::vec3(-0.967917f, 20.54413f, -1.45086f),
-                          glm::vec3(-22.4157f, 36.1665f, 0.0f)) {
+                          glm::vec3(-22.4157f, 36.1665f, 0.0f)),
+                    _terrainReflectFB(800, 600) {
     // Do nothing
 }
 
@@ -13,7 +14,6 @@ void MyWorld::init() {
     _water.setScene(this);
     //_fishEye.setScene(this);
 
-
     // Draw perlin noise in framebuffer we've just created
     const unsigned int FRAME_BUFFER_WIDTH = 512;
     const unsigned int FRAME_BUFFER_HEIGHT = 512;
@@ -23,11 +23,13 @@ void MyWorld::init() {
         _perlin.render(view, projection);
     perlinFrameBuffer.unbind();
 
+    // Save height map in memory
     _heightMap = new float[512 * 512];
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, perlinTextureId);
     glGetTexImage(GL_TEXTURE_2D, 0, GL_RED, GL_FLOAT, _heightMap);
 
+    _water.setTexturePerlin(perlinTextureId);
     _terrain.setTexture(perlinTextureId);
 
     // set camera bezier
@@ -40,11 +42,11 @@ void MyWorld::init() {
     CameraBezier cameraBezier;
     cameraBezier.setHulls(cameraHulls, lookHulls);
     setCameraBezier(cameraBezier);
-
 }
 
+
 void MyWorld::render() {
-    
+   
     //FrameBuffer fishEyeFrameBuffer = FrameBuffer(800, 600);
     //GLuint fishEyeTextureId = fishEyeFrameBuffer.initTextureId(GL_RGB);
     //fishEyeFrameBuffer.bind();
@@ -55,11 +57,22 @@ void MyWorld::render() {
     //_fishEye.setTexture(fishEyeTextureId);
     //_fishEye.render(view, projection);
 
-    //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe
+    //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe 
+    
+    //Draw terrain in framebuffer for water reflection
+    GLuint terrainReflectTextureId = _terrainReflectFB.initTextureId(GL_RGB);
+    _terrainReflectFB.bind();
+        _terrain.setReflection(true);
+        _terrain.render(view, projection);
+        _terrain.setReflection(false);
+    _terrainReflectFB.unbind();
+    _water.setTextureMirror(terrainReflectTextureId);
 
     _skybox.render(view, projection);
     _terrain.render(view, projection);
     _water.render(view, projection);
+
+    _terrainReflectFB.cleanUp();
 }
 
 void MyWorld::cleanUp() {

@@ -38,7 +38,6 @@ void Terrain::init() {
     //model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     model = glm::scale(model, glm::vec3(35, 35, 35));
 
-
     // Bind Grass Texture
     _grassTexId = gen2DTexture("../tex/grass.jpg", GL_RGB);
      // Bind Snow Texture
@@ -47,20 +46,47 @@ void Terrain::init() {
     _sandTexId = gen2DTexture("../tex/sand.jpg", GL_RGB);
      // Bind Rock Texture
     _rockTexId = gen2DTexture("../tex/rock.jpg", GL_RGB);
+
+    reflection = false;
 }   
 
 
 void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     useShaders();
 
+    float h = (model * glm::vec4(0, 0.37, 0, 1)).y;
+    glm::mat4 mirror = glm::translate(glm::mat4(1.0f), glm::vec3(0, 2*h, 0)) * glm::scale(glm::vec3(1, -1, 1));
+   
     // Set uniform variables for the vertex and fragment glsl files
-    scene->setUniformVariables(pid, model, view, projection);
+    if (!reflection) {
+        scene->setUniformVariables(pid, model, view, projection);
+    } else {
+        scene->setUniformVariables(pid, mirror * model,  view , projection);
+    }
 
     // grid size uniform
     GLuint grid_size_id = glGetUniformLocation(pid, "grid_size");
     glm::float1 grid_size = (float)GRID_SIZE;
     glUniform1f(grid_size_id, grid_size);
 
+    // refletion boolean uniform
+    GLuint reflection_id = glGetUniformLocation(pid, "isReflected");
+    int reflection_value = (reflection) ? 0 : 1;
+    glUniform1i(reflection_id, reflection_value);
+
+    // water height uniform
+    GLuint water_height_id = glGetUniformLocation(pid, "water_height");
+    //Todo constante a FIXER
+    float waterHeight = 0.37;; 
+    glUniform1f(water_height_id, waterHeight);
+
+    //time uniform
+    GLuint time_id = glGetUniformLocation(pid, "time");
+    glm::float1 time_size = glfwGetTime();
+    if (reflection) {
+        scene->setReflectTime(time_size);
+    }
+    glUniform1f(time_id, time_size);
 
     /* Bind textures */
     //Perlin Noise
@@ -83,12 +109,11 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glActiveTexture(GL_TEXTURE4);
     glBindTexture(GL_TEXTURE_2D, _rockTexId);
     glUniform1i(glGetUniformLocation(pid, "rockTex"), 4);
-
-
-    // Draw
+ 
     glBindVertexArray(_vertexArrayId);
     glDrawElements(GL_TRIANGLE_STRIP, _indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+ 
 }
 
 void Terrain::cleanUp() {
@@ -97,6 +122,10 @@ void Terrain::cleanUp() {
     glDeleteBuffers(1, &_vertexBufferId);
     glDeleteBuffers(1, &_elementBufferId);
     glDeleteTextures(1, &_textureId);
+    glDeleteTextures(1, &_snowTexId);
+    glDeleteTextures(1, &_sandTexId);
+    glDeleteTextures(1, &_grassTexId);
+    glDeleteTextures(1, &_rockTexId);
     glDeleteProgram(pid);
 }
 
@@ -148,5 +177,7 @@ void Terrain::setTexture(GLuint textureId) {
     _textureId = textureId;
 }
 
-
+void Terrain::setReflection(bool reflection) {
+    this->reflection = reflection;
+}
 
