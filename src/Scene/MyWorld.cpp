@@ -110,12 +110,9 @@ void MyWorld::cleanUp() {
     _bezierCurve.cleanUp();
     _bezierCurve2.cleanUp();
     _bezierHandles.cleanUp();
-
-
 }
 
 void MyWorld::keyCallback(int key, int /*scancode*/, int action, int /*mode*/) {
-    
     // bezier edit mode logic
     glm::vec3 deltaX(_step,0,0);
     glm::vec3 deltaY(0,_step,0);
@@ -127,7 +124,6 @@ void MyWorld::keyCallback(int key, int /*scancode*/, int action, int /*mode*/) {
     }
     
     if (_bezierEditModeEnabled) {
-
         if (action == GLFW_PRESS && keys[GLFW_KEY_U]) {
              std::cout << "HANDLE 1" << std::endl;
             _selectedHandle = &_handle1;
@@ -175,9 +171,7 @@ void MyWorld::keyCallback(int key, int /*scancode*/, int action, int /*mode*/) {
         if (action == GLFW_PRESS && keys[GLFW_KEY_ENTER]) {
             std::cout << glm::to_string(_handle1) << ", " << glm::to_string(_handle2) << ", " << glm::to_string(_handle3) << ", " << glm::to_string(_handle4) << std::endl;
         }
-
     }
-
 }
 
 void MyWorld::updateFpsCameraPosition() {
@@ -214,7 +208,7 @@ void MyWorld::updateFpsCameraPosition() {
 }
 
 float MyWorld::getHeight(unsigned int x, unsigned int y) {
-    if (x >= 0 && x < 512 && y >= 0 && y < 512) {
+    if (x < 512 && y < 512) {
         return _heightMap[x + 512 * y];
     } else {
         return 0.0;

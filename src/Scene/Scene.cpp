@@ -45,7 +45,7 @@ void Scene::renderScene() {
         }
 
         default: {
-
+            // Do nothing
         }
     }
 
@@ -63,6 +63,7 @@ void Scene::keyCallback(GLFWwindow* /*window*/, int key, int scancode, int actio
     } else if (action == GLFW_RELEASE) {
         keys[key] = false;  
     }
+
     // fog
     if(action == GLFW_PRESS && keys[GLFW_KEY_F]) {
         _fog = !_fog;
