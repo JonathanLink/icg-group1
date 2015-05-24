@@ -73,9 +73,9 @@ void Particles::render(const glm::mat4 &view, const glm::mat4 &projection) {
 
     scene->setUniformVariables(pid, model, view, projection);
 
-    std::vector<glm::vec3> cubePositions = {
+    static const std::vector<glm::vec3> cubePositions = {
         glm::vec3( 0.0f, 0.0f, 0.0f),
-        glm::vec3( 0.0f, 0.1f, 0.0f)
+        glm::vec3( 0.0f, 0.0f, 5.0f)
     };
 
     GLuint modelLoc = glGetUniformLocation(pid, "current_model");

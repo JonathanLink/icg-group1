@@ -159,6 +159,9 @@ void Scene::setUniformVariables(GLuint pid, const glm::mat4 &model, const glm::m
     GLuint modelLoc_id = glGetUniformLocation(pid, "model");
     glUniformMatrix4fv(modelLoc_id, 1, GL_FALSE,  glm::value_ptr(model));
 
+    GLuint viewLoc_id = glGetUniformLocation(pid, "view");
+    glUniformMatrix4fv(viewLoc_id, 1, GL_FALSE,  glm::value_ptr(view));
+
     GLuint projectionLoc = glGetUniformLocation(pid, "projection");
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
