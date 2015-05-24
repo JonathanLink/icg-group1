@@ -2,8 +2,6 @@
 #include "Window.h"
 
 Window::Window(GLuint width, GLuint height, const char* title) {
-    _windowWidth = width;
-    _windowHeight = height;
     _title = title;
 
     glfwInit();
@@ -16,7 +14,15 @@ Window::Window(GLuint width, GLuint height, const char* title) {
     glfwWindowHint(GLFW_SAMPLES, NUMBER_OF_SAMPLES_FOR_MULTISAMPLING);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);  
 
-    _window = glfwCreateWindow(_windowWidth, _windowHeight, _title, nullptr, nullptr);
+    _window = glfwCreateWindow(width, height, _title, nullptr, nullptr);
+    _windowWidth = width;
+    _windowHeight = height;
+//    int actualWidth, actualHeight;
+//    glfwGetFramebufferSize(_window, &actualWidth, &actualHeight);
+//    fprintf(stderr, "Actual: (%d, %d)\n", actualWidth, actualHeight);
+//    fprintf(stderr, "Given: (%d, %d)\n", width, height);
+//    _windowWidth = actualWidth;
+//    _windowHeight = actualHeight;
 
     glfwMakeContextCurrent(_window);
     glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
@@ -41,7 +47,7 @@ Window::Window(GLuint width, GLuint height, const char* title) {
     }
 
     glEnable(GL_DEPTH_TEST);
-    glViewport(0, 0, _windowWidth, _windowHeight);  
+    glViewport(0, 0, _windowWidth, _windowHeight);
 }
 
 

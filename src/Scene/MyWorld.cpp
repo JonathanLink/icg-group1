@@ -216,8 +216,8 @@ void MyWorld::updateFpsCameraPosition() {
 }
 
 float MyWorld::getHeight(unsigned int x, unsigned int y) {
-    if (x < 512 && y < 512) {
-        return _heightMap[x + 512 * y];
+    if (x < FRAME_BUFFER_PERLIN_WIDTH && y < FRAME_BUFFER_PERLIN_HEIGHT) {
+        return _heightMap[x + FRAME_BUFFER_PERLIN_WIDTH * y];
     } else {
         return 0.0;
     }

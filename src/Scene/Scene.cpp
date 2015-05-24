@@ -107,8 +107,8 @@ void Scene::setSceneHeight(GLuint height) {
     _sceneHeight = height;
 }
 
-GLuint Scene::getSceneAspectRatio() const {
-    return _sceneWidth / _sceneHeight;
+float Scene::getSceneAspectRatio() const {
+    return ((float)_sceneWidth) / ((float)_sceneHeight);
 }
 
 void Scene::updateFlyCameraPosition() {
