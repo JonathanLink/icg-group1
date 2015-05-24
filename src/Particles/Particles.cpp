@@ -18,47 +18,47 @@ void Particles::init() {
     loadShaders( "../src/Particles/particles_vshader.glsl", "../src/Particles/particles_fshader.glsl" );
 
     _vertices = {
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+            -0.25f, -0.25f, -0.25f,  0.0f, 0.0f,
+            0.25f, -0.25f, -0.25f,  1.0f, 0.0f,
+            0.25f,  0.25f, -0.25f,  1.0f, 1.0f,
+            0.25f,  0.25f, -0.25f,  1.0f, 1.0f,
+            -0.25f,  0.25f, -0.25f,  0.0f, 1.0f,
+            -0.25f, -0.25f, -0.25f,  0.0f, 0.0f,
 
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+            -0.25f, -0.25f,  0.25f,  0.0f, 0.0f,
+            0.25f, -0.25f,  0.25f,  1.0f, 0.0f,
+            0.25f,  0.25f,  0.25f,  1.0f, 1.0f,
+            0.25f,  0.25f,  0.25f,  1.0f, 1.0f,
+            -0.25f,  0.25f,  0.25f,  0.0f, 1.0f,
+            -0.25f, -0.25f,  0.25f,  0.0f, 0.0f,
 
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+            -0.25f,  0.25f,  0.25f,  1.0f, 0.0f,
+            -0.25f,  0.25f, -0.25f,  1.0f, 1.0f,
+            -0.25f, -0.25f, -0.25f,  0.0f, 1.0f,
+            -0.25f, -0.25f, -0.25f,  0.0f, 1.0f,
+            -0.25f, -0.25f,  0.25f,  0.0f, 0.0f,
+            -0.25f,  0.25f,  0.25f,  1.0f, 0.0f,
 
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+            0.25f,  0.25f,  0.25f,  1.0f, 0.0f,
+            0.25f,  0.25f, -0.25f,  1.0f, 1.0f,
+            0.25f, -0.25f, -0.25f,  0.0f, 1.0f,
+            0.25f, -0.25f, -0.25f,  0.0f, 1.0f,
+            0.25f, -0.25f,  0.25f,  0.0f, 0.0f,
+            0.25f,  0.25f,  0.25f,  1.0f, 0.0f,
 
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+            -0.25f, -0.25f, -0.25f,  0.0f, 1.0f,
+            0.25f, -0.25f, -0.25f,  1.0f, 1.0f,
+            0.25f, -0.25f,  0.25f,  1.0f, 0.0f,
+            0.25f, -0.25f,  0.25f,  1.0f, 0.0f,
+            -0.25f, -0.25f,  0.25f,  0.0f, 0.0f,
+            -0.25f, -0.25f, -0.25f,  0.0f, 1.0f,
 
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+            -0.25f,  0.25f, -0.25f,  0.0f, 1.0f,
+            0.25f,  0.25f, -0.25f,  1.0f, 1.0f,
+            0.25f,  0.25f,  0.25f,  1.0f, 0.0f,
+            0.25f,  0.25f,  0.25f,  1.0f, 0.0f,
+            -0.25f,  0.25f,  0.25f,  0.0f, 0.0f,
+            -0.25f,  0.25f, -0.25f,  0.0f, 1.0f
     };
 
     glGenVertexArrays(1, &_vertexArrayId);
@@ -75,15 +75,17 @@ void Particles::init() {
 
     glBindVertexArray(0);
 
-    const int particleHalfGridSize = ceil(Constants::TERRAIN_SCALE / 5.0f);
+
+    const int particleHalfGridSize = ceil(Constants::TERRAIN_SCALE / SCALE_FACTOR);
+    const float layerCount = ceil(SCALE_FACTOR * 4.0f);
     for (int i = -particleHalfGridSize; i < particleHalfGridSize; ++i) {
         for (int j = -particleHalfGridSize; j < particleHalfGridSize; ++j) {
-            for (int k = 0; k < 20; ++k) {
+            for (int k = 0; k < layerCount; ++k) {
                 _particlePositions.push_back(glm::vec3(
-                        i * 5.0f + randomOffset(), MAX_HEIGHT - k * 5.0f + randomOffset(), j * 5.0f + randomOffset()
+                        i * SCALE_FACTOR + randomOffset(), MAX_HEIGHT - k * SCALE_FACTOR + randomOffset(), j * SCALE_FACTOR + randomOffset()
                 ));
                 _particlePositions.push_back(glm::vec3(
-                        i * 5.0f + randomOffset(), MAX_HEIGHT + (k + 1) * 5.0f + randomOffset(), j * 5.0f + randomOffset()
+                        i * SCALE_FACTOR + randomOffset(), MAX_HEIGHT + (k + 1) * SCALE_FACTOR + randomOffset(), j * SCALE_FACTOR + randomOffset()
                 ));
             }
         }

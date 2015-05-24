@@ -17,9 +17,10 @@ private:
 
     GLfloat _initialTime;
     float randomOffset();
-    float randomNumber(float minimu, float maximum);
+    float randomNumber(float minimum, float maximum);
     float MAX_HEIGHT = 100.0f;
-    float DESCENT_TIME = 2.0f;
+    float DESCENT_TIME = 3.0f;
+    const float SCALE_FACTOR = 5.0f;
     std::vector<glm::vec3> _particlePositions;
 };
 
