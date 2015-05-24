@@ -1,9 +1,11 @@
 #include "../Constants/Constants.h"
 #include "MyWorld.h"
 
-MyWorld::MyWorld(): Scene(glm::vec3(-0.967917f, 20.54413f, -1.45086f),
-                          glm::vec3(-22.4157f, 36.1665f, 0.0f)),
-                    _terrainReflectFB(800, 600) {
+MyWorld::MyWorld(unsigned int terrainReflectFbWidth,
+                 unsigned int terrainReflectFbHeight):
+        Scene(glm::vec3(-0.967917f, 20.54413f, -1.45086f),
+              glm::vec3(-22.4157f, 36.1665f, 0.0f)),
+        _terrainReflectFB(terrainReflectFbWidth, terrainReflectFbHeight) {
     // Do nothing
 }
 

@@ -20,7 +20,8 @@ public:
 	static const unsigned int FRAME_BUFFER_PERLIN_WIDTH = 512;
     static const unsigned int FRAME_BUFFER_PERLIN_HEIGHT = 512;
 
-	MyWorld();
+	MyWorld(unsigned int terrainReflectFbWidth,
+			unsigned int terrainReflectFbHeight);
 	void init() override;
 	void render() override;
 	void cleanUp() override;
