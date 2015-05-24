@@ -14,7 +14,6 @@ private:
     GLuint _vertexArrayId;
     GLuint _vertexBufferId;
     std::vector<GLfloat> _vertices;
-    std::vector<GLuint> _indices;
 };
 
 
