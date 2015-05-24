@@ -8,7 +8,7 @@ void Particles::init() {
     std::cout << "Init Particles" << std::endl;
     loadShaders( "../src/Particles/particles_vshader.glsl", "../src/Particles/particles_fshader.glsl" );
 
-    GLfloat vertices[] = {
+    _vertices = {
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
@@ -59,7 +59,7 @@ void Particles::init() {
     glBindVertexArray(_vertexArrayId);
 
     glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(GLfloat), &_vertices[0], GL_STATIC_DRAW);
 
     // Position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
@@ -78,16 +78,16 @@ void Particles::render(const glm::mat4 &view, const glm::mat4 &projection) {
         glm::vec3( 0.0f, 0.1f, 0.0f)
     };
 
-    GLuint modelLoc = glGetUniformLocation(pid, "model");
+    GLuint modelLoc = glGetUniformLocation(pid, "current_model");
     glBindVertexArray(_vertexArrayId);
     for (GLuint i = 0; i < cubePositions.size(); i++) {
         glm::mat4 model2;
         model2 = glm::translate(model2,  cubePositions[i]);
         // Transformation
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE,  glm::value_ptr(model2));
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model2));
         glDrawArrays(GL_TRIANGLES, 0, 36);
-        glBindVertexArray(0);
     }
+    glBindVertexArray(0);
 }
 
 void Particles::cleanUp() {
