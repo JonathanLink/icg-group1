@@ -65,7 +65,7 @@ void Particles::init() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);
 
-    glBindVertexArray(0); //unbind VAO
+    glBindVertexArray(0);
 }
 
 void Particles::render(const glm::mat4 &view, const glm::mat4 &projection) {
