@@ -18,7 +18,7 @@ void CameraBezier::setHulls(const std::vector<Hull> &cameraHulls, const std::vec
     _lookHulls = lookHulls;
     _cameraPositionCurve.addHulls(_cameraHulls);
     _cameraLookCurve.addHulls(_lookHulls);
-    _period = 0.05;
+    _period = 0.1;
 }
 
 void CameraBezier::clear() {

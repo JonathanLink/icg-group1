@@ -70,12 +70,13 @@ void MyWorld::generateLakeCurve() {
 
     std::vector<Hull> cameraHulls;
     cameraHulls.clear();
-    cameraHulls.push_back(Hull(glm::vec3(-26.299969, 16.399982, 19.099995), glm::vec3(-26.000004, 10.799983, 1.400000), glm::vec3(-11.599994, 9.999980, -9.399996), glm::vec3(3.199999, 12.199974, -4.099999)));
+    cameraHulls.push_back(Hull(glm::vec3(-26.299969, 17.399982, 19.099995), glm::vec3(-26.000004, 11.799983, 1.400000), glm::vec3(-11.599994, 10.999980, -9.399996), glm::vec3(3.199999, 15.199974, -4.099999)));
+    //cameraHulls.push_back(Hull(_handle1, _handle2, _handle3, _handle4));
+
 
     std::vector<Hull> lookHulls;
     lookHulls.clear();
-    lookHulls.push_back(Hull(glm::vec3(-22.000000, 15.000002, 11.400002), glm::vec3(-26.000000, 11.000000, -0.200000), glm::vec3(-5.400002, 9.900000, -9.000000), glm::vec3(4.200001, 11.899998, -0.799999)));
-
+    lookHulls.push_back(Hull(glm::vec3(-22.000000, 16.000002, 11.400002), glm::vec3(-26.000000, 12.000000, -0.200000), glm::vec3(-5.400002, 10.900000, -9.000000), glm::vec3(4.200001, 15.899998, -0.799999)));
 
     _cameraBezierLake.setHulls(cameraHulls, lookHulls);
     setCameraBezier(_cameraBezierLake);
@@ -113,11 +114,10 @@ void MyWorld::generateAroundCurve() {
 }
 
 void MyWorld::buildBezierCurve() {
-    
-// decomment which bezier path you want to visualize  
-  generateSkyViewCurve();
- // generateLakeCurve();  
- // generateAroundCurve();
+    // decomment which bezier path you want to visualize
+    //generateSkyViewCurve();
+    generateLakeCurve();
+    // generateAroundCurve();
 }
 
 
