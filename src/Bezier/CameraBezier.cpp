@@ -33,8 +33,8 @@ glm::mat4 CameraBezier::getViewMatrix() {
     glm::vec3 cameraPosition = _cameraPositionCurve.samplePointAtTime(t);
     glm::vec3 cameraLook = _cameraLookCurve.samplePointAtTime(t);
     glm::vec3 cameraUp(0.0f, 1.0f, 0.0f);
-    std::cout << "t=" << t << " cameraPosition: "<< glm::to_string(cameraPosition) << std::endl;
-    std::cout << "t=" << t << " cameraLook: "<< glm::to_string(cameraLook) << std::endl;
+    //std::cout << "t=" << t << " cameraPosition: "<< glm::to_string(cameraPosition) << std::endl;
+    //std::cout << "t=" << t << " cameraLook: "<< glm::to_string(cameraLook) << std::endl;
 
     /*glm::vec3 cameraDirection = glm::normalize(cameraPosition - cameraLook);
     if (cameraUp == cameraDirection) {

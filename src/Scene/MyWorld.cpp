@@ -37,16 +37,22 @@ void MyWorld::init() {
     _bezierEditModeEnabled = false;
     _bezierPositionCurve.setScene(this);
     _bezierLookCurve.setScene(this);
-    _handle1 = glm::vec3(9.000000, 112.700005, 36.500000);
-    _handle2 =  glm::vec3(-103.599945, 73.299995, -18.799986);
-    _handle3 =glm::vec3(63.299995, 75.799995, -52.500000);
-    _handle4 = glm::vec3(22.700005, 31.500000, 21.500000);
+
+    // CURVE OK
+    _handle1 = glm::vec3(-33.299969, 29.899982, 19.099995);
+    _handle2 = glm::vec3(-23.700001, 11.299978, 1.400000);
+    _handle3 = glm::vec3(-24.099998, 6.599979, -7.899996);
+    _handle4 = glm::vec3(13.699999, 16.199974, -3.599999);
     _selectedHandle = &_handle1;
     buildBezierCurve();
 }
 
 void MyWorld::generateSkyViewCurve() {
-    
+    _handle1 = glm::vec3(0.0, 65.0, 20.0);
+    _handle2 = glm::vec3(0.0, 65.0, 1.0);
+    _handle3 = glm::vec3(0.0,65.0, -1.0);
+    _handle4 = glm::vec3(0.0, 65.0, -20.0);
+
     std::vector<Hull> cameraHulls;
     cameraHulls.clear();
     cameraHulls.push_back(Hull(glm::vec3(0.0, 65.0, 20.0), glm::vec3(0.0, 65.0, 1.0), glm::vec3(0.0,65.0, -1.0), glm::vec3(0.0, 65.0, -20.0)));
@@ -67,16 +73,14 @@ void MyWorld::generateSkyViewCurve() {
 }
 
 void MyWorld::generateLakeCurve() {
-
     std::vector<Hull> cameraHulls;
     cameraHulls.clear();
-    cameraHulls.push_back(Hull(glm::vec3(-26.299969, 17.399982, 19.099995), glm::vec3(-26.000004, 11.799983, 1.400000), glm::vec3(-11.599994, 10.999980, -9.399996), glm::vec3(3.199999, 15.199974, -4.099999)));
-    //cameraHulls.push_back(Hull(_handle1, _handle2, _handle3, _handle4));
-
+    cameraHulls.push_back(Hull(_handle1, _handle2, _handle3, _handle4));
+    //cameraHulls.push_back(Hull(glm::vec3(-20.799969, 17.399982, 19.099995), glm::vec3(-31.500004, 10.299983, 3.400000), glm::vec3(-4.599994, 10.499980, -7.899996), glm::vec3(13.699999, 16.199974, -3.599999)));
 
     std::vector<Hull> lookHulls;
     lookHulls.clear();
-    lookHulls.push_back(Hull(glm::vec3(-22.000000, 16.000002, 11.400002), glm::vec3(-26.000000, 12.000000, -0.200000), glm::vec3(-5.400002, 10.900000, -9.000000), glm::vec3(4.200001, 15.899998, -0.799999)));
+    lookHulls.push_back(Hull(glm::vec3(-25.799969, 20.399982, 25.099995), glm::vec3(-32.500004, 13.299983, 4.400000), glm::vec3(-15.599994, 12.499980, 5.4f), glm::vec3(-12.699999, 15.199974, 8.599999)));
 
     _cameraBezierLake.setHulls(cameraHulls, lookHulls);
     setCameraBezier(_cameraBezierLake);
@@ -85,17 +89,22 @@ void MyWorld::generateLakeCurve() {
     _bezierLookCurve.setIsLookAtCurve(true);
     _bezierLookCurve.setPoints(_cameraBezierLake.getLookCurvePoints());
 
-    _bezierHandles.setHandles(lookHulls, this);
+    _bezierHandles.setHandles(cameraHulls, this);
 }
 
 
 void MyWorld::generateAroundCurve() {
-    
+    _handle1 = glm::vec3(0, 30, 35);
+    _handle2 = glm::vec3(-10, 120, 1);
+    _handle3 = glm::vec3(-20, 75, -1);
+    _handle4 = glm::vec3(-30, 20, -15);
+
     std::vector<Hull> cameraHulls;
     cameraHulls.clear();
     //cameraHulls.push_back(Hull(glm::vec3(11.000000, 73.200001, 20.000000), glm::vec3(-127.099945, 72.799999, 0.200014), glm::vec3(16.299997, 75.799995, -93.000000), glm::vec3(32.200005, 30.000000, 28.500000)));
-    cameraHulls.push_back(Hull(glm::vec3(0, 11, 35), glm::vec3(-10, 120, 1), glm::vec3(-20, 75, -1), glm::vec3(-30, 20, -15)));
+    cameraHulls.push_back(Hull(glm::vec3(0, 30, 35), glm::vec3(-10, 120, 1), glm::vec3(-20, 75, -1), glm::vec3(-30, 20, -15)));
     //cameraHulls.push_back(Hull(_handle1, _handle2, _handle3, _handle4));
+
     std::vector<Hull> lookHulls;
     lookHulls.clear();
     //lookHulls.push_back(Hull(glm::vec3(0.299997, 27.999977, -10.099998), glm::vec3(2.600057, 14.799999, 8.100016), glm::vec3(4.599998, 30.799995, 2.000002), glm::vec3(3.500003, 25.500000, 8.299999)));
@@ -117,7 +126,7 @@ void MyWorld::buildBezierCurve() {
     // decomment which bezier path you want to visualize
     //generateSkyViewCurve();
     generateLakeCurve();
-    // generateAroundCurve();
+    //generateAroundCurve();
 }
 
 
@@ -150,11 +159,11 @@ void MyWorld::render() {
 
      _terrainReflectFB.cleanUp();
 
-    _bezierPositionCurve.render(view, projection);
-    _bezierLookCurve.render(view, projection);
-    _bezierHandles.render(view, projection);
-
-
+    if (_bezierEditModeEnabled) {
+        _bezierPositionCurve.render(view, projection);
+        _bezierLookCurve.render(view, projection);
+        _bezierHandles.render(view, projection);
+    }
 
     _cube.render(view, projection);
 }
