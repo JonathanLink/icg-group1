@@ -12,7 +12,8 @@ void Handles::setHandles(const std::vector<Hull> &cameraHulls, Scene *scene) {
     for (unsigned int i = 0; i < cameraHulls.size(); ++i) {
         Hull currentHull = cameraHulls[i];
         std::vector<glm::vec3> hulls = currentHull.getVector();
-        for (unsigned int j = 0; j < hulls.size(); ++j) {
+        unsigned int j =  (i > 0) ? 1 : 0;
+        for (;j < hulls.size(); ++j) {
             Handle handle;
             handle.setScene(scene);
             glm::vec3 handlePos = hulls[j];

@@ -1,3 +1,4 @@
+
 #version 330 core
 
 #define M_PI 3.1415926535897932384626433832795
@@ -108,7 +109,7 @@ void main() {
         finalColor = vec4(result, alpha);
 
         // =========== Camera underwater ? =======
-        if (cameraPos.y > 0.0 && cameraPos.y < 13.5) {
+        if (cameraPos.y > 0.0 && cameraPos.y < 13.0) {
             float alpha = exp(cameraPos.y * 0.04) - 1.0f;
             alpha = clamp(alpha, 0, 1.0);
             finalColor = mix( vec4(0,128.0/255.0, 1.0, 0.5), finalColor, alpha);
