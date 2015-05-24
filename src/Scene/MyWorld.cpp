@@ -36,16 +36,16 @@ void MyWorld::init() {
     _bezierEditModeEnabled = false;
     _bezierPositionCurve.setScene(this);
     _bezierLookCurve.setScene(this);
-    _handle1 = glm::vec3(-22.000000, 15.000002, 11.400002);
-    _handle2 =  glm::vec3(-26.000000, 11.000000, -0.200000);
-    _handle3 =  glm::vec3(-5.400002, 10.400000, -9.000000);
-    _handle4 = glm::vec3(4.200001, 18.399998, -0.799999);
+    _handle1 = glm::vec3(9.000000, 112.700005, 36.500000);
+    _handle2 =  glm::vec3(-103.599945, 73.299995, -18.799986);
+    _handle3 =glm::vec3(63.299995, 75.799995, -52.500000);
+    _handle4 = glm::vec3(22.700005, 31.500000, 21.500000);
     _selectedHandle = &_handle1;
     buildBezierCurve();
 }
 
 void MyWorld::generateSkyViewCurve() {
-     // curve TOP
+    
     std::vector<Hull> cameraHulls;
     cameraHulls.clear();
     cameraHulls.push_back(Hull(glm::vec3(0.0, 65.0, 20.0), glm::vec3(0.0, 65.0, 1.0), glm::vec3(0.0,65.0, -1.0), glm::vec3(0.0, 65.0, -20.0)));
@@ -66,16 +66,40 @@ void MyWorld::generateSkyViewCurve() {
 }
 
 void MyWorld::generateLakeCurve() {
-     // curve LAKE
+
     std::vector<Hull> cameraHulls;
     cameraHulls.clear();
     cameraHulls.push_back(Hull(glm::vec3(-26.299969, 16.399982, 19.099995), glm::vec3(-26.000004, 10.799983, 1.400000), glm::vec3(-11.599994, 9.999980, -9.399996), glm::vec3(3.199999, 12.199974, -4.099999)));
 
     std::vector<Hull> lookHulls;
     lookHulls.clear();
-    //lookHulls.push_back(Hull(glm::vec3(-22.000000, 15.000002, 11.400002), glm::vec3(-26.000000, 11.000000, -0.200000), glm::vec3(-5.400002, 10.400000, -9.000000), glm::vec3(4.200001, 18.399998, -0.799999)));
     lookHulls.push_back(Hull(glm::vec3(-22.000000, 15.000002, 11.400002), glm::vec3(-26.000000, 11.000000, -0.200000), glm::vec3(-5.400002, 9.900000, -9.000000), glm::vec3(4.200001, 11.899998, -0.799999)));
 
+
+    _cameraBezierLake.setHulls(cameraHulls, lookHulls);
+    setCameraBezier(_cameraBezierLake);
+
+    _bezierPositionCurve.setPoints(_cameraBezierLake.getCameraCurvePoints());
+    _bezierLookCurve.setIsLookAtCurve(true);
+    _bezierLookCurve.setPoints(_cameraBezierLake.getLookCurvePoints());
+
+    _bezierHandles.setHandles(lookHulls, this);
+}
+
+
+void MyWorld::generateAroundCurve() {
+    
+    std::vector<Hull> cameraHulls;
+    cameraHulls.clear();
+    //cameraHulls.push_back(Hull(glm::vec3(11.000000, 73.200001, 20.000000), glm::vec3(-127.099945, 72.799999, 0.200014), glm::vec3(16.299997, 75.799995, -93.000000), glm::vec3(32.200005, 30.000000, 28.500000)));
+    cameraHulls.push_back(Hull(glm::vec3(0, 11, 35), glm::vec3(-10, 120, 1), glm::vec3(-20, 75, -1), glm::vec3(-30, 20, -15)));
+    //cameraHulls.push_back(Hull(_handle1, _handle2, _handle3, _handle4));
+    std::vector<Hull> lookHulls;
+    lookHulls.clear();
+    //lookHulls.push_back(Hull(glm::vec3(0.299997, 27.999977, -10.099998), glm::vec3(2.600057, 14.799999, 8.100016), glm::vec3(4.599998, 30.799995, 2.000002), glm::vec3(3.500003, 25.500000, 8.299999)));
+    //lookHulls.push_back(Hull(glm::vec3(2.799998, 42.999977, 15.400003), glm::vec3(-22.599945, 26.799999, 23.700014), glm::vec3(-6.200003, 45.799995, -67.000000), glm::vec3(22.700005, 31.500000, 21.500000)));
+    lookHulls.push_back(Hull(glm::vec3(-20, 0, -20), glm::vec3(20, 0, 0), glm::vec3(20, 0, 0), glm::vec3(-20, 0, 20)));
+    
 
     _cameraBezierLake.setHulls(cameraHulls, lookHulls);
     setCameraBezier(_cameraBezierLake);
@@ -90,9 +114,9 @@ void MyWorld::generateLakeCurve() {
 void MyWorld::buildBezierCurve() {
     
 // decomment which bezier path you want to visualize  
-//generateSkyViewCurve();
-  generateLakeCurve();  
-
+  generateSkyViewCurve();
+ // generateLakeCurve();  
+ // generateAroundCurve();
 }
 
 

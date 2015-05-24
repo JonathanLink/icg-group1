@@ -6,7 +6,7 @@
 
 #include "CameraBezier.h"
 
- const float PERIOD_STEP = 2;
+ const float PERIOD_STEP = 0.1;
 
 CameraBezier::CameraBezier() {
 }
@@ -18,7 +18,7 @@ void CameraBezier::setHulls(const std::vector<Hull> &cameraHulls, const std::vec
     _lookHulls = lookHulls;
     _cameraPositionCurve.addHulls(_cameraHulls);
     _cameraLookCurve.addHulls(_lookHulls);
-    _period = 35;
+    _period = 0.05;
 }
 
 void CameraBezier::clear() {
@@ -29,9 +29,7 @@ void CameraBezier::clear() {
 glm::mat4 CameraBezier::getViewMatrix() {
 
     float openGlTime = glfwGetTime();
-    float amplitude = 1.0;
-    float PI = 3.1415;
-    float t = fabs((2.0 * amplitude / PI) * asin(sin(2 * PI / _period * openGlTime)));
+    float t = fabs(sin( _period * openGlTime));
     glm::vec3 cameraPosition = _cameraPositionCurve.samplePointAtTime(t);
     glm::vec3 cameraLook = _cameraLookCurve.samplePointAtTime(t);
     glm::vec3 cameraUp(0.0f, 1.0f, 0.0f);
@@ -68,9 +66,7 @@ glm::mat4 CameraBezier::getViewMatrix() {
 
 glm::vec3 CameraBezier::getPosition() {
     float openGlTime = glfwGetTime();
-    float amplitude = 1.0;
-    float PI = 3.1415;
-    float t = fabs((2.0 * amplitude / PI) * asin(sin(2 * PI / _period * openGlTime)));
+    float t = fabs(sin( _period * openGlTime));
     glm::vec3 cameraPosition = _cameraPositionCurve.samplePointAtTime(t);
     return cameraPosition;
 }

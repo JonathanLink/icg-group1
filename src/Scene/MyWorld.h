@@ -31,6 +31,7 @@ private:
 	float getHeight(unsigned int x, unsigned int y);
 	void generateSkyViewCurve();
 	void generateLakeCurve();
+	void generateAroundCurve();
 	float* _heightMap;
 
 	Perlin _perlin;
