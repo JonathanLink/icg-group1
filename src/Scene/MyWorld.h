@@ -11,6 +11,7 @@
 #include "../Cube/Cube.h"
 #include "../Water/Water.h"
 #include "../FrameBuffer/FrameBuffer.h"
+#include "../Particles/Particles.h"
 
 
 class MyWorld: public Scene {
@@ -19,7 +20,8 @@ public:
 	static const unsigned int FRAME_BUFFER_PERLIN_WIDTH = 512;
     static const unsigned int FRAME_BUFFER_PERLIN_HEIGHT = 512;
 
-	MyWorld();
+	MyWorld(unsigned int terrainReflectFbWidth,
+			unsigned int terrainReflectFbHeight);
 	void init() override;
 	void render() override;
 	void cleanUp() override;
@@ -40,6 +42,7 @@ private:
 	FishEye _fishEye;
 	Cube _cube;
 	Water _water;
+	Particles _particles;
 
 	// Bezier 
 	glm::vec3 _delta;

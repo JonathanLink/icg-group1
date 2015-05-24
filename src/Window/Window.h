@@ -6,8 +6,6 @@
 class Window {
 public:
     static Window& getInstance();
-    static const GLuint WINDOW_WIDTH = 1024; // 800
-    static const GLuint WINDOW_HEIGHT = 800; // 600
 
     const int OPENGL_VERSION_MAJOR = 3;
     const int OPENGL_VERSION_MINOR = 3;

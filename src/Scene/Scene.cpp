@@ -107,8 +107,8 @@ void Scene::setSceneHeight(GLuint height) {
     _sceneHeight = height;
 }
 
-GLuint Scene::getSceneAspectRatio() const {
-    return _sceneWidth / _sceneHeight;
+float Scene::getSceneAspectRatio() const {
+    return ((float)_sceneWidth) / ((float)_sceneHeight);
 }
 
 void Scene::updateFlyCameraPosition() {
@@ -158,6 +158,12 @@ void Scene::updateInertia() {
 void Scene::setUniformVariables(GLuint pid, const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &projection) {
     GLuint modelLoc_id = glGetUniformLocation(pid, "model");
     glUniformMatrix4fv(modelLoc_id, 1, GL_FALSE,  glm::value_ptr(model));
+
+    GLuint viewLoc_id = glGetUniformLocation(pid, "view");
+    glUniformMatrix4fv(viewLoc_id, 1, GL_FALSE,  glm::value_ptr(view));
+
+    GLuint projectionLoc = glGetUniformLocation(pid, "projection");
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
     GLuint modelViewLoc_id = glGetUniformLocation(pid, "modelView");
     glm::mat4 modelView = view * model;

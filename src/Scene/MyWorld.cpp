@@ -2,9 +2,11 @@
 #include "MyWorld.h"
 #include "../Window/Window.h"
 
-MyWorld::MyWorld(): Scene(glm::vec3(-0.967917f, 20.54413f, -1.45086f),
-                          glm::vec3(-22.4157f, 36.1665f, 0.0f)),
-                    _terrainReflectFB(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT) {
+MyWorld::MyWorld(unsigned int terrainReflectFbWidth,
+                 unsigned int terrainReflectFbHeight):
+        Scene(glm::vec3(-0.967917f, 20.54413f, -1.45086f),
+              glm::vec3(-22.4157f, 36.1665f, 0.0f)),
+        _terrainReflectFB(terrainReflectFbWidth, terrainReflectFbHeight) {
     // Do nothing
 }
 
@@ -13,7 +15,7 @@ void MyWorld::init() {
     _perlin.setScene(this);
     _terrain.setScene(this);
     _water.setScene(this);
-    _cube.setScene(this);
+    _particles.setScene(this);
     //_fishEye.setScene(this);
 
     // Draw perlin noise in framebuffer we've just created
@@ -131,7 +133,6 @@ void MyWorld::buildBezierCurve() {
 
 
 void MyWorld::render() {
-   
     //FrameBuffer fishEyeFrameBuffer = FrameBuffer(800, 600);
     //GLuint fishEyeTextureId = fishEyeFrameBuffer.initTextureId(GL_RGB);
     //fishEyeFrameBuffer.bind();
@@ -158,6 +159,7 @@ void MyWorld::render() {
     _water.render(view, projection);
 
      _terrainReflectFB.cleanUp();
+    _particles.render(view, projection);
 
     if (_bezierEditModeEnabled) {
         _bezierPositionCurve.render(view, projection);
@@ -176,6 +178,7 @@ void MyWorld::cleanUp() {
     _bezierPositionCurve.cleanUp();
     _bezierLookCurve.cleanUp();
     _bezierHandles.cleanUp();
+    _particles.cleanUp();
 }
 
 // This method is ugly and i know it!
@@ -282,7 +285,8 @@ void MyWorld::updateFpsCameraPosition() {
 
     if (_hasJumped) {
         GLfloat timeSinceJump = glfwGetTime() - _jumpStartTime;
-        if (timeSinceJump <= 4.0) {
+        const static float MAX_JUMP_TIME = 3.0f;
+        if (timeSinceJump <= MAX_JUMP_TIME) {
             GLfloat jumpHeight = 9 - pow(3 * timeSinceJump - 3, 2.0) + _jumpStartHeight;
             camera.setHeight(std::max(jumpHeight, height));
         } else {
@@ -294,8 +298,8 @@ void MyWorld::updateFpsCameraPosition() {
 }
 
 float MyWorld::getHeight(unsigned int x, unsigned int y) {
-    if (x < 512 && y < 512) {
-        return _heightMap[x + 512 * y];
+    if (x < FRAME_BUFFER_PERLIN_WIDTH && y < FRAME_BUFFER_PERLIN_HEIGHT) {
+        return _heightMap[x + FRAME_BUFFER_PERLIN_WIDTH * y];
     } else {
         return 0.0;
     }

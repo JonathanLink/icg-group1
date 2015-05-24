@@ -30,7 +30,7 @@ public:
     void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
     void setSceneWidth(GLuint width);
     void setSceneHeight(GLuint height);
-    GLuint getSceneAspectRatio() const;
+    float getSceneAspectRatio() const;
     glm::vec3 getCameraPosition();
     glm::vec3 getLightPosition();
     void setUniformVariables(GLuint pid, const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &projection);
