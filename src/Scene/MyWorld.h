@@ -11,6 +11,7 @@
 #include "../Cube/Cube.h"
 #include "../Water/Water.h"
 #include "../FrameBuffer/FrameBuffer.h"
+#include "../Particles/Particles.h"
 
 
 class MyWorld: public Scene {
@@ -38,6 +39,7 @@ private:
 	FishEye _fishEye;
 	Cube _cube;
 	Water _water;
+	Particles _particles;
 
 	// Bezier 
 	glm::vec3 _delta;
