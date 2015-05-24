@@ -1,9 +1,10 @@
 #include "../Constants/Constants.h"
 #include "MyWorld.h"
+#include "../Window/Window.h"
 
 MyWorld::MyWorld(): Scene(glm::vec3(-0.967917f, 20.54413f, -1.45086f),
                           glm::vec3(-22.4157f, 36.1665f, 0.0f)),
-                    _terrainReflectFB(800, 600) {
+                    _terrainReflectFB(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT) {
     // Do nothing
 }
 
@@ -155,7 +156,7 @@ void MyWorld::render() {
 
 
 
-    //_cube.render(view, projection);
+    _cube.render(view, projection);
 }
 
 void MyWorld::cleanUp() {
