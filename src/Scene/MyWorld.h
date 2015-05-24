@@ -43,6 +43,7 @@ private:
 	Cube _cube;
 	Water _water;
 	Particles _particles;
+	bool _particlesEnabled = false;
 
 	// Bezier 
 	glm::vec3 _delta;
