@@ -54,7 +54,6 @@ void Particles::init() {
 
     glGenVertexArrays(1, &_vertexArrayId);
     glGenBuffers(1, &_vertexBufferId);
-    glGenBuffers(1, &_elementBufferId);
 
     glBindVertexArray(_vertexArrayId);
 
@@ -62,8 +61,8 @@ void Particles::init() {
     glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(GLfloat), &_vertices[0], GL_STATIC_DRAW);
 
     // Position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
 
     glBindVertexArray(0);
 }
@@ -94,6 +93,5 @@ void Particles::cleanUp() {
     std::cout << "CleanUp Particles" << std::endl;
     glDeleteVertexArrays(1, &_vertexArrayId);
     glDeleteBuffers(1, &_vertexBufferId);
-    glDeleteBuffers(1, &_elementBufferId);
     glDeleteProgram(pid);
 }

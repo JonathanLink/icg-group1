@@ -13,7 +13,6 @@ public:
 private:
     GLuint _vertexArrayId;
     GLuint _vertexBufferId;
-    GLuint _elementBufferId;
     std::vector<GLfloat> _vertices;
     std::vector<GLuint> _indices;
 };
