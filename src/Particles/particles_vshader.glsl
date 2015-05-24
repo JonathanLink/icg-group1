@@ -6,5 +6,5 @@ uniform mat4 view;
 uniform mat4 projection;
 
 void main() {
-    gl_Position = model * view * projection * vec4(position, 1.0);
+    gl_Position = projection * view * current_model * vec4(position, 1.0);
 }

@@ -82,7 +82,7 @@ void Particles::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glBindVertexArray(_vertexArrayId);
     for (GLuint i = 0; i < cubePositions.size(); i++) {
         glm::mat4 model2;
-        model2 = glm::translate(model2,  cubePositions[i]);
+        model2 = glm::translate(model2, cubePositions[i]);
         // Transformation
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model2));
         glDrawArrays(GL_TRIANGLES, 0, 36);
