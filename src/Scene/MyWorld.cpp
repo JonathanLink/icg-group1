@@ -206,7 +206,8 @@ void MyWorld::updateFpsCameraPosition() {
 
     if (_hasJumped) {
         GLfloat timeSinceJump = glfwGetTime() - _jumpStartTime;
-        if (timeSinceJump <= 4.0) {
+        const static float MAX_JUMP_TIME = 3.0f;
+        if (timeSinceJump <= MAX_JUMP_TIME) {
             GLfloat jumpHeight = 9 - pow(3 * timeSinceJump - 3, 2.0) + _jumpStartHeight;
             camera.setHeight(std::max(jumpHeight, height));
         } else {
