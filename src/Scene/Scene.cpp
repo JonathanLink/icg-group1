@@ -184,7 +184,12 @@ void Scene::setUniformVariables(GLuint pid, const glm::mat4 &model, const glm::m
     glUniform3f(lightColorLoc, lightColor.x, lightColor.y, lightColor.z);  
 
     // camera position
-    glm::vec3 cameraPos = getCameraPosition();
+    glm::vec3 cameraPos;
+    if (_cameraMode == BEZIER) {
+        cameraPos = _cameraBezier.getPosition();
+    } else {
+        cameraPos = getCameraPosition();
+    }
     GLint cameraPosLoc = glGetUniformLocation(pid, "cameraPos");
     glUniform3f(cameraPosLoc, cameraPos.x, cameraPos.y, cameraPos.z);  
 

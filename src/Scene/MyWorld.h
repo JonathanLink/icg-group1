@@ -31,7 +31,9 @@ private:
 	void updateFpsCameraPosition() override;
 	void buildBezierCurve();
 	float getHeight(unsigned int x, unsigned int y);
-
+	void generateSkyViewCurve();
+	void generateLakeCurve();
+	void generateAroundCurve();
 	float* _heightMap;
 
 	Perlin _perlin;
@@ -46,9 +48,10 @@ private:
 	glm::vec3 _delta;
 	float _step;
 	bool _bezierEditModeEnabled;
-	CameraBezier _cameraBezier;
-	Curve _bezierCurve;
-	Curve _bezierCurve2;
+	CameraBezier _cameraBezierTopView;
+	CameraBezier _cameraBezierLake;
+	Curve _bezierPositionCurve;
+	Curve _bezierLookCurve;
 	Handles _bezierHandles;
 	glm::vec3 *_selectedHandle;
 	glm::vec3 _handle1;

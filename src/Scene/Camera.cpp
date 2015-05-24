@@ -17,6 +17,9 @@ Camera::Camera(const glm::vec3& position, const glm::vec3& rotation) {
 
 
 glm::mat4 Camera::getViewMatrix() {
+    /*std::cout << "eye: "<< glm::to_string(_position) << std::endl;
+    std::cout << "center: " << glm::to_string(_position + _front) << std::endl;
+    std::cout << "_up: " << glm::to_string(_position + _front) << std::endl;*/
     return glm::lookAt(_position, _position + _front, _up);
 }
 

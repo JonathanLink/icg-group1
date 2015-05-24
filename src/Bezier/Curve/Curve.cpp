@@ -15,6 +15,8 @@ void Curve::init() {
 
     glGenVertexArrays(1, &_vertexArrayId);
     glGenBuffers(1, &_vertexBufferId);
+
+    _isLookAtCurve = false;
 }   
 
 
@@ -24,6 +26,11 @@ void Curve::render(const glm::mat4 &view, const glm::mat4 &projection) {
 
     // Set uniform variables for the vertex and fragment glsl files
     scene->setUniformVariables(pid, model, view, projection);
+
+    // lookAtCurve
+    GLint isLookAtCurveLoc = glGetUniformLocation(pid, "isLookAtCurve");
+    int lookAtCurveValue = (_isLookAtCurve) ? 1 : 0 ;
+    glUniform1i(isLookAtCurveLoc, lookAtCurveValue);  
 
     // Draw the container
     glBindVertexArray(_vertexArrayId);
@@ -53,5 +60,10 @@ void Curve::setPoints(std::vector<glm::vec3> points) {
     glBindVertexArray(0); //unbind VAO
 
 }
+
+void Curve::setIsLookAtCurve(bool isLookAtCurve) {
+    _isLookAtCurve = isLookAtCurve;
+}
+
 
 
