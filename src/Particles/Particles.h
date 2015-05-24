@@ -14,6 +14,13 @@ private:
     GLuint _vertexArrayId;
     GLuint _vertexBufferId;
     std::vector<GLfloat> _vertices;
+
+    GLfloat _initialTime;
+    float randomOffset();
+    float randomNumber(float minimu, float maximum);
+    float MAX_HEIGHT = 100.0f;
+    float DESCENT_TIME = 2.0f;
+    std::vector<glm::vec3> _particlePositions;
 };
 
 

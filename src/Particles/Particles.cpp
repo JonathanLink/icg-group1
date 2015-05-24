@@ -1,7 +1,16 @@
 #include "Particles.h"
+#include "../Constants/Constants.h"
 
 Particles::Particles() {
-    // Do nothing
+    srand (time(NULL));
+}
+
+float Particles::randomNumber(float minimum, float maximum) {
+    return ((float(rand()) / float(RAND_MAX)) * (maximum - minimum)) + minimum;
+}
+
+float Particles::randomOffset() {
+    return randomNumber(-5.0f, 5.0f);
 }
 
 void Particles::init() {
@@ -65,6 +74,22 @@ void Particles::init() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
 
     glBindVertexArray(0);
+
+    const int particleHalfGridSize = ceil(Constants::TERRAIN_SCALE / 5.0f);
+    for (int i = -particleHalfGridSize; i < particleHalfGridSize; ++i) {
+        for (int j = -particleHalfGridSize; j < particleHalfGridSize; ++j) {
+            for (int k = 0; k < 20; ++k) {
+                _particlePositions.push_back(glm::vec3(
+                        i * 5.0f + randomOffset(), MAX_HEIGHT - k * 5.0f + randomOffset(), j * 5.0f + randomOffset()
+                ));
+                _particlePositions.push_back(glm::vec3(
+                        i * 5.0f + randomOffset(), MAX_HEIGHT + (k + 1) * 5.0f + randomOffset(), j * 5.0f + randomOffset()
+                ));
+            }
+        }
+    }
+
+    _initialTime = glfwGetTime();
 }
 
 void Particles::render(const glm::mat4 &view, const glm::mat4 &projection) {
@@ -72,16 +97,19 @@ void Particles::render(const glm::mat4 &view, const glm::mat4 &projection) {
 
     scene->setUniformVariables(pid, model, view, projection);
 
-    static const std::vector<glm::vec3> cubePositions = {
-        glm::vec3( 0.0f, 0.0f, 0.0f),
-        glm::vec3( 0.0f, 0.0f, 5.0f)
-    };
+    double currentTime = glfwGetTime() - _initialTime;
+    if (currentTime >= DESCENT_TIME) {
+        _initialTime = glfwGetTime();
+    }
+    const float slope = (MAX_HEIGHT - 0.0f) / (DESCENT_TIME - 0.0f);
+    GLfloat delta = slope * currentTime;
 
     GLuint modelLoc = glGetUniformLocation(pid, "current_model");
     glBindVertexArray(_vertexArrayId);
-    for (GLuint i = 0; i < cubePositions.size(); i++) {
+    for (GLuint i = 0; i < _particlePositions.size(); i++) {
         glm::mat4 model2;
-        model2 = glm::translate(model2, cubePositions[i]);
+        model2 = glm::translate(model2, _particlePositions[i]);
+        model2 = glm::translate(model2, glm::vec3(0.0, -delta, 0.0));
         // Transformation
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model2));
         glDrawArrays(GL_TRIANGLES, 0, 36);
