@@ -18,47 +18,8 @@ void Particles::init() {
     loadShaders( "../src/Particles/particles_vshader.glsl", "../src/Particles/particles_fshader.glsl" );
 
     _vertices = {
-            -0.25f, -0.25f, -0.25f,  0.0f, 0.0f,
-            0.25f, -0.25f, -0.25f,  1.0f, 0.0f,
-            0.25f,  0.25f, -0.25f,  1.0f, 1.0f,
-            0.25f,  0.25f, -0.25f,  1.0f, 1.0f,
-            -0.25f,  0.25f, -0.25f,  0.0f, 1.0f,
-            -0.25f, -0.25f, -0.25f,  0.0f, 0.0f,
-
-            -0.25f, -0.25f,  0.25f,  0.0f, 0.0f,
-            0.25f, -0.25f,  0.25f,  1.0f, 0.0f,
-            0.25f,  0.25f,  0.25f,  1.0f, 1.0f,
-            0.25f,  0.25f,  0.25f,  1.0f, 1.0f,
-            -0.25f,  0.25f,  0.25f,  0.0f, 1.0f,
-            -0.25f, -0.25f,  0.25f,  0.0f, 0.0f,
-
-            -0.25f,  0.25f,  0.25f,  1.0f, 0.0f,
-            -0.25f,  0.25f, -0.25f,  1.0f, 1.0f,
-            -0.25f, -0.25f, -0.25f,  0.0f, 1.0f,
-            -0.25f, -0.25f, -0.25f,  0.0f, 1.0f,
-            -0.25f, -0.25f,  0.25f,  0.0f, 0.0f,
-            -0.25f,  0.25f,  0.25f,  1.0f, 0.0f,
-
-            0.25f,  0.25f,  0.25f,  1.0f, 0.0f,
-            0.25f,  0.25f, -0.25f,  1.0f, 1.0f,
-            0.25f, -0.25f, -0.25f,  0.0f, 1.0f,
-            0.25f, -0.25f, -0.25f,  0.0f, 1.0f,
-            0.25f, -0.25f,  0.25f,  0.0f, 0.0f,
-            0.25f,  0.25f,  0.25f,  1.0f, 0.0f,
-
-            -0.25f, -0.25f, -0.25f,  0.0f, 1.0f,
-            0.25f, -0.25f, -0.25f,  1.0f, 1.0f,
-            0.25f, -0.25f,  0.25f,  1.0f, 0.0f,
-            0.25f, -0.25f,  0.25f,  1.0f, 0.0f,
-            -0.25f, -0.25f,  0.25f,  0.0f, 0.0f,
-            -0.25f, -0.25f, -0.25f,  0.0f, 1.0f,
-
-            -0.25f,  0.25f, -0.25f,  0.0f, 1.0f,
-            0.25f,  0.25f, -0.25f,  1.0f, 1.0f,
-            0.25f,  0.25f,  0.25f,  1.0f, 0.0f,
-            0.25f,  0.25f,  0.25f,  1.0f, 0.0f,
-            -0.25f,  0.25f,  0.25f,  0.0f, 0.0f,
-            -0.25f,  0.25f, -0.25f,  0.0f, 1.0f
+            0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 0.0f
     };
 
     glGenVertexArrays(1, &_vertexArrayId);
@@ -114,7 +75,7 @@ void Particles::render(const glm::mat4 &view, const glm::mat4 &projection) {
         model2 = glm::translate(model2, glm::vec3(0.0, -delta, 0.0));
         // Transformation
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model2));
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glDrawArrays(GL_LINE_STRIP, 0, _vertices.size());
     }
     glBindVertexArray(0);
 }

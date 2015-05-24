@@ -20,7 +20,7 @@ private:
     float randomNumber(float minimum, float maximum);
     float MAX_HEIGHT = 100.0f;
     float DESCENT_TIME = 3.0f;
-    const float SCALE_FACTOR = 5.0f;
+    const float SCALE_FACTOR = 6.0f;
     std::vector<glm::vec3> _particlePositions;
 };
 
