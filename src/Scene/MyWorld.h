@@ -40,7 +40,6 @@ private:
 	Skybox _skybox;
 	Terrain _terrain;
 	FishEye _fishEye;
-	Cube _cube;
 	Water _water;
 	Particles _particles;
 	bool _particlesEnabled = false;

@@ -64,7 +64,7 @@ glm::mat4 CameraBezier::getViewMatrix() {
 
 
 glm::vec3 CameraBezier::getPosition() {
-    float openGlTime = glfwGetTime();
+    float openGlTime = glfwGetTime() - _initialTime;
     float t = fabs(sin( _period * openGlTime));
     glm::vec3 cameraPosition = _cameraPositionCurve.samplePointAtTime(t);
     return cameraPosition;
