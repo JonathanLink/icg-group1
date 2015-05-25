@@ -170,7 +170,7 @@ void MyWorld::render() {
         _bezierHandles.render(view, projection);
     }
 
-    _cube.render(view, projection);
+    //_cube.render(view, projection);
 }
 
 void MyWorld::cleanUp() {
