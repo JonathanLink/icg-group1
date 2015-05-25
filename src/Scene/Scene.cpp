@@ -10,7 +10,7 @@
 Scene::Scene(const glm::vec3& camera_position, const glm::vec3& camera_rotation) : camera(camera_position, camera_rotation) {
     keys.resize(1024, false);
     _cameraMode = FLY;
-    _fog = true;
+    _fog = false;
 }
 
 void Scene::renderScene() {
@@ -75,6 +75,7 @@ void Scene::keyCallback(GLFWwindow* /*window*/, int key, int scancode, int actio
     // camera mode
     if(action == GLFW_PRESS && keys[GLFW_KEY_C]) {
         _cameraMode = (CameraMode)((_cameraMode + 1) % 3);
+        _cameraBezier.setInitialTime(glfwGetTime());
     }
 
     keyCallback(key, scancode, action, mode);

@@ -27,8 +27,7 @@ void CameraBezier::clear() {
 }
 
 glm::mat4 CameraBezier::getViewMatrix() {
-
-    float openGlTime = glfwGetTime();
+    float openGlTime = glfwGetTime() - _initialTime;
     float t = fabs(sin( _period * openGlTime));
     glm::vec3 cameraPosition = _cameraPositionCurve.samplePointAtTime(t);
     glm::vec3 cameraLook = _cameraLookCurve.samplePointAtTime(t);
@@ -92,3 +91,6 @@ void CameraBezier::decreasePeriod() {
 }
 
 
+void CameraBezier::setInitialTime(float initialTime) {
+    _initialTime = initialTime;
+}

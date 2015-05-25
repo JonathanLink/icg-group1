@@ -159,7 +159,10 @@ void MyWorld::render() {
     _water.render(view, projection);
 
      _terrainReflectFB.cleanUp();
-    _particles.render(view, projection);
+
+    if (_particlesEnabled) {
+        _particles.render(view, projection);
+    }
 
     if (_bezierEditModeEnabled) {
         _bezierPositionCurve.render(view, projection);
@@ -202,6 +205,10 @@ void MyWorld::keyCallback(int key, int /*scancode*/, int action, int /*mode*/) {
     glm::vec3 deltaX(_step,0,0);
     glm::vec3 deltaY(0,_step,0);
     glm::vec3 deltaZ(0,0,_step);
+
+    if (action == GLFW_PRESS && keys[GLFW_KEY_R]) {
+        _particlesEnabled = ! _particlesEnabled;
+    }
 
     if(action == GLFW_PRESS && keys[GLFW_KEY_B]) {
         _bezierEditModeEnabled = ! _bezierEditModeEnabled;
