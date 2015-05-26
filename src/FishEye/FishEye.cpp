@@ -34,7 +34,7 @@ void FishEye::render(const glm::mat4 &view, const glm::mat4 &projection) {
     // Bind texture
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _textureId);
-    glUniform1i(glGetUniformLocation(pid, "tex"), 0);
+    glUniform1i(glGetUniformLocation(_pid, "tex"), 0);
 
     // Draw the container
     glBindVertexArray(_vertexArrayId);
@@ -46,7 +46,7 @@ void FishEye::cleanUp() {
     std::cout << "CleanUp FishEye" << std::endl;
     glDeleteVertexArrays(1, &_vertexArrayId);
     glDeleteBuffers(1, &_vertexBufferId);
-    glDeleteProgram(pid);
+    glDeleteProgram(_pid);
 }
 
 void FishEye::setTexture(GLuint textureId) {

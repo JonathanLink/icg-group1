@@ -7,23 +7,23 @@
 
 #include "Scene.h"
 
-Scene::Scene(const glm::vec3& camera_position, const glm::vec3& camera_rotation) : camera(camera_position, camera_rotation) {
-    keys.resize(1024, false);
+Scene::Scene(const glm::vec3& camera_position, const glm::vec3& camera_rotation) : _camera(camera_position, camera_rotation) {
+    _keys.resize(1024, false);
     _cameraMode = FLY;
     _fog = false;
 }
 
 void Scene::renderScene() {
     // update time
-    deltaTime = glfwGetTime() - lastTime;
-    lastTime = glfwGetTime();
+    _deltaTime = glfwGetTime() - _lastTime;
+    _lastTime = glfwGetTime();
 
     // update light position
     float radius = 5.0f;
     float xSun = radius * sin(_lightAngle * 180.0/3.14) + 5.0f;
     float zSun = radius * cos(_lightAngle * 180.0/3.14);
     _lightPosition = glm::vec3(xSun, 5.0f, zSun);
-    _lightAngle = _lightAngle + 0.01 * deltaTime;
+    _lightAngle = _lightAngle + 0.01 * _deltaTime;
 
     // update camera
     switch (_cameraMode) {
@@ -32,18 +32,18 @@ void Scene::renderScene() {
             if (_isInertiaEnabled) {
                 updateInertia();
             }
-            view = camera.getViewMatrix();
+            _view = _camera.getViewMatrix();
             break;
         }
 
         case FPS: {
             updateFpsCameraPosition();
-            view = camera.getViewMatrix();
+            _view = _camera.getViewMatrix();
             break;
         }
 
         case BEZIER: {
-            view = _cameraBezier.getViewMatrix();
+            _view = _cameraBezier.getViewMatrix();
             break;
         }
 
@@ -54,7 +54,7 @@ void Scene::renderScene() {
 
     // update projection
     //projection = glm::perspective(camera.getZoom(), (GLfloat)getSceneAspectRatio(), 0.1f, 100.0f);
-    projection = glm::perspective(45.0f, (GLfloat)getSceneAspectRatio(), 0.1f, 200.0f);
+    _projection = glm::perspective(45.0f, (GLfloat)getSceneAspectRatio(), 0.1f, 200.0f);
 
     render();
 }
@@ -62,18 +62,18 @@ void Scene::renderScene() {
 void Scene::keyCallback(GLFWwindow* /*window*/, int key, int scancode, int action, int mode) {
     // camera
     if(action == GLFW_PRESS) {
-        keys[key] = true;
+        _keys[key] = true;
     } else if (action == GLFW_RELEASE) {
-        keys[key] = false;  
+        _keys[key] = false;
     }
 
     // fog
-    if(action == GLFW_PRESS && keys[GLFW_KEY_F]) {
+    if(action == GLFW_PRESS && _keys[GLFW_KEY_F]) {
         _fog = !_fog;
     }
 
     // camera mode
-    if(action == GLFW_PRESS && keys[GLFW_KEY_C]) {
+    if(action == GLFW_PRESS && _keys[GLFW_KEY_C]) {
         _cameraMode = (CameraMode)((_cameraMode + 1) % 3);
         _cameraBezier.setInitialTime(glfwGetTime());
     }
@@ -82,22 +82,22 @@ void Scene::keyCallback(GLFWwindow* /*window*/, int key, int scancode, int actio
 }
 
 void Scene::mouseCallback(GLFWwindow* /*window*/, double xpos, double ypos) {
-    if(firstMouse) {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
+    if(_firstMouse) {
+        _lastX = xpos;
+        _lastY = ypos;
+        _firstMouse = false;
     }
 
-    GLfloat xOffset = xpos - lastX;
-    GLfloat yOffset = lastY - ypos;
-    lastX = xpos;
-    lastY = ypos;
+    GLfloat xOffset = xpos - _lastX;
+    GLfloat yOffset = _lastY - ypos;
+    _lastX = xpos;
+    _lastY = ypos;
 
-    camera.rotate(xOffset, yOffset);
+    _camera.rotate(xOffset, yOffset);
 }
 
 void Scene::scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
-    camera.zoom(yoffset);
+    _camera.zoom(yoffset);
 }
 
 void Scene::setSceneWidth(GLuint width) {
@@ -113,25 +113,25 @@ float Scene::getSceneAspectRatio() const {
 }
 
 void Scene::updateFlyCameraPosition() {
-    if (keys[GLFW_KEY_W] || keys[GLFW_KEY_S] || keys[GLFW_KEY_A] || keys[GLFW_KEY_D]) {
+    if (_keys[GLFW_KEY_W] || _keys[GLFW_KEY_S] || _keys[GLFW_KEY_A] || _keys[GLFW_KEY_D]) {
         _isInerting = false;
 
-        glm::vec3 oldCameraPosition = camera.getPosition();
-        if(keys[GLFW_KEY_W]) {
-            camera.translate(Camera::FORWARD, deltaTime);
+        glm::vec3 oldCameraPosition = _camera.getPosition();
+        if(_keys[GLFW_KEY_W]) {
+            _camera.translate(Camera::FORWARD, _deltaTime);
         }
-        if(keys[GLFW_KEY_S]) {
-            camera.translate(Camera::BACKWARD, deltaTime);
+        if(_keys[GLFW_KEY_S]) {
+            _camera.translate(Camera::BACKWARD, _deltaTime);
         }
-        if(keys[GLFW_KEY_A]) {
-            camera.translate(Camera::LEFT, deltaTime);
+        if(_keys[GLFW_KEY_A]) {
+            _camera.translate(Camera::LEFT, _deltaTime);
         }
-        if(keys[GLFW_KEY_D]) {
-            camera.translate(Camera::RIGHT, deltaTime);
+        if(_keys[GLFW_KEY_D]) {
+            _camera.translate(Camera::RIGHT, _deltaTime);
         }
 
         // Save last direction of the camera
-        glm::vec3 newCameraPosition = camera.getPosition();
+        glm::vec3 newCameraPosition = _camera.getPosition();
         _lastDirection = glm::normalize(newCameraPosition - oldCameraPosition);
     }
 }
@@ -146,7 +146,7 @@ void Scene::updateInertia() {
         if (timeSinceInertionStart <= 2.0) {
             // Compute speed malus, decreasing from 1 to 0 until end of inertion
             GLfloat speedMalus = 1.0 - timeSinceInertionStart / 2.0;
-            camera.move(_lastDirection, deltaTime * speedMalus);
+            _camera.move(_lastDirection, _deltaTime * speedMalus);
         } else {
             _isInerting = false;
             // After inertion, the camera is not moving anymore
@@ -202,7 +202,7 @@ void Scene::setUniformVariables(GLuint pid, const glm::mat4 &model, const glm::m
 }
 
 glm::vec3 Scene::getCameraPosition() {
-    return camera.getPosition();
+    return _camera.getPosition();
 }
 
 glm::vec3 Scene::getLightPosition() {
@@ -210,7 +210,7 @@ glm::vec3 Scene::getLightPosition() {
 }
 
 GLfloat Scene::getDeltaTime() {
-    return deltaTime;
+    return _deltaTime;
 }
 
 bool Scene::fogEnabled() {
@@ -222,9 +222,9 @@ void Scene::setCameraBezier(CameraBezier cameraBezier) {
 }
 
 glm::float1 Scene :: getReflectTime() {
-    return reflectTime;
+    return _reflectTime;
 }
 
 void Scene :: setReflectTime(glm::float1 t) {
-    reflectTime = t;
+    _reflectTime = t;
 }

@@ -69,15 +69,15 @@ void RenderObject::loadShaders(const char* vertexShaderFile,const char* fragment
     };
 
      // Shader Program
-    pid = glCreateProgram();
-    glAttachShader(pid, vertex);
-    glAttachShader(pid, fragment);
-    glLinkProgram(pid);
+    _pid = glCreateProgram();
+    glAttachShader(_pid, vertex);
+    glAttachShader(_pid, fragment);
+    glLinkProgram(_pid);
 
     // Print linking errors if any
-    glGetProgramiv(pid, GL_LINK_STATUS, &success);
+    glGetProgramiv(_pid, GL_LINK_STATUS, &success);
     if (!success) {
-        glGetProgramInfoLog(pid, 512, NULL, infoLog);
+        glGetProgramInfoLog(_pid, 512, NULL, infoLog);
         std::cout << "[ERROR] RenderObject:loadShaders()\n\tLINKING_FAILED\n\t" << infoLog << std::endl;
     }
 
@@ -89,7 +89,7 @@ void RenderObject::loadShaders(const char* vertexShaderFile,const char* fragment
 }
 
 void RenderObject::useShaders() {
-    glUseProgram(pid); 
+    glUseProgram(_pid);
 }
 
 GLuint RenderObject::gen2DTexture(const char* imagePath, GLint format) {
@@ -116,7 +116,7 @@ GLuint RenderObject::gen2DTexture(const char* imagePath, GLint format) {
 }
 
 void RenderObject::setScene(Scene *s) {
-    scene = s;
+    _scene = s;
     init();
 }
 

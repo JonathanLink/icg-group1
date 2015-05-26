@@ -58,7 +58,7 @@ void Particles::init() {
 void Particles::render(const glm::mat4 &view, const glm::mat4 &projection) {
     useShaders();
 
-    scene->setUniformVariables(pid, model, view, projection);
+    _scene->setUniformVariables(_pid, _model, view, projection);
 
     double currentTime = glfwGetTime() - _initialTime;
     if (currentTime >= DESCENT_TIME) {
@@ -67,7 +67,7 @@ void Particles::render(const glm::mat4 &view, const glm::mat4 &projection) {
     const float slope = (MAX_HEIGHT - 0.0f) / (DESCENT_TIME - 0.0f);
     GLfloat delta = slope * currentTime;
 
-    GLuint modelLoc = glGetUniformLocation(pid, "current_model");
+    GLuint modelLoc = glGetUniformLocation(_pid, "current_model");
     glBindVertexArray(_vertexArrayId);
     for (GLuint i = 0; i < _particlePositions.size(); i++) {
         glm::mat4 model2;
@@ -84,5 +84,5 @@ void Particles::cleanUp() {
     std::cout << "CleanUp Particles" << std::endl;
     glDeleteVertexArrays(1, &_vertexArrayId);
     glDeleteBuffers(1, &_vertexBufferId);
-    glDeleteProgram(pid);
+    glDeleteProgram(_pid);
 }

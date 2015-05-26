@@ -25,10 +25,10 @@ void Curve::render(const glm::mat4 &view, const glm::mat4 &projection) {
     useShaders();
 
     // Set uniform variables for the vertex and fragment glsl files
-    scene->setUniformVariables(pid, model, view, projection);
+    _scene->setUniformVariables(_pid, _model, view, projection);
 
     // lookAtCurve
-    GLint isLookAtCurveLoc = glGetUniformLocation(pid, "isLookAtCurve");
+    GLint isLookAtCurveLoc = glGetUniformLocation(_pid, "isLookAtCurve");
     int lookAtCurveValue = (_isLookAtCurve) ? 1 : 0 ;
     glUniform1i(isLookAtCurveLoc, lookAtCurveValue);  
 
@@ -42,7 +42,7 @@ void Curve::cleanUp() {
     std::cout << "CleanUp Curve" << std::endl;
     glDeleteVertexArrays(1, &_vertexArrayId);
     glDeleteBuffers(1, &_vertexBufferId);
-    glDeleteProgram(pid);
+    glDeleteProgram(_pid);
 }
 
 void Curve::setPoints(std::vector<glm::vec3> points) {

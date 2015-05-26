@@ -23,10 +23,10 @@ void Handle::render(const glm::mat4 &view, const glm::mat4 &projection) {
     useShaders();
 
     // Set uniform variables for the vertex and fragment glsl files
-    scene->setUniformVariables(pid, model, view, projection);
+    _scene->setUniformVariables(_pid, _model, view, projection);
 
     glBindVertexArray(_vertexArrayId); // bind VAO
-    GLint positionLoc = glGetUniformLocation(pid, "position");
+    GLint positionLoc = glGetUniformLocation(_pid, "position");
     glUniform3f(positionLoc, _handle.x, _handle.y, _handle.z);  
 
     // Draw the container
@@ -39,7 +39,7 @@ void Handle::render(const glm::mat4 &view, const glm::mat4 &projection) {
 void Handle::cleanUp() {
     std::cout << "CleanUp Handle" << std::endl;
     glDeleteVertexArrays(1, &_vertexArrayId);
-    glDeleteProgram(pid);
+    glDeleteProgram(_pid);
 }
 
 void Handle::setHandle(const glm::vec3 &handle) {

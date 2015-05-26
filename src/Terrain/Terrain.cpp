@@ -38,7 +38,7 @@ void Terrain::init() {
 
     // Apply a rotation on the model matrix
     //model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::scale(model, glm::vec3(Constants::TERRAIN_SCALE,
+    _model = glm::scale(_model, glm::vec3(Constants::TERRAIN_SCALE,
                                         Constants::TERRAIN_SCALE,
                                         Constants::TERRAIN_SCALE));
 
@@ -58,37 +58,37 @@ void Terrain::init() {
 void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     useShaders();
 
-    float h = (model * glm::vec4(0, 0.37, 0, 1)).y;
+    float h = (_model * glm::vec4(0, 0.37, 0, 1)).y;
     glm::mat4 mirror = glm::translate(glm::mat4(1.0f), glm::vec3(0, 2*h, 0)) * glm::scale(glm::vec3(1, -1, 1));
    
     // Set uniform variables for the vertex and fragment glsl files
     if (!reflection) {
-        scene->setUniformVariables(pid, model, view, projection);
+        _scene->setUniformVariables(_pid, _model, view, projection);
     } else {
-        scene->setUniformVariables(pid, mirror * model,  view , projection);
+        _scene->setUniformVariables(_pid, mirror * _model,  view , projection);
     }
 
     // grid size uniform
-    GLuint grid_size_id = glGetUniformLocation(pid, "grid_size");
+    GLuint grid_size_id = glGetUniformLocation(_pid, "grid_size");
     glm::float1 grid_size = (float)GRID_SIZE;
     glUniform1f(grid_size_id, grid_size);
 
     // refletion boolean uniform
-    GLuint reflection_id = glGetUniformLocation(pid, "isReflected");
+    GLuint reflection_id = glGetUniformLocation(_pid, "isReflected");
     int reflection_value = (reflection) ? 0 : 1;
     glUniform1i(reflection_id, reflection_value);
 
     // water height uniform
-    GLuint water_height_id = glGetUniformLocation(pid, "water_height");
+    GLuint water_height_id = glGetUniformLocation(_pid, "water_height");
     //Todo constante a FIXER
     float waterHeight = 0.37;; 
     glUniform1f(water_height_id, waterHeight);
 
     //time uniform
-    GLuint time_id = glGetUniformLocation(pid, "time");
+    GLuint time_id = glGetUniformLocation(_pid, "time");
     glm::float1 time_size = glfwGetTime();
     if (reflection) {
-        scene->setReflectTime(time_size);
+        _scene->setReflectTime(time_size);
     }
     glUniform1f(time_id, time_size);
 
@@ -96,23 +96,23 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     //Perlin Noise
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _textureId);
-    glUniform1i(glGetUniformLocation(pid, "tex"), 0);
+    glUniform1i(glGetUniformLocation(_pid, "tex"), 0);
     //Grass
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, _grassTexId);
-    glUniform1i(glGetUniformLocation(pid, "grassTex"), 1);
+    glUniform1i(glGetUniformLocation(_pid, "grassTex"), 1);
     //Snow
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, _snowTexId);
-    glUniform1i(glGetUniformLocation(pid, "snowTex"), 2);
+    glUniform1i(glGetUniformLocation(_pid, "snowTex"), 2);
     //Sand
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, _sandTexId);
-    glUniform1i(glGetUniformLocation(pid, "sandTex"), 3);
+    glUniform1i(glGetUniformLocation(_pid, "sandTex"), 3);
     //Rock
     glActiveTexture(GL_TEXTURE4);
     glBindTexture(GL_TEXTURE_2D, _rockTexId);
-    glUniform1i(glGetUniformLocation(pid, "rockTex"), 4);
+    glUniform1i(glGetUniformLocation(_pid, "rockTex"), 4);
  
     glBindVertexArray(_vertexArrayId);
     glDrawElements(GL_TRIANGLE_STRIP, _indices.size(), GL_UNSIGNED_INT, 0);
@@ -130,7 +130,7 @@ void Terrain::cleanUp() {
     glDeleteTextures(1, &_sandTexId);
     glDeleteTextures(1, &_grassTexId);
     glDeleteTextures(1, &_rockTexId);
-    glDeleteProgram(pid);
+    glDeleteProgram(_pid);
 }
 
 void Terrain::constructGrid() {

@@ -22,7 +22,7 @@ void MyWorld::init() {
     FrameBuffer perlinFrameBuffer = FrameBuffer(FRAME_BUFFER_PERLIN_WIDTH, FRAME_BUFFER_PERLIN_HEIGHT);
     GLuint perlinTextureId = perlinFrameBuffer.initTextureId(GL_R32F); 
     perlinFrameBuffer.bind();
-        _perlin.render(view, projection);
+        _perlin.render(_view, _projection);
     perlinFrameBuffer.unbind();
 
     // Save height map in memory
@@ -149,25 +149,25 @@ void MyWorld::render() {
     GLuint terrainReflectTextureId = _terrainReflectFB.initTextureId(GL_RGB);
     _terrainReflectFB.bind();
         _terrain.setReflection(true);
-        _terrain.render(view, projection);
+        _terrain.render(_view, _projection);
         _terrain.setReflection(false);
     _terrainReflectFB.unbind();
     _water.setTextureMirror(terrainReflectTextureId);
 
-    _skybox.render(view, projection);
-    _terrain.render(view, projection);
-    _water.render(view, projection);
+    _skybox.render(_view, _projection);
+    _terrain.render(_view, _projection);
+    _water.render(_view, _projection);
 
      _terrainReflectFB.cleanUp();
 
     if (_particlesEnabled) {
-        _particles.render(view, projection);
+        _particles.render(_view, _projection);
     }
 
     if (_bezierEditModeEnabled) {
-        _bezierPositionCurve.render(view, projection);
-        _bezierLookCurve.render(view, projection);
-        _bezierHandles.render(view, projection);
+        _bezierPositionCurve.render(_view, _projection);
+        _bezierLookCurve.render(_view, _projection);
+        _bezierHandles.render(_view, _projection);
     }
 
     //_cube.render(view, projection);
@@ -191,10 +191,10 @@ void MyWorld::keyCallback(int key, int /*scancode*/, int action, int /*mode*/) {
     // ****bezier ajust speed ****
     // *********************************
 
-    if (action == GLFW_PRESS && keys[GLFW_KEY_K]) {
+    if (action == GLFW_PRESS && _keys[GLFW_KEY_K]) {
         _cameraBezier.increasePeriod();
     }
-    if (action == GLFW_PRESS && keys[GLFW_KEY_L]) {
+    if (action == GLFW_PRESS && _keys[GLFW_KEY_L]) {
         _cameraBezier.decreasePeriod();
     }
 
@@ -206,11 +206,11 @@ void MyWorld::keyCallback(int key, int /*scancode*/, int action, int /*mode*/) {
     glm::vec3 deltaY(0,_step,0);
     glm::vec3 deltaZ(0,0,_step);
 
-    if (action == GLFW_PRESS && keys[GLFW_KEY_R]) {
+    if (action == GLFW_PRESS && _keys[GLFW_KEY_R]) {
         _particlesEnabled = ! _particlesEnabled;
     }
 
-    if(action == GLFW_PRESS && keys[GLFW_KEY_B]) {
+    if(action == GLFW_PRESS && _keys[GLFW_KEY_B]) {
         _bezierEditModeEnabled = ! _bezierEditModeEnabled;
 
         _isInertiaEnabled = ! _isInertiaEnabled;
@@ -221,50 +221,50 @@ void MyWorld::keyCallback(int key, int /*scancode*/, int action, int /*mode*/) {
     }
     
     if (_bezierEditModeEnabled) {
-        if (action == GLFW_PRESS && keys[GLFW_KEY_U]) {
+        if (action == GLFW_PRESS && _keys[GLFW_KEY_U]) {
              std::cout << "HANDLE 1" << std::endl;
             _selectedHandle = &_handle1;
-        } else if (action == GLFW_PRESS && keys[GLFW_KEY_I]) {
+        } else if (action == GLFW_PRESS && _keys[GLFW_KEY_I]) {
              std::cout << "HANDLE 2" << std::endl;
             _selectedHandle = &_handle2;
-        } else if (action == GLFW_PRESS && keys[GLFW_KEY_O]) {
+        } else if (action == GLFW_PRESS && _keys[GLFW_KEY_O]) {
             std::cout << "HANDLE 3" << std::endl;
             _selectedHandle = &_handle3;
-        } else if (action == GLFW_PRESS && keys[GLFW_KEY_P]) {
+        } else if (action == GLFW_PRESS && _keys[GLFW_KEY_P]) {
             std::cout << "HANDLE 4" << std::endl;
             _selectedHandle = &_handle4;
         }
 
 
-        if (action == GLFW_PRESS && keys[GLFW_KEY_X]) {
+        if (action == GLFW_PRESS && _keys[GLFW_KEY_X]) {
             _delta = deltaX;
             std::cout << "BEZIER EDIT SELECTED AXE = X " << std::endl;
-        } else if (action == GLFW_PRESS && keys[GLFW_KEY_Z]) {
+        } else if (action == GLFW_PRESS && _keys[GLFW_KEY_Z]) {
             _delta = deltaY;
             std::cout << "BEZIER EDIT SELECTED AXE = Y " << std::endl;
-        } else if (action == GLFW_PRESS && keys[GLFW_KEY_Y]) {
+        } else if (action == GLFW_PRESS && _keys[GLFW_KEY_Y]) {
             _delta = deltaZ;
             std::cout << "BEZIER EDIT SELECTED AXE = Z " << std::endl;
         }
 
-        if (action == GLFW_PRESS  && keys[GLFW_KEY_UP]) {
+        if (action == GLFW_PRESS  && _keys[GLFW_KEY_UP]) {
             *_selectedHandle = *_selectedHandle - _delta;
             buildBezierCurve();
-        } else if (action == GLFW_PRESS  && keys[GLFW_KEY_DOWN]) {
+        } else if (action == GLFW_PRESS  && _keys[GLFW_KEY_DOWN]) {
             *_selectedHandle = *_selectedHandle + _delta;
             buildBezierCurve();
         }
 
-        if (action == GLFW_PRESS  && keys[GLFW_KEY_LEFT]) {
+        if (action == GLFW_PRESS  && _keys[GLFW_KEY_LEFT]) {
             _step += 0.2;
             std::cout << "BEZIER EDIT step = " << _step << std::endl;
-        } else if (action == GLFW_PRESS  && keys[GLFW_KEY_RIGHT]) {
+        } else if (action == GLFW_PRESS  && _keys[GLFW_KEY_RIGHT]) {
             _step -= 0.2;
             if (_step < 0) _step = 0;
             std::cout << "BEZIER EDIT step = " << _step << std::endl;
         }
 
-        if (action == GLFW_PRESS && keys[GLFW_KEY_ENTER]) {
+        if (action == GLFW_PRESS && _keys[GLFW_KEY_ENTER]) {
             std::cout << "camera/lookHulls.push_back(Hull(glm::"<< glm::to_string(_handle1) << ", glm::" << glm::to_string(_handle2) << ", glm::" << glm::to_string(_handle3) << ", glm::" << glm::to_string(_handle4) << "));"<<std::endl;
         }
     }
@@ -272,7 +272,7 @@ void MyWorld::keyCallback(int key, int /*scancode*/, int action, int /*mode*/) {
 
 void MyWorld::updateFpsCameraPosition() {
     updateFlyCameraPosition();
-    glm::vec3 cameraPosition = camera.getPosition();
+    glm::vec3 cameraPosition = _camera.getPosition();
     glm::vec2 pos_2d(cameraPosition.x, cameraPosition.z);
     //std::cout << "2D position: " << pos_2d.x << ", " << pos_2d.y << std::endl;
     glm::vec2 pos_texture(
@@ -284,7 +284,7 @@ void MyWorld::updateFpsCameraPosition() {
     float normalizedHeight = getHeight(pos_texture.x * FRAME_BUFFER_PERLIN_WIDTH, pos_texture.y * FRAME_BUFFER_PERLIN_HEIGHT);
     //std::cout << "Height: " << normalizedHeight << std::endl;
     float height = (normalizedHeight + 0.05) * Constants::TERRAIN_SCALE;
-    if(keys[GLFW_KEY_SPACE] && !_hasJumped) {
+    if(_keys[GLFW_KEY_SPACE] && !_hasJumped) {
         _hasJumped = true;
         _jumpStartTime = glfwGetTime();
         _jumpStartHeight = height;
@@ -295,12 +295,12 @@ void MyWorld::updateFpsCameraPosition() {
         const static float MAX_JUMP_TIME = 3.0f;
         if (timeSinceJump <= MAX_JUMP_TIME) {
             GLfloat jumpHeight = 9 - pow(3 * timeSinceJump - 3, 2.0) + _jumpStartHeight;
-            camera.setHeight(std::max(jumpHeight, height));
+            _camera.setHeight(std::max(jumpHeight, height));
         } else {
             _hasJumped = false;
         }
     } else {
-        camera.setHeight(height);
+        _camera.setHeight(height);
     }
 }
 

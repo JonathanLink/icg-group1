@@ -98,13 +98,13 @@ double previousTime = 0.0;
 void Cube::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _texture1);
-    glUniform1i(glGetUniformLocation(this->pid, "ourTexture1"), 0);
+    glUniform1i(glGetUniformLocation(this->_pid, "ourTexture1"), 0);
 
     useShaders();
 
-    GLuint modelLoc = glGetUniformLocation(pid, "model");
-    GLuint viewLoc = glGetUniformLocation(pid, "view");
-    GLuint projectionLoc = glGetUniformLocation(pid, "projection");
+    GLuint modelLoc = glGetUniformLocation(_pid, "model");
+    GLuint viewLoc = glGetUniformLocation(_pid, "view");
+    GLuint projectionLoc = glGetUniformLocation(_pid, "projection");
 
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE,  glm::value_ptr(view));
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE,  glm::value_ptr(projection));
@@ -131,6 +131,6 @@ void Cube::cleanUp() {
     glDeleteVertexArrays(1, &_vertexArrayId);
     glDeleteBuffers(1, &_vertexBufferId);
     glDeleteBuffers(1, &_elementBufferId);
-    glDeleteProgram(pid);
+    glDeleteProgram(_pid);
 }
 
