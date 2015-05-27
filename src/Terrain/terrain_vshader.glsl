@@ -19,8 +19,8 @@ vec3 getNormal(vec2 pos) {
     
     float delta = 1.0/grid_size;
     // Create 2D vectors
-    vec2 north2D = vec2(pos.x, pos.y + delta);
-    vec2 south2D = vec2(pos.x, pos.y - delta);
+    vec2 north2D = vec2(pos.x, pos.y - delta);
+    vec2 south2D = vec2(pos.x, pos.y + delta);
     vec2 east2D = vec2(pos.x + delta, pos.y);
     vec2 west2D = vec2(pos.x - delta, pos.y);
 
