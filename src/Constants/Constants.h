@@ -12,6 +12,8 @@ public:
     static const bool IS_FULLSCREEN;
     static const GLuint WINDOW_WIDTH;
     static const GLuint WINDOW_HEIGHT;
+
+    static float getParabola(float currentX, float width);
 };
 
 #endif //MYWORLD_CONSTANTS_H

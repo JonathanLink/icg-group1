@@ -102,7 +102,7 @@ GLfloat Camera::getZoom() {
     return _zoom;
 }
 
-glm::vec3 Camera::getPosition() {
+const glm::vec3& Camera::getPosition() const {
    // std::cout << glm::to_string(_position) << std::endl;
     return _position;
 }
