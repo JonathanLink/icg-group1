@@ -58,7 +58,7 @@ void Terrain::init() {
 void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
     useShaders();
 
-    float h = (_model * glm::vec4(0, 0.37, 0, 1)).y;
+    float h = (_model * glm::vec4(0, Constants::WATER_HEIGHT, 0, 1)).y;
     glm::mat4 mirror = glm::translate(glm::mat4(1.0f), glm::vec3(0, 2*h, 0)) * glm::scale(glm::vec3(1, -1, 1));
    
     // Set uniform variables for the vertex and fragment glsl files
@@ -80,9 +80,7 @@ void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
 
     // water height uniform
     GLuint water_height_id = glGetUniformLocation(_pid, "water_height");
-    //Todo constante a FIXER
-    float waterHeight = 0.37;; 
-    glUniform1f(water_height_id, waterHeight);
+    glUniform1f(water_height_id, Constants::WATER_HEIGHT);
 
     //time uniform
     GLuint time_id = glGetUniformLocation(_pid, "time");
