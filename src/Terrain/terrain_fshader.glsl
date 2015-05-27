@@ -72,7 +72,7 @@ void main() {
         vec3 snowMixedRockMixedGrass = mix(rockMixedGrass, snowTex, snowCoeff(1 - angle)); 
 
         float pseudoRN = angle / 6;
-        float sandHeight = 0.45;
+        float sandHeight = water_height + 0.03;
         float sandHeightMixed = sandHeight + 0.05;
         float snowHeight = 0.87;
         float snowHeightMixed = snowHeight + 0.08;

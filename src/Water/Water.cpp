@@ -58,8 +58,7 @@ void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
     // water height uniform
     GLuint water_height_id = glGetUniformLocation(_pid, "water_height");
     //Todo constante a FIXER
-    float waterHeight = 0.37;
-    glUniform1f(water_height_id, waterHeight);
+    glUniform1f(water_height_id, Constants::WATER_HEIGHT);
 
     //time uniform
     GLuint time_id = glGetUniformLocation(_pid, "time");

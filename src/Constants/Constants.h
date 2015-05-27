@@ -12,6 +12,7 @@ public:
     static const bool IS_FULLSCREEN;
     static const GLuint WINDOW_WIDTH;
     static const GLuint WINDOW_HEIGHT;
+    static const float WATER_HEIGHT;
 };
 
 #endif //MYWORLD_CONSTANTS_H

@@ -9,3 +9,4 @@ const float Constants::SKYBOX_SCALE = 55.0f;
 const bool Constants::IS_FULLSCREEN = false;
 const GLuint Constants::WINDOW_WIDTH = 800;
 const GLuint Constants::WINDOW_HEIGHT = 600;
+const float Constants::WATER_HEIGHT = 0.37;
