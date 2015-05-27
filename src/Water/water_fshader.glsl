@@ -24,7 +24,8 @@ out vec4 color;
 
 void main() {
 
-    vec4 textureColor = vec4(0,128.0/255.0, 1.0, 0.5);
+    //vec4 textureColor = vec4(0,196.0/255.0, 1.0, 0.4);
+    vec4 textureColor = vec4(0,241.0/255.0, 1.0, 0.4);
     vec4 finalColor = vec4(0,0,0,0);
    
     if (fragHeight >= water_height) { // hide water if not a visible lake
@@ -65,8 +66,7 @@ void main() {
 
         if(texture(tex_mirror, rfl_uv).rgb != vec3(0.0, 0.0, 0.0) ) {
             vec3 terrainReflected = texture(tex_mirror, rfl_uv).rgb;
-
-            finalColor.xyz = mix(finalColor.xyz, terrainReflected, 0.5);
+            finalColor = vec4(mix(finalColor.xyz, terrainReflected, 0.5), 0.6);
         }
 
         // ============ Fog part =======================

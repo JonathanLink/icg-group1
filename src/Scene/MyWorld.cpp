@@ -16,49 +16,12 @@ void MyWorld::init() {
     _terrain.setScene(this);
     _water.setScene(this);
     _particles.setScene(this);
+    _bezierController.setScene(this);
     _sun.setScene(this);
 
     drawPerlin();
-
-    // Bezier init
-    _step = 0.5;
-    _bezierEditModeEnabled = false;
-    _bezierPositionCurve.setScene(this);
-    _bezierLookCurve.setScene(this);
-
-    // CURVE OK
-    _handle1 = glm::vec3(-33.299969, 29.899982, 19.099995);
-    _handle2 = glm::vec3(-23.700001, 11.299978, 1.400000);
-    _handle3 = glm::vec3(-24.099998, 6.599979, -7.899996);
-    _handle4 = glm::vec3(13.699999, 16.199974, -3.599999);
-    _selectedHandle = &_handle1;
-    buildBezierCurve();
-
     _wireframeIsEnabled = false;
-}
-
-void MyWorld::generateSkyViewCurve() {
-    _handle1 = glm::vec3(0.0, 65.0, 20.0);
-    _handle2 = glm::vec3(0.0, 65.0, 1.0);
-    _handle3 = glm::vec3(0.0,65.0, -1.0);
-    _handle4 = glm::vec3(0.0, 65.0, -20.0);
-
-    std::vector<Hull> cameraHulls;
-    cameraHulls.clear();
-    cameraHulls.push_back(Hull(glm::vec3(0.0, 65.0, 20.0), glm::vec3(0.0, 65.0, 1.0), glm::vec3(0.0,65.0, -1.0), glm::vec3(0.0, 65.0, -20.0)));
     
-    std::vector<Hull> lookHulls;
-    lookHulls.clear();
-    lookHulls.push_back(Hull(glm::vec3(0.0, 64.6, 20.0), glm::vec3(0.0,  64.6, 1.0), glm::vec3(0.0,  64.6, -1.0), glm::vec3(0.0,  64.6, -20.0)));
-
-    _cameraBezierTopView.setHulls(cameraHulls, lookHulls);
-    setCameraBezier(_cameraBezierTopView);
-
-    _bezierPositionCurve.setPoints(_cameraBezierTopView.getCameraCurvePoints());
-    _bezierLookCurve.setIsLookAtCurve(true);
-    _bezierLookCurve.setPoints(_cameraBezierTopView.getLookCurvePoints());
-
-    _bezierHandles.setHandles(cameraHulls, this);
 
 }
 
@@ -119,6 +82,7 @@ void MyWorld::buildBezierCurve() {
     //generateAroundCurve();
 }
 
+
 void MyWorld::drawPerlin() {
     // Draw perlin noise in framebuffer we've just created
     FrameBuffer perlinFrameBuffer = FrameBuffer(_perlin.getFrameBufferWidth(), _perlin.getFrameBufferWidth());
@@ -168,14 +132,9 @@ void MyWorld::render() {
             _particles.render(_view, _projection);
         }
 
-        if (_bezierEditModeEnabled) {
-            _bezierPositionCurve.render(_view, _projection);
-            _bezierLookCurve.render(_view, _projection);
-            _bezierHandles.render(_view, _projection);
+        if (_bezierController.bezierEditModeEnabled) {
+            _bezierController.render(_view, _projection);
         }
-
-        _sun.setPosition(getLightPosition());
-        _sun.render(_view, _projection);
     } else {
         _perlin.render(_view, _projection);
     }
@@ -186,15 +145,17 @@ void MyWorld::cleanUp() {
     _terrain.cleanUp();
     _perlin.cleanUp();
 
-    _bezierPositionCurve.cleanUp();
-    _bezierLookCurve.cleanUp();
-    _bezierHandles.cleanUp();
+    _bezierController.cleanUp();
+
     _particles.cleanUp();
 }
 
 // This method is ugly and i know it!
 void MyWorld::keyCallback(int key, int scancode, int action, int mode) {
-    if (action == GLFW_PRESS && _keys[GLFW_KEY_R]) {
+
+    _bezierController.keyCallback(key, scancode, action, mode);
+
+    if (action == GLFW_PRESS && key == GLFW_KEY_R) {
         _particlesEnabled = ! _particlesEnabled;
         if (_particlesEnabled) {
             std::cout << "Particles mode enabled" << std::endl;
@@ -204,7 +165,7 @@ void MyWorld::keyCallback(int key, int scancode, int action, int mode) {
 
     }
 
-   if (!_bezierEditModeEnabled) {
+   if (!_bezierController.bezierEditModeEnabled) {
         _perlin.keyCallback(key, scancode, action, mode);
    }
 
@@ -215,78 +176,14 @@ void MyWorld::keyCallback(int key, int scancode, int action, int mode) {
     // *********************************
     // ****bezier ajust speed ****
     // *********************************
-    if (action == GLFW_PRESS && key == GLFW_KEY_K) {
+    if (action == GLFW_PRESS && key == GLFW_KEY_J) {
         _cameraBezier.increasePeriod();
     }
-    if (action == GLFW_PRESS && key == GLFW_KEY_L) {
+    if (action == GLFW_PRESS && key == GLFW_KEY_K) {
         _cameraBezier.decreasePeriod();
     }
 
-    // *********************************
-    // ***** bezier edit mode  ****
-    // *********************************
-
-    glm::vec3 deltaX(_step,0,0);
-    glm::vec3 deltaY(0,_step,0);
-    glm::vec3 deltaZ(0,0,_step);
-
-    if(action == GLFW_PRESS && key == GLFW_KEY_B) {
-        _bezierEditModeEnabled = ! _bezierEditModeEnabled;
-
-        _isInertiaEnabled = ! _isInertiaEnabled;
-        // Reset inertia
-        _isInerting = false;
-        _lastDirection = glm::vec3(0.0, 0.0, 0.0);
-        std::cout << "BEZIER EDIT MODE = " << _bezierEditModeEnabled << std::endl;
-    }
-
-    if (_bezierEditModeEnabled) {
-        if (action == GLFW_PRESS && key == GLFW_KEY_U) {
-             std::cout << "HANDLE 1" << std::endl;
-            _selectedHandle = &_handle1;
-        } else if (action == GLFW_PRESS && key == GLFW_KEY_I) {
-             std::cout << "HANDLE 2" << std::endl;
-            _selectedHandle = &_handle2;
-        } else if (action == GLFW_PRESS && key == GLFW_KEY_O) {
-            std::cout << "HANDLE 3" << std::endl;
-            _selectedHandle = &_handle3;
-        } else if (action == GLFW_PRESS && key == GLFW_KEY_P) {
-            std::cout << "HANDLE 4" << std::endl;
-            _selectedHandle = &_handle4;
-        }
-
-        if (action == GLFW_PRESS && key == GLFW_KEY_X) {
-            _delta = deltaX;
-            std::cout << "BEZIER EDIT SELECTED AXE = X " << std::endl;
-        } else if (action == GLFW_PRESS && key == GLFW_KEY_Z) {
-            _delta = deltaY;
-            std::cout << "BEZIER EDIT SELECTED AXE = Y " << std::endl;
-        } else if (action == GLFW_PRESS && key == GLFW_KEY_Y) {
-            _delta = deltaZ;
-            std::cout << "BEZIER EDIT SELECTED AXE = Z " << std::endl;
-        }
-
-        if (action == GLFW_PRESS  && key == GLFW_KEY_UP) {
-            *_selectedHandle = *_selectedHandle - _delta;
-            buildBezierCurve();
-        } else if (action == GLFW_PRESS  && key == GLFW_KEY_DOWN) {
-            *_selectedHandle = *_selectedHandle + _delta;
-            buildBezierCurve();
-        }
-
-        if (action == GLFW_PRESS  && key == GLFW_KEY_LEFT) {
-            _step += 0.2;
-            std::cout << "BEZIER EDIT step = " << _step << std::endl;
-        } else if (action == GLFW_PRESS  && key == GLFW_KEY_RIGHT) {
-            _step -= 0.2;
-            if (_step < 0) _step = 0;
-            std::cout << "BEZIER EDIT step = " << _step << std::endl;
-        }
-
-        if (action == GLFW_PRESS && key == GLFW_KEY_ENTER) {
-            std::cout << "camera/lookHulls.push_back(Hull(glm::"<< glm::to_string(_handle1) << ", glm::" << glm::to_string(_handle2) << ", glm::" << glm::to_string(_handle3) << ", glm::" << glm::to_string(_handle4) << "));"<<std::endl;
-        }
-    }
+   
 }
 
 void MyWorld::updateFpsCameraPosition() {

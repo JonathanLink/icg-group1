@@ -1,6 +1,48 @@
 README
 ==================================
+# Keyboard tips:
 
+Press:
+
+* C to change camera (FLY, FPS, BEZIER)
+* W,A,S,D + mouse in FLY and FPS mode	
+* SPACE BAR to jump in FPS mode
+* R to turn on/off the rain
+* F to turn on/off the fog
+* L to turn on/off wireframe mode
+* J to increase camera bezier speed
+* K to decrease camera bezier speed
+
+# Bezier Mode:
+
+Press:
+
+* B to enter Bezier mode
+* U to select the first handle
+* I to select the second handle
+* O to select the third handle
+* P to select the forth and last handle
+* X to move along the X-axe
+* Y to move along the Y-axe
+* Z to move along the Z-axe
+* UP ARROW to increase value
+* DOWN ARROW to decrease value
+* LEFT ARROW to increase step value
+* RIGHT ARROW to decrease step value
+* ENTER to output the 4 handles coordinates into the console
+
+# Perlin Mode:
+
+Press:
+
+* P to enter Bezier mode
+* SPACE BAR to select which perlin parameter you want to modify
+* UP ARROW to increase value
+* DOWN ARROW to decrease value
+* O to write all bezier parameters into the console
+* R to reset the terrain to default bezier parameters
+
+# Code:
 Description of the root directory items:
 
 * include
@@ -11,11 +53,6 @@ Description of the root directory items:
    * Contains source of the project
 * tex
    * Contains all textures of the project
-
-
-> ********************************************************************************** 
-> IMPORTANT NOTE TO TA: The external lib named “pgl” has been created by ourselves.
-> **********************************************************************************
 
 
 # How to build:
@@ -82,8 +119,3 @@ Description of all classes of the pgl library:
 
 A small home-made library aiming to accelerate simple openGL projects or for prototyping purpose. PoGL actually stands for Prototyping OpenGL (name is subject to change, still brainstorming, fist name was pgl)
 
-# Credits
-
-Date: April 2015
-
-Author: Jonathan Link
