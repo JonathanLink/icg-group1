@@ -32,13 +32,15 @@ void main() {
     //vec4 textureColor = vec4(0,128.0/255.0, 1.0, 0.5);
 
 
-    vec2 uv = posV.xy + ( (0.1*cos(5*time))  );
-
+    
     /* 
     PROBLEM
         Find a way better move equation  (cf. slide technique)
     PROBLEM
     */
+    vec2 uv = posV.xy - 0.02*time;
+
+
     vec4 textureColor = vec4(texture2D(tex_water, 5*uv).rgb, 0.7);
 
     vec4 finalColor = vec4(0,0,0,0);
