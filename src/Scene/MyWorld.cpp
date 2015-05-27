@@ -124,7 +124,7 @@ void MyWorld::drawPerlin() {
     FrameBuffer perlinFrameBuffer = FrameBuffer(_perlin.getFrameBufferWidth(), _perlin.getFrameBufferWidth());
     _perlinTextureId = perlinFrameBuffer.initTextureId(GL_R32F); 
     perlinFrameBuffer.bind();
-        _perlin.render(view, projection);
+        _perlin.render(_view, _projection);
     perlinFrameBuffer.unbind();
 
     // Save height map in memory
@@ -140,16 +140,14 @@ void MyWorld::drawPerlin() {
 void MyWorld::render() {
     //Draw terrain in framebuffer for water reflection
     if (true) { // to debug perlin purpose
-
         if (_perlin.isPerlinModeIsEnabled()) {
             drawPerlin();
         }
 
-
         GLuint terrainReflectTextureId = _terrainReflectFB.initTextureId(GL_RGB);
         _terrainReflectFB.bind();
             _terrain.setReflection(true);
-            _terrain.render(view, projection);
+            _terrain.render(_view, _projection);
             _terrain.setReflection(false);
         _terrainReflectFB.unbind();
         _water.setTextureMirror(terrainReflectTextureId);
@@ -159,24 +157,24 @@ void MyWorld::render() {
          } else {
              glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
          }
-        _skybox.render(view, projection);
-        _terrain.render(view, projection);
-        _water.render(view, projection);
+        _skybox.render(_view, _projection);
+        _terrain.render(_view, _projection);
+        _water.render(_view, _projection);
 
         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
          _terrainReflectFB.cleanUp();
         if (_particlesEnabled) {
-            _particles.render(view, projection);
+            _particles.render(_view, _projection);
         }
 
         if (_bezierEditModeEnabled) {
-            _bezierPositionCurve.render(view, projection);
-            _bezierLookCurve.render(view, projection);
-            _bezierHandles.render(view, projection);
+            _bezierPositionCurve.render(_view, _projection);
+            _bezierLookCurve.render(_view, _projection);
+            _bezierHandles.render(_view, _projection);
         }
     } else {
-        _perlin.render(view, projection);
+        _perlin.render(_view, _projection);
     }
 }
 
@@ -193,7 +191,15 @@ void MyWorld::cleanUp() {
 
 // This method is ugly and i know it!
 void MyWorld::keyCallback(int key, int scancode, int action, int mode) {
-    
+    if (action == GLFW_PRESS && _keys[GLFW_KEY_R]) {
+        _particlesEnabled = ! _particlesEnabled;
+        if (_particlesEnabled) {
+            std::cout << "Particles mode enabled" << std::endl;
+        } else {
+            std::cout << "Particles mode disabled" << std::endl;
+        }
+
+    }
 
    if (!_bezierEditModeEnabled) {
         _perlin.keyCallback(key, scancode, action, mode);
@@ -315,7 +321,9 @@ void MyWorld::updateFpsCameraPosition() {
 }
 
 float MyWorld::getHeight(unsigned int x, unsigned int y) {
-    if (x < _perlin.getFrameBufferWidth() && y < _perlin.getFrameBufferWidth()) {
+    unsigned int width = _perlin.getFrameBufferWidth();
+    unsigned int height = _perlin.getFrameBufferWidth();
+    if (x < width && y < height) {
         return _heightMap[x + _perlin.getFrameBufferWidth() * y];
     } else {
         return 0.0;

@@ -18,8 +18,6 @@ Perlin::Perlin() {
 void Perlin::init() {
     std::cout << "Init Perlin" << std::endl;
 
-
-
     loadShaders( "../src/Perlin/perlin_vshader.glsl", "../src/Perlin/perlin_fshader.glsl" );
 
     _lacunarity = LACUNARITY_DEFAULT_VALUE;
@@ -51,9 +49,6 @@ void Perlin::init() {
 }  
 
 void Perlin::keyCallback(int key, int scancode, int action, int mode) {
-
-    
-
     if (action == GLFW_PRESS && key == GLFW_KEY_P) {
         _perlinModeIsEnabled =! _perlinModeIsEnabled;
         std::cout << "PERLIN MODE  = " << _perlinModeIsEnabled << std::endl;
@@ -63,12 +58,8 @@ void Perlin::keyCallback(int key, int scancode, int action, int mode) {
     }
 
     if (_perlinModeIsEnabled) {
-
         float value = 0;
         float step = 0;
-
-        
-
 
         if (action == GLFW_PRESS && key == GLFW_KEY_SPACE) {
             _param = (ParamNoise)((_param + 1) % 6);
@@ -90,7 +81,6 @@ void Perlin::keyCallback(int key, int scancode, int action, int mode) {
             std::cout << "\t x = " << _x << std::endl;
             std::cout << "\t framebuffer = " << _frameBufferWidth << std::endl;
         }
-
 
         switch(_param) {
             case LACUNARITY: {
@@ -131,15 +121,12 @@ void Perlin::keyCallback(int key, int scancode, int action, int mode) {
             }
         }
 
-        
-
         if (action == GLFW_PRESS && key ==  GLFW_KEY_UP) {
             value = value + step;
         } else if (action == GLFW_PRESS && key ==  GLFW_KEY_DOWN) {
             value = value - step;
         }
 
-       
         switch(_param) {
             case LACUNARITY: {
                 _lacunarity =  value;
@@ -170,23 +157,18 @@ void Perlin::keyCallback(int key, int scancode, int action, int mode) {
                 _frameBufferWidth = value;
                 break;
             }
-            
-        } 
-       
+        }
     }
-        
-
-    
 } 
 
 void Perlin::render(const glm::mat4 &view, const glm::mat4 &projection) {
     useShaders();
 
-    glUniform1f(glGetUniformLocation(pid, "_lacunarity"), _lacunarity);
-    glUniform1f(glGetUniformLocation(pid, "_freq"), _freq);
-    glUniform1i(glGetUniformLocation(pid, "_octaves"), _octaves);
-    glUniform1f(glGetUniformLocation(pid, "_amplitude"), _amplitude);
-    glUniform1f(glGetUniformLocation(pid, "_x"), _x);
+    glUniform1f(glGetUniformLocation(_pid, "_lacunarity"), _lacunarity);
+    glUniform1f(glGetUniformLocation(_pid, "_freq"), _freq);
+    glUniform1i(glGetUniformLocation(_pid, "_octaves"), _octaves);
+    glUniform1f(glGetUniformLocation(_pid, "_amplitude"), _amplitude);
+    glUniform1f(glGetUniformLocation(_pid, "_x"), _x);
 
     // Draw the container
     glBindVertexArray(_vertexArrayId);
