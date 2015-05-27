@@ -24,7 +24,7 @@ void Scene::renderScene() {
     float xSun = radius * sin(_lightAngle * 180.0/3.14) + radius;
     float zSun = radius * cos(_lightAngle * 180.0/3.14) - 0.0;
     _lightPosition = glm::vec3(xSun, Constants::TERRAIN_SCALE, zSun);
-    _lightAngle = _lightAngle + 0.01 * _deltaTime;
+//    _lightAngle = _lightAngle + 0.01 * _deltaTime;
 
     // update camera
     switch (_cameraMode) {

@@ -24,13 +24,8 @@ uniform float water_height;
 out vec4 color;
 
 float grassCoeff(float local_slope) {
-    if (local_slope >= 0.7) {
-        return 0.0;
-    } else if (local_slope <= 0.3) {
-        return 0.7;
-    } else {
-        return local_slope * local_slope * local_slope;
-    }
+    //return 1.0 - 1.0/(1.0 + exp((-(local_slope - 0.5) * 6.0)) );
+    return 1.0 - (6.0*(local_slope * local_slope * local_slope * local_slope * local_slope) - 15.0*(local_slope * local_slope * local_slope * local_slope) + 10.0*(local_slope * local_slope * local_slope));
 }
 
 float snowCoeff(float local_slope) {
@@ -56,8 +51,8 @@ void main() {
 
         // ============ Texturing part ==================
         float tilingScaleSand = 30;
-        float tilingScaleRock = 10;
-        float tilingScaleGrass = 15;
+        float tilingScaleRock = 30;
+        float tilingScaleGrass = 50;
         float tilingScaleSnow = 30;
 
         float angle = dot(normal, vec3(0.0f, -1.0f, 0.0f));
@@ -68,8 +63,8 @@ void main() {
         vec3 grassTex = texture(grassTex, tilingScaleGrass * uv_coords).rgb;
         vec3 snowTex = texture(snowTex, tilingScaleSnow * uv_coords).rgb;
         vec3 rockMixedGrass = mix(rockTex, grassTex, grassCoeff(1.0 - angle));
-        vec3 snowMixedRock = mix(rockTex, snowTex, snowCoeff(1 - angle));
-        vec3 snowMixedRockMixedGrass = mix(rockMixedGrass, snowTex, snowCoeff(1 - angle)); 
+        vec3 snowMixedRock = mix(rockTex, snowTex, snowCoeff(1.0 - angle));
+        vec3 snowMixedRockMixedGrass = mix(rockMixedGrass, snowTex, snowCoeff(1.0 - angle)); 
 
         float pseudoRN = angle / 6;
         float sandHeight = water_height + 0.03;
