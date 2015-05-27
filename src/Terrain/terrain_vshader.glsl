@@ -52,7 +52,7 @@ void main() {
 
     //0 = true #logic
     float heightWater = 0;
-    if (isReflected < 0.5) {
+    /*if (isReflected < 0.5) {
         
         float CONST_PI = 3.1415926535897932384626433832795;
         float timeValue = time;
@@ -64,7 +64,7 @@ void main() {
         float heightSine = amplitude * sin(spatialFrequency * (local_uv_coords.x + local_uv_coords.y) + timeFrequency * timeValue);
 
         heightWater = amplitude - amplitude * sin(spatialFrequency * sqrt(local_uv_coords.x * local_uv_coords.x + local_uv_coords.y * local_uv_coords.y) + timeFrequency * timeValue);
-    }
+    }*/
 
 	vec3 local_pos_3d = vec3(position.x, fragHeight, position.y);
     gl_Position = MVP_matrix * vec4(local_pos_3d, 1.0);

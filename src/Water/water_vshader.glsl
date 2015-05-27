@@ -2,16 +2,6 @@
 
 layout (location = 0) in vec2 position;
 
-const vec3 TANGENT = vec3(1.0, 0.0, 0.0);
-const vec3 NORMAL = vec3(0.0, 1.0, 0.0);
-const vec3 BITANGENT = vec3(0.0, 0.0, -1.0);
-
-
-out vec3 FragPos;
-out vec3 TangentFragPos;
-out vec3 TangentLightDir;
-out vec3 TangentPlayerPos;
-
 out vec2 uv_coords;
 out vec3 fragPos;
 out vec3 normal;
@@ -65,7 +55,7 @@ void main() {
 
     uv_coords = local_uv_coords;
 
-    float CONST_PI = 3.1415926535897932384626433832795;
+    /* float CONST_PI = 3.1415926535897932384626433832795;
     float timeValue = time;
 
     float amplitude = 0.005;
@@ -78,7 +68,7 @@ void main() {
 
     float heightWater = amplitude - amplitude * sin(spatialFrequency * sqrt(local_uv_coords.x * local_uv_coords.x +
      local_uv_coords.y * local_uv_coords.y) + timeFrequency * timeValue);
-
+    */
 
     normal = getNormal(local_uv_coords);
     vec3 local_pos_3d = vec3(position.x, water_height, position.y); // 0.37 initially for the height
@@ -86,16 +76,6 @@ void main() {
     fragPos = vec3(model * vec4(local_pos_3d, 1.0f));
 
     frag_coord = vec2(0.5* (gl_Position.x / gl_Position.w + 1.0), 0.5* (gl_Position.y / gl_Position.w + 1.0) );
-
-    mat3 mod = transpose(inverse(mat3(model)));
-    vec3 n = normalize(mod * NORMAL);
-    vec3 t = normalize(mod * TANGENT);
-    vec3 b = normalize(mod * BITANGENT);
-    mat3 TBN = transpose(mat3(t, b, n));
-    TangentFragPos =  TBN * fragPos;
-    TangentLightDir =  TBN * lightPos.xyz;
-    TangentPlayerPos =  TBN * cameraPos;
-
 }
 
 

@@ -41,10 +41,6 @@ void Water::init() {
                                         Constants::TERRAIN_SCALE,
                                         Constants::TERRAIN_SCALE));
 
-    // Bind Grass Texture
-    _waterTextureId = gen2DTexture("../tex/water4.jpg", GL_RGB);
-
-
     /* 
     PROBLEM
         Find a better normalMap Texture for water because we can see shading artefact right now
@@ -89,14 +85,9 @@ void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glBindTexture(GL_TEXTURE_2D, _mirrorTextureId);
     glUniform1i(glGetUniformLocation(_pid, "tex_mirror"), 1);
 
-    //Terrain reflection
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, _waterTextureId);
-    glUniform1i(glGetUniformLocation(_pid, "tex_water"), 2);
-
     //Water normal
     glActiveTexture(GL_TEXTURE3);
-    glBindTexture(GL_TEXTURE_2D, _waterTextureId);
+    glBindTexture(GL_TEXTURE_2D, _waterNormalTextureId);
     glUniform1i(glGetUniformLocation(_pid, "tex_water_normal"), 3);
 
     // Draw

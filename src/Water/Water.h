@@ -18,7 +18,6 @@ private:
     GLuint _elementBufferId;
     GLuint _perlinTextureId;
     GLuint _mirrorTextureId;
-    GLuint _waterTextureId;
     GLuint _waterNormalTextureId;
     std::vector<GLfloat> _vertices;
     std::vector<GLuint> _indices;

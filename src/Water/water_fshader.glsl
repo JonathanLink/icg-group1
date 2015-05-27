@@ -11,10 +11,6 @@ in float fragHeight;
 in vec2 frag_coord;
 in vec2 posV;
 
-in vec3 TangentFragPos;
-in vec3 TangentLightDir;
-in vec3 TangentPlayerPos;
-
 uniform sampler2D tex;
 uniform sampler2D tex_mirror;
 uniform sampler2D tex_water;
@@ -32,26 +28,18 @@ uniform float time;
 
 out vec4 color;
 
-
 void main() {
 
-    //vec4 textureColor = vec4(0,128.0/255.0, 1.0, 0.5);
-
-    /* 
-    PROBLEM
-        Find a way better move equation  (cf. slide technique)
-    PROBLEM
-    */
-    //vec2 uv = posV.xy + vec2(time) * 0.2;
-
     vec3 waterNormal = normalize(2.0 * texture2D(tex_water_normal, uv_coords).rgb - 1.0);
-
     vec4 textureColor = vec4(texture2D(tex_water, uv_coords).rgb, 0.7);
+    vec4 finalColor = vec4(0.0);
 
-    vec4 finalColor = vec4(0,0,0,0);
-
+    /*
+    CREDIT GOES TO SHADERTOY
+    */
+    
         float time2 = time * .5+23.0;
-        vec2 uv = 10*uv_coords.xy;
+        vec2 uv = 8 * uv_coords.xy;
        
         vec2 p = mod(uv*TAU, TAU)-250.0;
         vec2 i = vec2(p);
@@ -68,7 +56,10 @@ void main() {
         c = 1.17-pow(c, 1.4);
         vec3 colour = vec3(pow(abs(c), 8.0));
         textureColor = vec4(clamp(colour + vec3(0.0, 0.35, 0.5), 0.0, 1.0), 0.8);
-
+    
+    /*
+    CREDIT GOES TO SHADERTOY
+    */
    
     if (fragHeight >= water_height) { // hide water if not a visible lake
        finalColor = vec4(0.0,0.0,0.0,0.0); 
@@ -87,17 +78,8 @@ void main() {
         vec3 diffuse = diff * lightColor;
 
         // Ambient + Diffuse
-        vec4 result = vec4((ambient + diffuse), 1.0f) * textureColor;
+        vec4 result = vec4((ambient), 1.0f) * textureColor;
         finalColor = result;
-
-        /* Specular lighting
-        lightDir = normalize(-TangentLightDir);
-        vec3 viewDir = normalize(TangentPlayerPos - TangentFragPos);
-        vec3 reflectDir = normalize(reflect(-lightDir, normal));
-        float spec = pow(max(dot(viewDir, reflectDir), 0.0), 64);
-        vec3 lighting = vec3(spec);
-        finalColor.xyz *= lighting;       
-        */
 
         // ============ Reflection part ==================
         vec2 whSize = textureSize(tex_mirror, 0);
