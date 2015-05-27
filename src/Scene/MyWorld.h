@@ -11,6 +11,7 @@
 #include "../Water/Water.h"
 #include "../FrameBuffer/FrameBuffer.h"
 #include "../Particles/Particles.h"
+#include "../Sun/Sun.h"
 
 
 class MyWorld: public Scene {
@@ -59,6 +60,8 @@ private:
 	glm::vec3 _handle2;
 	glm::vec3 _handle3;
 	glm::vec3 _handle4;
+
+	Sun _sun;
 
 	FrameBuffer _terrainReflectFB;
 };

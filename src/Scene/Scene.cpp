@@ -33,7 +33,7 @@ void Scene::renderScene() {
             xSun = -elapsedTime * slope + sunDistance;
         }
 
-        const float ySun = 5.0f * Constants::getParabola(elapsedTime, DAY_DURATION);
+        const float ySun = 3.0f * Constants::getParabola(elapsedTime, DAY_DURATION);
         const float zSun = 0.0;
         _lightPosition = glm::vec3(xSun, ySun, zSun);
     } else {
