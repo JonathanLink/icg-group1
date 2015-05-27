@@ -6,6 +6,7 @@ uniform float _lacunarity; // 1.5
 uniform float _freq; // 5
 uniform int _octaves; // 5
 uniform float _amplitude; // 0.8
+uniform float _x; // 0.8
 
 // noise
 float noise(vec2 pos)
@@ -82,7 +83,7 @@ float fbm(vec2 x,float lacunarity) {
     float a = _amplitude;
     vec2 shift = vec2(100);
     // Rotate to reduce axial bias
-    mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.50));
+    mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));
     int NUM_OCTAVES = _octaves;
     for (int i = 0; i < NUM_OCTAVES; ++i) {
         float noise = noise(x, _freq);

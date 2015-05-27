@@ -11,7 +11,9 @@ public:
         LACUNARITY,
         FREQ,
         OCTAVES,
-        AMPLITUDE
+        AMPLITUDE,
+        X,
+        FRAMEBUFFER
     };
 
     Perlin();
@@ -20,17 +22,20 @@ public:
     void cleanUp() override;
     void keyCallback(int key, int scancode, int action, int mode);
     bool isPerlinModeIsEnabled();
+    int getFrameBufferWidth();
 
 private:
     GLuint _vertexArrayId;
     GLuint _vertexBufferId;
 
+    int _frameBufferWidth;
     ParamNoise _param;
     bool _perlinModeIsEnabled;
     float _lacunarity;
 	float _freq;
 	int _octaves; 
-	float _amplitude; 
+	float _amplitude;
+    float _x; 
 };
 
 #endif

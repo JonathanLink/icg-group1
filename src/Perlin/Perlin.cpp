@@ -1,12 +1,15 @@
 #include <iostream>
 #include "Perlin.h"
 
-const char * _params[] = { "LACUNARITY", "FREQ", "OCTAVES", "AMPLITUDE" }; 
+const char * _params[] = { "LACUNARITY", "FREQ", "OCTAVES", "AMPLITUDE", "X", "FRAMEBUFFER" }; 
 
+const int FRAMEBUFFER_SIZE_DEFAULT_VALUE = 512;
 const float LACUNARITY_DEFAULT_VALUE = 1.5;
 const float FREQ_DEFAULT_VALUE = 5;
 const int OCTAVES_DEFAULT_VALUE = 5;
 const float AMPLITUDE_DEFAULT_VALUE = 0.8;
+const int X_DEFAULT_VALUE = 0;
+
 
 Perlin::Perlin() {
     // Do nothing
@@ -23,6 +26,8 @@ void Perlin::init() {
     _freq = FREQ_DEFAULT_VALUE;
     _octaves = OCTAVES_DEFAULT_VALUE;
     _amplitude = AMPLITUDE_DEFAULT_VALUE;
+    _x = X_DEFAULT_VALUE;
+    _frameBufferWidth = FRAMEBUFFER_SIZE_DEFAULT_VALUE;
 
     GLfloat vertices[] = { /*V1*/ -1.0f, -1.0f, 0.0f,
                            /*V2*/ +1.0f, -1.0f, 0.0f,
@@ -66,7 +71,7 @@ void Perlin::keyCallback(int key, int scancode, int action, int mode) {
 
 
         if (action == GLFW_PRESS && key == GLFW_KEY_SPACE) {
-            _param = (ParamNoise)((_param + 1) % 4);
+            _param = (ParamNoise)((_param + 1) % 6);
             std::cout << "[PERLIN MODE] PARAM = " << _params[_param] << std::endl;
         } else if (action == GLFW_PRESS && key == GLFW_KEY_R) {
             std::cout << "[PERLIN MODE] RESET PARAMS" << std::endl;
@@ -74,12 +79,16 @@ void Perlin::keyCallback(int key, int scancode, int action, int mode) {
             _freq = FREQ_DEFAULT_VALUE;
             _octaves = OCTAVES_DEFAULT_VALUE;
             _amplitude = AMPLITUDE_DEFAULT_VALUE;
+            _x = X_DEFAULT_VALUE;
+            _frameBufferWidth = FRAMEBUFFER_SIZE_DEFAULT_VALUE;
         } else if (action == GLFW_PRESS && key == GLFW_KEY_O) {
             std::cout << "[PERLIN MODE] VALUES:" << std::endl;
             std::cout << "\t lacunarity = " << _lacunarity << std::endl;
             std::cout << "\t freq = " << _freq << std::endl;
             std::cout << "\t octaves = " << _octaves << std::endl;
             std::cout << "\t amplitude = " << _amplitude << std::endl;
+            std::cout << "\t x = " << _x << std::endl;
+            std::cout << "\t framebuffer = " << _frameBufferWidth << std::endl;
         }
 
 
@@ -107,6 +116,19 @@ void Perlin::keyCallback(int key, int scancode, int action, int mode) {
                 step = 0.05;
                 break;
             }
+
+            case X: {
+                value = _x;
+                step = 0.5;
+                break;
+            }
+
+
+            case FRAMEBUFFER: {
+                value = _frameBufferWidth;
+                step = 100;
+                break;
+            }
         }
 
         
@@ -131,13 +153,21 @@ void Perlin::keyCallback(int key, int scancode, int action, int mode) {
             
             case OCTAVES: {
                 _octaves = value;
-                std::cout << "\t octaves = " << _octaves << std::endl;
                 break;
             }
            
             case AMPLITUDE: {
                 _amplitude = value;
-                std::cout << "\t _amplitude = " << _amplitude << std::endl;
+                break;
+            }
+
+            case X: {
+                _x = value;
+                break;
+            }
+
+            case FRAMEBUFFER: {
+                _frameBufferWidth = value;
                 break;
             }
             
@@ -156,6 +186,7 @@ void Perlin::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glUniform1f(glGetUniformLocation(pid, "_freq"), _freq);
     glUniform1i(glGetUniformLocation(pid, "_octaves"), _octaves);
     glUniform1f(glGetUniformLocation(pid, "_amplitude"), _amplitude);
+    glUniform1f(glGetUniformLocation(pid, "_x"), _x);
 
     // Draw the container
     glBindVertexArray(_vertexArrayId);
@@ -174,4 +205,7 @@ bool Perlin::isPerlinModeIsEnabled() {
     return _perlinModeIsEnabled;
 }
 
+int Perlin::getFrameBufferWidth() {
+    return _frameBufferWidth;
+}
 

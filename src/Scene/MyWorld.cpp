@@ -121,14 +121,14 @@ void MyWorld::buildBezierCurve() {
 
 void MyWorld::drawPerlin() {
     // Draw perlin noise in framebuffer we've just created
-    FrameBuffer perlinFrameBuffer = FrameBuffer(FRAME_BUFFER_PERLIN_WIDTH, FRAME_BUFFER_PERLIN_HEIGHT);
+    FrameBuffer perlinFrameBuffer = FrameBuffer(_perlin.getFrameBufferWidth(), _perlin.getFrameBufferWidth());
     _perlinTextureId = perlinFrameBuffer.initTextureId(GL_R32F); 
     perlinFrameBuffer.bind();
         _perlin.render(view, projection);
     perlinFrameBuffer.unbind();
 
     // Save height map in memory
-    _heightMap = new float[FRAME_BUFFER_PERLIN_WIDTH * FRAME_BUFFER_PERLIN_HEIGHT];
+    _heightMap = new float[_perlin.getFrameBufferWidth() * _perlin.getFrameBufferWidth()];
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _perlinTextureId);
     glGetTexImage(GL_TEXTURE_2D, 0, GL_RED, GL_FLOAT, _heightMap);
@@ -294,7 +294,7 @@ void MyWorld::updateFpsCameraPosition() {
     );
 
     //std::cout << "Texture position: " << pos_texture.x << ", " << pos_texture.y << std::endl;
-    float normalizedHeight = getHeight(pos_texture.x * FRAME_BUFFER_PERLIN_WIDTH, pos_texture.y * FRAME_BUFFER_PERLIN_HEIGHT);
+    float normalizedHeight = getHeight(pos_texture.x * _perlin.getFrameBufferWidth(), pos_texture.y * _perlin.getFrameBufferWidth());
     //std::cout << "Height: " << normalizedHeight << std::endl;
     float height = (normalizedHeight + 0.05) * Constants::TERRAIN_SCALE;
     if(keys[GLFW_KEY_SPACE] && !_hasJumped) {
@@ -318,8 +318,8 @@ void MyWorld::updateFpsCameraPosition() {
 }
 
 float MyWorld::getHeight(unsigned int x, unsigned int y) {
-    if (x < FRAME_BUFFER_PERLIN_WIDTH && y < FRAME_BUFFER_PERLIN_HEIGHT) {
-        return _heightMap[x + FRAME_BUFFER_PERLIN_WIDTH * y];
+    if (x < _perlin.getFrameBufferWidth() && y < _perlin.getFrameBufferWidth()) {
+        return _heightMap[x + _perlin.getFrameBufferWidth() * y];
     } else {
         return 0.0;
     }
