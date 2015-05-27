@@ -95,7 +95,7 @@ void main() {
         // ============ Lightning part ==================
 
         // Ambient
-        float ambientStrength = 0.3f;
+        float ambientStrength = 0.25f;
         vec3 ambient = ambientStrength * lightColor;
 
         // Diffuse

@@ -69,6 +69,7 @@ void Particles::render(const glm::mat4 &view, const glm::mat4 &projection) {
 
     GLuint modelLoc = glGetUniformLocation(_pid, "current_model");
     glBindVertexArray(_vertexArrayId);
+    glEnable(GL_BLEND);
     for (GLuint i = 0; i < _particlePositions.size(); i++) {
         glm::mat4 model2;
         model2 = glm::translate(model2, _particlePositions[i]);
@@ -77,6 +78,7 @@ void Particles::render(const glm::mat4 &view, const glm::mat4 &projection) {
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model2));
         glDrawArrays(GL_LINE_STRIP, 0, _vertices.size());
     }
+    glDisable(GL_BLEND);
     glBindVertexArray(0);
 }
 

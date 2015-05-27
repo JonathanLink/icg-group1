@@ -4,6 +4,7 @@
 #include "../libs/stb_image.h"
 #include "Scene.h"
 
+
 class RenderObject {
 public:
     RenderObject();
@@ -15,6 +16,8 @@ public:
     void loadShaders(const char* vertexShaderFile,const char* fragmentShaderFile);
     void useShaders();
     GLuint gen2DTexture(const char* imagePath, GLint format);
+    void keyCallback(int key, int scancode, int action, int mode); 
+    void mouseCallback(double xpos, double ypos);
 
 protected:
     Scene *_scene;

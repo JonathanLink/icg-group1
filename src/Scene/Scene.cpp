@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include "../Constants/Constants.h"
 
 #include "Scene.h"
 
@@ -19,10 +20,10 @@ void Scene::renderScene() {
     _lastTime = glfwGetTime();
 
     // update light position
-    float radius = 5.0f;
-    float xSun = radius * sin(_lightAngle * 180.0/3.14) + 5.0f;
-    float zSun = radius * cos(_lightAngle * 180.0/3.14);
-    _lightPosition = glm::vec3(xSun, 5.0f, zSun);
+    float radius = Constants::TERRAIN_SCALE;
+    float xSun = radius * sin(_lightAngle * 180.0/3.14) + radius;
+    float zSun = radius * cos(_lightAngle * 180.0/3.14) - 0.0;
+    _lightPosition = glm::vec3(xSun, Constants::TERRAIN_SCALE, zSun);
     _lightAngle = _lightAngle + 0.01 * _deltaTime;
 
     // update camera
@@ -59,7 +60,7 @@ void Scene::renderScene() {
     render();
 }
 
-void Scene::keyCallback(GLFWwindow* /*window*/, int key, int scancode, int action, int mode) {
+void Scene::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
     // camera
     if(action == GLFW_PRESS) {
         _keys[key] = true;
@@ -79,6 +80,7 @@ void Scene::keyCallback(GLFWwindow* /*window*/, int key, int scancode, int actio
     }
 
     keyCallback(key, scancode, action, mode);
+
 }
 
 void Scene::mouseCallback(GLFWwindow* /*window*/, double xpos, double ypos) {
@@ -181,6 +183,8 @@ void Scene::setUniformVariables(GLuint pid, const glm::mat4 &model, const glm::m
 
     // light color
     glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    //glm::vec3 lightColor = glm::vec3(240.0/255.0, 205/255.0, 102./255.0);
+    //glm::vec3 lightColor = glm::vec3(0.3,0.3,0.3);
     GLint lightColorLoc = glGetUniformLocation(pid, "lightColor");
     glUniform3f(lightColorLoc, lightColor.x, lightColor.y, lightColor.z);  
 

@@ -7,7 +7,6 @@
 #include "../Bezier/Curve/Handles/Handles.h"
 #include "../Terrain/Terrain.h"
 #include "../Perlin/Perlin.h"
-#include "../FishEye/FishEye.h"
 #include "../Cube/Cube.h"
 #include "../Water/Water.h"
 #include "../FrameBuffer/FrameBuffer.h"
@@ -17,8 +16,6 @@
 class MyWorld: public Scene {
 public:
 
-	static const unsigned int FRAME_BUFFER_PERLIN_WIDTH = 512;
-    static const unsigned int FRAME_BUFFER_PERLIN_HEIGHT = 512;
 
 	MyWorld(unsigned int terrainReflectFbWidth,
 			unsigned int terrainReflectFbHeight);
@@ -34,14 +31,18 @@ private:
 	void generateSkyViewCurve();
 	void generateLakeCurve();
 	void generateAroundCurve();
+	void drawPerlin();
+	GLuint _perlinTextureId;
+
 	float* _heightMap;
 
 	Perlin _perlin;
 	Skybox _skybox;
 	Terrain _terrain;
-	FishEye _fishEye;
+
 	Water _water;
 	Particles _particles;
+	bool _wireframeIsEnabled;
 	bool _particlesEnabled = false;
 
 	// Bezier 

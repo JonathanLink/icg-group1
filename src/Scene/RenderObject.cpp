@@ -120,3 +120,11 @@ void RenderObject::setScene(Scene *s) {
     init();
 }
 
+void RenderObject::keyCallback(int key, int scancode, int action, int mode) {
+
+}
+
+void RenderObject::mouseCallback(double xpos, double ypos) {
+
+}
+
