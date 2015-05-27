@@ -66,7 +66,6 @@ void main() {
         heightWater = amplitude - amplitude * sin(spatialFrequency * sqrt(local_uv_coords.x * local_uv_coords.x + local_uv_coords.y * local_uv_coords.y) + timeFrequency * timeValue);
     }
 
-
 	vec3 local_pos_3d = vec3(position.x, fragHeight, position.y);
     gl_Position = MVP_matrix * vec4(local_pos_3d, 1.0);
 
