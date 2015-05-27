@@ -96,7 +96,7 @@ void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
 
     //Water normal
     glActiveTexture(GL_TEXTURE3);
-    glBindTexture(GL_TEXTURE_2D, _waterTextureId);
+    glBindTexture(GL_TEXTURE_2D, _waterNormalTextureId);
     glUniform1i(glGetUniformLocation(_pid, "tex_water_normal"), 3);
 
     // Draw
