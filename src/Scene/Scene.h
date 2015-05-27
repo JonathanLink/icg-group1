@@ -31,13 +31,14 @@ public:
     void setSceneWidth(GLuint width);
     void setSceneHeight(GLuint height);
     float getSceneAspectRatio() const;
-    glm::vec3 getCameraPosition();
-    glm::vec3 getLightPosition();
+    const glm::vec3& getCameraPosition() const;
     void setUniformVariables(GLuint pid, const glm::mat4 &model, const glm::mat4 &view, const glm::mat4 &projection);
     GLfloat getDeltaTime();
     bool fogEnabled();
     void setCameraBezier(CameraBezier cameraBezier);
 
+    const glm::vec3& getLightPosition() const;
+    const glm::vec3& getLightColor() const;
     glm::float1 getReflectTime();
     void setReflectTime(glm::float1 t);
 
@@ -53,7 +54,6 @@ protected:
     GLfloat _deltaTime;
     GLfloat _lastTime;
 
-protected:
     void updateFlyCameraPosition();
     virtual void updateFpsCameraPosition() = 0;
     bool _isInertiaEnabled = true;
@@ -69,8 +69,12 @@ protected:
     GLuint _sceneWidth;
     GLuint _sceneHeight;
     CameraMode _cameraMode;
-    double _lightAngle;
+
+    float _dayInitialTime;
     glm::vec3 _lightPosition;
+    bool _lightDirection = true;
+    glm::vec3 _lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+
     bool _fog;
     CameraBezier _cameraBezier;
     glm::float1 _reflectTime;

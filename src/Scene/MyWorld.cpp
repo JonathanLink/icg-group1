@@ -16,6 +16,7 @@ void MyWorld::init() {
     _terrain.setScene(this);
     _water.setScene(this);
     _particles.setScene(this);
+    _sun.setScene(this);
 
     drawPerlin();
 
@@ -118,7 +119,6 @@ void MyWorld::buildBezierCurve() {
     //generateAroundCurve();
 }
 
-
 void MyWorld::drawPerlin() {
     // Draw perlin noise in framebuffer we've just created
     FrameBuffer perlinFrameBuffer = FrameBuffer(_perlin.getFrameBufferWidth(), _perlin.getFrameBufferWidth());
@@ -173,6 +173,9 @@ void MyWorld::render() {
             _bezierLookCurve.render(_view, _projection);
             _bezierHandles.render(_view, _projection);
         }
+
+        _sun.setPosition(getLightPosition());
+        _sun.render(_view, _projection);
     } else {
         _perlin.render(_view, _projection);
     }

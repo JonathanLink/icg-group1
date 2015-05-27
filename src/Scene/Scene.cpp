@@ -12,6 +12,7 @@ Scene::Scene(const glm::vec3& camera_position, const glm::vec3& camera_rotation)
     _keys.resize(1024, false);
     _cameraMode = FLY;
     _fog = false;
+    _dayInitialTime = glfwGetTime();
 }
 
 void Scene::renderScene() {
@@ -19,12 +20,28 @@ void Scene::renderScene() {
     _deltaTime = glfwGetTime() - _lastTime;
     _lastTime = glfwGetTime();
 
-    // update light position
-    float radius = Constants::TERRAIN_SCALE;
-    float xSun = radius * sin(_lightAngle * 180.0/3.14) + radius;
-    float zSun = radius * cos(_lightAngle * 180.0/3.14) - 0.0;
-    _lightPosition = glm::vec3(xSun, Constants::TERRAIN_SCALE, zSun);
-//    _lightAngle = _lightAngle + 0.01 * _deltaTime;
+    // Update light position
+    const float elapsedTime = glfwGetTime() - _dayInitialTime;
+    if (elapsedTime < 10.0f) {
+        static const float DAY_DURATION = 10.0f;
+        const float sunDistance = 3 * Constants::TERRAIN_SCALE;
+        const float slope = (sunDistance + sunDistance) / (DAY_DURATION - 0);
+        float xSun;
+        if (_lightDirection) {
+            xSun = elapsedTime * slope - sunDistance;
+        } else {
+            xSun = -elapsedTime * slope + sunDistance;
+        }
+
+        const float ySun = 3.0f * Constants::getParabola(elapsedTime, DAY_DURATION);
+        const float zSun = 0.0;
+        _lightPosition = glm::vec3(xSun, ySun, zSun);
+    } else {
+        _dayInitialTime = glfwGetTime();
+        _lightDirection = !_lightDirection;
+    }
+
+    //fprintf(stdout, "Light position: (%f, %f, %f)\n", _lightPosition.x, _lightPosition.y, _lightPosition.z);
 
     // update camera
     switch (_cameraMode) {
@@ -145,9 +162,10 @@ void Scene::updateInertia() {
         _initialInertionTime = glfwGetTime();
     } else if (_isInerting) {
         GLfloat timeSinceInertionStart = glfwGetTime() - _initialInertionTime;
-        if (timeSinceInertionStart <= 2.0) {
+        static const float INERTION_DURATION = 1.0f;
+        if (timeSinceInertionStart <= INERTION_DURATION) {
             // Compute speed malus, decreasing from 1 to 0 until end of inertion
-            GLfloat speedMalus = 1.0 - timeSinceInertionStart / 2.0;
+            GLfloat speedMalus = 1.0 - timeSinceInertionStart / INERTION_DURATION;
             _camera.move(_lastDirection, _deltaTime * speedMalus);
         } else {
             _isInerting = false;
@@ -205,11 +223,11 @@ void Scene::setUniformVariables(GLuint pid, const glm::mat4 &model, const glm::m
 
 }
 
-glm::vec3 Scene::getCameraPosition() {
+const glm::vec3& Scene::getCameraPosition() const {
     return _camera.getPosition();
 }
 
-glm::vec3 Scene::getLightPosition() {
+const glm::vec3& Scene::getLightPosition() const {
    return _lightPosition;
 }
 
@@ -225,10 +243,14 @@ void Scene::setCameraBezier(CameraBezier cameraBezier) {
     _cameraBezier = cameraBezier;
 }
 
-glm::float1 Scene :: getReflectTime() {
+glm::float1 Scene::getReflectTime() {
     return _reflectTime;
 }
 
-void Scene :: setReflectTime(glm::float1 t) {
+void Scene::setReflectTime(glm::float1 t) {
     _reflectTime = t;
+}
+
+const glm::vec3 &Scene::getLightColor() const {
+    return _lightColor;
 }

@@ -6,6 +6,8 @@
 
 class Constants {
 public:
+    static float getParabola(float currentX, float width);
+
     static const float TERRAIN_SCALE;
     static const glm::vec3 SKYBOX_TRANSLATION;
     static const float SKYBOX_SCALE;

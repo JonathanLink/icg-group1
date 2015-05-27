@@ -24,7 +24,7 @@ public:
     void rotate(GLfloat xOffset, GLfloat yOffset);
     void zoom(GLfloat yOffset);
     GLfloat getZoom();
-    glm::vec3 getPosition();
+    const glm::vec3& getPosition() const;
     void setHeight(float height);
 
 private:

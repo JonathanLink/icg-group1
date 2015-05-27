@@ -55,7 +55,7 @@ void main() {
         float tilingScaleGrass = 50;
         float tilingScaleSnow = 30;
 
-        float angle = dot(normal, vec3(0.0f, -1.0f, 0.0f));
+        float angle = dot(normal, vec3(0.0f, 1.0f, 0.0f));
         vec3 textureColor;
 
         vec3 sandTex = texture(sandTex, tilingScaleSand * uv_coords).rgb;
@@ -95,7 +95,7 @@ void main() {
 
         // Diffuse
         vec3 norm = normalize(normal);
-        vec3 lightDir = normalize(lightPos - fragPos);  
+        vec3 lightDir = normalize(lightPos - fragPos);
         float diff = max(dot(norm, lightDir), 0.0);
         vec3 diffuse = diff * lightColor;
 
