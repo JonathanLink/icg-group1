@@ -7,7 +7,6 @@
 #include "../Bezier/Curve/Handles/Handles.h"
 #include "../Terrain/Terrain.h"
 #include "../Perlin/Perlin.h"
-#include "../FishEye/FishEye.h"
 #include "../Cube/Cube.h"
 #include "../Water/Water.h"
 #include "../FrameBuffer/FrameBuffer.h"
@@ -34,15 +33,18 @@ private:
 	void generateSkyViewCurve();
 	void generateLakeCurve();
 	void generateAroundCurve();
+	void drawPerlin();
+	GLuint _perlinTextureId;
+
 	float* _heightMap;
 
 	Perlin _perlin;
 	Skybox _skybox;
 	Terrain _terrain;
-	FishEye _fishEye;
 	Cube _cube;
 	Water _water;
 	Particles _particles;
+	bool _wireframeIsEnabled;
 
 	// Bezier 
 	glm::vec3 _delta;

@@ -2,6 +2,10 @@
 
 out vec3 color;
 
+uniform float _lacunarity; // 1.5
+uniform float _freq; // 5
+uniform int _octaves; // 5
+uniform float _amplitude; // 0.8
 
 // noise
 float noise(vec2 pos)
@@ -75,13 +79,13 @@ float noise(vec2 p, float freq ){
 
 float fbm(vec2 x,float lacunarity) {
     float v = 0.0;
-    float a = 0.8;
+    float a = _amplitude;
     vec2 shift = vec2(100);
     // Rotate to reduce axial bias
     mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.50));
-    int NUM_OCTAVES = 7;
+    int NUM_OCTAVES = _octaves;
     for (int i = 0; i < NUM_OCTAVES; ++i) {
-        float noise = noise(x, 5);
+        float noise = noise(x, _freq);
         v += a * noise;
         //x = x * 2.0;
         //x = x * 2.0 + shift;
@@ -126,7 +130,7 @@ void main() {
     /*float c = noise(gl_FragCoord.xy, 5);*/
     
 //*********************
-    float c = fbm(gl_FragCoord.xy, 1.5);
+    float c = fbm(gl_FragCoord.xy, _lacunarity);
     //float c = fbmOld(gl_FragCoord.xy);
  //*********************
 
