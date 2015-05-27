@@ -19,17 +19,19 @@ uniform mat4 MVP_matrix;
 uniform float water_height;
 uniform int fogEnabled;
 
+uniform float time;
+
 out vec4 color;
 
+float rand(vec2 c){
+    float result = fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
+    return result;
+}
 
 void main() {
 
-    vec4 textureColor = vec4(0,128.0/255.0, 1.0, 0.5);
+    vec4 textureColor = vec4(0,241.0/255.0, 1.0, 0.7);
     vec4 finalColor = vec4(0,0,0,0);
-   
-    if (fragHeight >= water_height) { // hide water if not a visible lake
-       finalColor = vec4(0.0,0.0,0.0,0.0); 
-    } else {
 
         // ============ Lightning part ==================
 
@@ -41,10 +43,11 @@ void main() {
         vec3 norm = normalize(normal);
         vec3 lightDir = normalize(lightPos - fragPos);  
         float diff = max(dot(norm, lightDir), 0.0);
-        vec3 diffuse = diff * lightColor;
-        // Ambient + Diffuse
+        float cLength = length(uv_coords + 0.2*normal.x);
+        vec3 rng = lightColor * 0.2 * cos( time * cLength ) / cLength;
+        // Ambient + RNG
 
-        vec4 result = vec4((ambient + diffuse), 1.0f) * textureColor;
+        vec4 result = vec4((ambient + rng), 1.0f) * textureColor;
         finalColor = result;
 
 
@@ -66,7 +69,7 @@ void main() {
         if(texture(tex_mirror, rfl_uv).rgb != vec3(0.0, 0.0, 0.0) ) {
             vec3 terrainReflected = texture(tex_mirror, rfl_uv).rgb;
 
-            finalColor.xyz = mix(finalColor.xyz, terrainReflected, 0.5);
+            finalColor = vec4(mix(finalColor.xyz, terrainReflected, 0.5), 0.7);
         }
 
         // ============ Fog part =======================
@@ -78,8 +81,6 @@ void main() {
             vec4  fogColor  = vec4(1,1,1,1);
             finalColor = mix( finalColor, fogColor, fogAmount );
         }
-     
-    }
 
     color = finalColor;
 }

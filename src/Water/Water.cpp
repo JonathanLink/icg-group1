@@ -40,9 +40,7 @@ void Water::init() {
     _model = glm::scale(_model, glm::vec3(Constants::TERRAIN_SCALE,
                                         Constants::TERRAIN_SCALE,
                                         Constants::TERRAIN_SCALE));
-    
 }   
-
 
 void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
     useShaders();
@@ -96,7 +94,7 @@ void Water::cleanUp() {
 }
 
 void Water::constructGrid() {
-    const double STEP = (1.0 / GRID_SIZE) * 2.0;
+    const double STEP = (1.0 / (GRID_SIZE)) * 2.0;
 
     // construct vertices grid
     Point points [GRID_SIZE + 1][GRID_SIZE + 1];

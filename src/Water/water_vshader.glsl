@@ -50,7 +50,6 @@ void main() {
     fragHeight = texture(tex, local_uv_coords).r;
 
     uv_coords = local_uv_coords;
-
     float CONST_PI = 3.1415926535897932384626433832795;
     float timeValue = time;
 
@@ -62,12 +61,10 @@ void main() {
     float heightSine = amplitude * sin(spatialFrequency * (local_uv_coords.x + local_uv_coords.y) +
      timeFrequency * timeValue);
 
-    float heightWater = amplitude - amplitude * sin(spatialFrequency * sqrt(local_uv_coords.x * local_uv_coords.x +
-     local_uv_coords.y * local_uv_coords.y) + timeFrequency * timeValue);
-
+    float heightWaterDifference = amplitude - amplitude * sin(spatialFrequency * sqrt(local_uv_coords.x * local_uv_coords.x + local_uv_coords.y * local_uv_coords.y) + timeFrequency * timeValue);
 
     normal = getNormal(local_uv_coords);
-    vec3 local_pos_3d = vec3(position.x, water_height - heightWater, position.y); // 0.37 initially for the height
+    vec3 local_pos_3d = vec3(position.x, water_height - heightWaterDifference, position.y); // 0.37 initially for the height
     gl_Position = MVP_matrix * vec4(local_pos_3d, 1.0);
     fragPos = vec3(model * vec4(local_pos_3d, 1.0f));
 

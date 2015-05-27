@@ -53,10 +53,6 @@ float perlin_noise(vec2 pos)
     return n;
 }
 
-
-
-
-
 float rand(vec2 c){
     float result = fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
     return result;
