@@ -41,7 +41,7 @@ void Scene::renderScene() {
         _lightDirection = !_lightDirection;
     }
 
-    fprintf(stdout, "Light position: (%f, %f, %f)\n", _lightPosition.x, _lightPosition.y, _lightPosition.z);
+    //fprintf(stdout, "Light position: (%f, %f, %f)\n", _lightPosition.x, _lightPosition.y, _lightPosition.z);
 
     // update camera
     switch (_cameraMode) {
