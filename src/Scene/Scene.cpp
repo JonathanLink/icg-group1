@@ -145,7 +145,7 @@ void Scene::updateInertia() {
         _initialInertionTime = glfwGetTime();
     } else if (_isInerting) {
         GLfloat timeSinceInertionStart = glfwGetTime() - _initialInertionTime;
-        static const float INERTION_DURATION = 2.0f;
+        static const float INERTION_DURATION = 1.0f;
         if (timeSinceInertionStart <= INERTION_DURATION) {
             // Compute speed malus, decreasing from 1 to 0 until end of inertion
             GLfloat speedMalus = 1.0 - timeSinceInertionStart / INERTION_DURATION;
