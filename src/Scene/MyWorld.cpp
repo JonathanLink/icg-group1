@@ -146,28 +146,31 @@ void MyWorld::render() {
     //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe 
     
     //Draw terrain in framebuffer for water reflection
-    GLuint terrainReflectTextureId = _terrainReflectFB.initTextureId(GL_RGB);
-    _terrainReflectFB.bind();
-        _terrain.setReflection(true);
+    if (true) {
+        GLuint terrainReflectTextureId = _terrainReflectFB.initTextureId(GL_RGB);
+        _terrainReflectFB.bind();
+            _terrain.setReflection(true);
+            _terrain.render(view, projection);
+            _terrain.setReflection(false);
+        _terrainReflectFB.unbind();
+        _water.setTextureMirror(terrainReflectTextureId);
+
+        _skybox.render(view, projection);
         _terrain.render(view, projection);
-        _terrain.setReflection(false);
-    _terrainReflectFB.unbind();
-    _water.setTextureMirror(terrainReflectTextureId);
+        _water.render(view, projection);
 
-    _skybox.render(view, projection);
-    _terrain.render(view, projection);
-    _water.render(view, projection);
+         _terrainReflectFB.cleanUp();
+        _particles.render(view, projection);
 
-     _terrainReflectFB.cleanUp();
-    _particles.render(view, projection);
-
-    if (_bezierEditModeEnabled) {
-        _bezierPositionCurve.render(view, projection);
-        _bezierLookCurve.render(view, projection);
-        _bezierHandles.render(view, projection);
+        if (_bezierEditModeEnabled) {
+            _bezierPositionCurve.render(view, projection);
+            _bezierLookCurve.render(view, projection);
+            _bezierHandles.render(view, projection);
+        }
+    } else {
+        _perlin.render(view, projection);
     }
-
-    _cube.render(view, projection);
+    
 }
 
 void MyWorld::cleanUp() {
