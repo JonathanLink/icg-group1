@@ -36,7 +36,6 @@ vec3 getNormal(vec2 pos) {
     vec3 east3D = vec3(east2D.x, eastHeight, east2D.y);
     vec3 west3D = vec3(west2D.x, westHeight, west2D.y);
 
-
     vec3 south_to_north = north3D - south3D;
 	vec3 south_to_west = west3D - south3D;
 
