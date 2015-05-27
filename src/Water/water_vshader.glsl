@@ -2,6 +2,16 @@
 
 layout (location = 0) in vec2 position;
 
+const vec3 TANGENT = vec3(1.0, 0.0, 0.0);
+const vec3 NORMAL = vec3(0.0, 1.0, 0.0);
+const vec3 BITANGENT = vec3(0.0, 0.0, -1.0);
+
+
+out vec3 FragPos;
+out vec3 TangentFragPos;
+out vec3 TangentLightDir;
+out vec3 TangentPlayerPos;
+
 out vec2 uv_coords;
 out vec3 fragPos;
 out vec3 normal;
@@ -16,6 +26,8 @@ uniform sampler2D tex_mirror;
 uniform float grid_size;
 uniform float water_height;
 uniform float time;
+uniform vec3 cameraPos;
+uniform vec3 lightPos;
 
 vec3 getNormal(vec2 pos) {
     
@@ -74,6 +86,15 @@ void main() {
     fragPos = vec3(model * vec4(local_pos_3d, 1.0f));
 
     frag_coord = vec2(0.5* (gl_Position.x / gl_Position.w + 1.0), 0.5* (gl_Position.y / gl_Position.w + 1.0) );
+
+    mat3 mod = transpose(inverse(mat3(model)));
+    vec3 n = normalize(mod * NORMAL);
+    vec3 t = normalize(mod * TANGENT);
+    vec3 b = normalize(mod * BITANGENT);
+    mat3 TBN = transpose(mat3(t, b, n));
+    TangentFragPos =  TBN * fragPos;
+    TangentLightDir =  TBN * lightPos.xyz;
+    TangentPlayerPos =  TBN * cameraPos;
 
 }
 

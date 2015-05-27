@@ -42,7 +42,7 @@ void Water::init() {
                                         Constants::TERRAIN_SCALE));
 
     // Bind Grass Texture
-    _waterTextureId = gen2DTexture("../tex/water.jpg", GL_RGBA);
+    _waterTextureId = gen2DTexture("../tex/water4.jpg", GL_RGB);
 
 
     /* 
