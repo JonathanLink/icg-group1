@@ -42,16 +42,16 @@ public:
     void setReflectTime(glm::float1 t);
 
 protected: 
-    Camera camera;
+    Camera _camera;
 
-    glm::mat4 view;
-    glm::mat4 projection;
-    std::vector<bool> keys;
-    GLfloat lastX;
-    GLfloat lastY;
-    bool firstMouse;
-    GLfloat deltaTime;
-    GLfloat lastTime;
+    glm::mat4 _view;
+    glm::mat4 _projection;
+    std::vector<bool> _keys;
+    GLfloat _lastX;
+    GLfloat _lastY;
+    bool _firstMouse;
+    GLfloat _deltaTime;
+    GLfloat _lastTime;
 
 protected:
     void updateFlyCameraPosition();
@@ -73,7 +73,7 @@ protected:
     glm::vec3 _lightPosition;
     bool _fog;
     CameraBezier _cameraBezier;
-    glm::float1 reflectTime;
+    glm::float1 _reflectTime;
 };
 
 #endif

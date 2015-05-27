@@ -37,7 +37,7 @@ void Water::init() {
 
     // Apply a rotation on the model matrix
     //model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::scale(model, glm::vec3(Constants::TERRAIN_SCALE,
+    _model = glm::scale(_model, glm::vec3(Constants::TERRAIN_SCALE,
                                         Constants::TERRAIN_SCALE,
                                         Constants::TERRAIN_SCALE));
     
@@ -48,34 +48,34 @@ void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
     useShaders();
 
     // Set uniform variables for the vertex and fragment glsl files
-    scene->setUniformVariables(pid, model, view, projection); 
+    _scene->setUniformVariables(_pid, _model, view, projection);
 
     // grid size uniform
-    GLuint grid_size_id = glGetUniformLocation(pid, "grid_size");
+    GLuint grid_size_id = glGetUniformLocation(_pid, "grid_size");
     glm::float1 grid_size = (float)GRID_SIZE;
     glUniform1f(grid_size_id, grid_size);
 
     // water height uniform
-    GLuint water_height_id = glGetUniformLocation(pid, "water_height");
+    GLuint water_height_id = glGetUniformLocation(_pid, "water_height");
     //Todo constante a FIXER
     float waterHeight = 0.37;
     glUniform1f(water_height_id, waterHeight);
 
     //time uniform
-    GLuint time_id = glGetUniformLocation(pid, "time");
-    glm::float1 time_size = scene->getReflectTime();
+    GLuint time_id = glGetUniformLocation(_pid, "time");
+    glm::float1 time_size = _scene->getReflectTime();
     glUniform1f(time_id, time_size);
 
     /* Bind textures */
     //Terrain reflection
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _perlinTextureId);
-    glUniform1i(glGetUniformLocation(pid, "tex"), 0);
+    glUniform1i(glGetUniformLocation(_pid, "tex"), 0);
 
     //Terrain reflection
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, _mirrorTextureId);
-    glUniform1i(glGetUniformLocation(pid, "tex_mirror"), 1);
+    glUniform1i(glGetUniformLocation(_pid, "tex_mirror"), 1);
 
     // Draw
     glEnable(GL_BLEND);
@@ -93,7 +93,7 @@ void Water::cleanUp() {
     glDeleteBuffers(1, &_elementBufferId);
     glDeleteTextures(1, &_perlinTextureId);
     glDeleteTextures(1, &_mirrorTextureId);
-    glDeleteProgram(pid);
+    glDeleteProgram(_pid);
 }
 
 void Water::constructGrid() {

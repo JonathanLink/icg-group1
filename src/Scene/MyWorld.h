@@ -39,10 +39,11 @@ private:
 	Perlin _perlin;
 	Skybox _skybox;
 	Terrain _terrain;
-	Cube _cube;
+
 	Water _water;
 	Particles _particles;
 	bool _wireframeIsEnabled;
+	bool _particlesEnabled = false;
 
 	// Bezier 
 	glm::vec3 _delta;

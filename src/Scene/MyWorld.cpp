@@ -138,15 +138,13 @@ void MyWorld::drawPerlin() {
 }
 
 void MyWorld::render() {
-
-    
     //Draw terrain in framebuffer for water reflection
     if (true) { // to debug perlin purpose
 
         if (_perlin.isPerlinModeIsEnabled()) {
             drawPerlin();
         }
-        
+
 
         GLuint terrainReflectTextureId = _terrainReflectFB.initTextureId(GL_RGB);
         _terrainReflectFB.bind();
@@ -157,9 +155,9 @@ void MyWorld::render() {
         _water.setTextureMirror(terrainReflectTextureId);
 
         if (_wireframeIsEnabled) {
-             glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe 
+             glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); // wireframe
          } else {
-             glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ); 
+             glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
          }
         _skybox.render(view, projection);
         _terrain.render(view, projection);
@@ -168,7 +166,9 @@ void MyWorld::render() {
         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
          _terrainReflectFB.cleanUp();
-        _particles.render(view, projection);
+        if (_particlesEnabled) {
+            _particles.render(view, projection);
+        }
 
         if (_bezierEditModeEnabled) {
             _bezierPositionCurve.render(view, projection);
@@ -178,7 +178,6 @@ void MyWorld::render() {
     } else {
         _perlin.render(view, projection);
     }
-    
 }
 
 void MyWorld::cleanUp() {
@@ -207,7 +206,6 @@ void MyWorld::keyCallback(int key, int scancode, int action, int mode) {
     // *********************************
     // ****bezier ajust speed ****
     // *********************************
-
     if (action == GLFW_PRESS && key == GLFW_KEY_K) {
         _cameraBezier.increasePeriod();
     }
@@ -232,7 +230,7 @@ void MyWorld::keyCallback(int key, int scancode, int action, int mode) {
         _lastDirection = glm::vec3(0.0, 0.0, 0.0);
         std::cout << "BEZIER EDIT MODE = " << _bezierEditModeEnabled << std::endl;
     }
-    
+
     if (_bezierEditModeEnabled) {
         if (action == GLFW_PRESS && key == GLFW_KEY_U) {
              std::cout << "HANDLE 1" << std::endl;
@@ -247,7 +245,6 @@ void MyWorld::keyCallback(int key, int scancode, int action, int mode) {
             std::cout << "HANDLE 4" << std::endl;
             _selectedHandle = &_handle4;
         }
-
 
         if (action == GLFW_PRESS && key == GLFW_KEY_X) {
             _delta = deltaX;
@@ -285,7 +282,7 @@ void MyWorld::keyCallback(int key, int scancode, int action, int mode) {
 
 void MyWorld::updateFpsCameraPosition() {
     updateFlyCameraPosition();
-    glm::vec3 cameraPosition = camera.getPosition();
+    glm::vec3 cameraPosition = _camera.getPosition();
     glm::vec2 pos_2d(cameraPosition.x, cameraPosition.z);
     //std::cout << "2D position: " << pos_2d.x << ", " << pos_2d.y << std::endl;
     glm::vec2 pos_texture(
@@ -297,7 +294,7 @@ void MyWorld::updateFpsCameraPosition() {
     float normalizedHeight = getHeight(pos_texture.x * _perlin.getFrameBufferWidth(), pos_texture.y * _perlin.getFrameBufferWidth());
     //std::cout << "Height: " << normalizedHeight << std::endl;
     float height = (normalizedHeight + 0.05) * Constants::TERRAIN_SCALE;
-    if(keys[GLFW_KEY_SPACE] && !_hasJumped) {
+    if(_keys[GLFW_KEY_SPACE] && !_hasJumped) {
         _hasJumped = true;
         _jumpStartTime = glfwGetTime();
         _jumpStartHeight = height;
@@ -308,12 +305,12 @@ void MyWorld::updateFpsCameraPosition() {
         const static float MAX_JUMP_TIME = 3.0f;
         if (timeSinceJump <= MAX_JUMP_TIME) {
             GLfloat jumpHeight = 9 - pow(3 * timeSinceJump - 3, 2.0) + _jumpStartHeight;
-            camera.setHeight(std::max(jumpHeight, height));
+            _camera.setHeight(std::max(jumpHeight, height));
         } else {
             _hasJumped = false;
         }
     } else {
-        camera.setHeight(height);
+        _camera.setHeight(height);
     }
 }
 

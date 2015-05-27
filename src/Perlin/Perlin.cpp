@@ -198,7 +198,7 @@ void Perlin::cleanUp() {
     std::cout << "CleanUp Perlin" << std::endl;
     glDeleteVertexArrays(1, &_vertexArrayId);
     glDeleteBuffers(1, &_vertexBufferId);
-    glDeleteProgram(pid);
+    glDeleteProgram(_pid);
 }
 
 bool Perlin::isPerlinModeIsEnabled() {

@@ -20,7 +20,10 @@ public:
     void increasePeriod();
     void decreasePeriod();
 
+    void setInitialTime(float initialTime);
+
 private:
+    float _initialTime;
     Bezier _cameraPositionCurve;
     Bezier _cameraLookCurve;
     std::vector<Hull> _cameraHulls;

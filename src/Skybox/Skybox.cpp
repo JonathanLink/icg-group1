@@ -84,8 +84,8 @@ void Skybox::init() {
     _cubemapTextureId = loadCubemap(faces);
 
     // scale the skybox
-    model = glm::translate(model, Constants::SKYBOX_TRANSLATION);
-    model = glm::scale(model, glm::vec3(Constants::SKYBOX_SCALE, Constants::SKYBOX_SCALE, Constants::SKYBOX_SCALE));
+    _model = glm::translate(_model, Constants::SKYBOX_TRANSLATION);
+    _model = glm::scale(_model, glm::vec3(Constants::SKYBOX_SCALE, Constants::SKYBOX_SCALE, Constants::SKYBOX_SCALE));
 }
 
 void Skybox::render(const glm::mat4 &view, const glm::mat4 &projection) {
@@ -93,12 +93,12 @@ void Skybox::render(const glm::mat4 &view, const glm::mat4 &projection) {
     
     useShaders();
 
-    scene->setUniformVariables(pid, model, view, projection); 
+    _scene->setUniformVariables(_pid, _model, view, projection);
 
     // skybox cube
     glBindVertexArray(_VAO);
     glActiveTexture(GL_TEXTURE0);
-    glUniform1i(glGetUniformLocation(pid, "skybox"), 0);
+    glUniform1i(glGetUniformLocation(_pid, "skybox"), 0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, _cubemapTextureId);
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
@@ -110,7 +110,7 @@ void Skybox::cleanUp() {
     std::cout << "CleanUp Skybox" << std::endl;
     glDeleteBuffers(1, &_VBO);
     glDeleteVertexArrays(1, &_VAO);
-    glDeleteProgram(pid);
+    glDeleteProgram(_pid);
 }
 
 GLuint Skybox::loadCubemap(std::vector<const GLchar*> faces) {

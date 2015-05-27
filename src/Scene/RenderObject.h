@@ -20,9 +20,9 @@ public:
     void mouseCallback(double xpos, double ypos);
 
 protected:
-    Scene *scene;
-    GLuint pid;
-    glm::mat4 model;
+    Scene *_scene;
+    GLuint _pid;
+    glm::mat4 _model;
 
 };
 
