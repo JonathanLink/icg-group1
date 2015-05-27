@@ -30,7 +30,6 @@ void Terrain::init() {
         // position attribute (location=0)
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
         glEnableVertexAttribArray(0);
-
         // indices
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBufferId);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices.size() * sizeof(GLuint), &_indices[0], GL_STATIC_DRAW);

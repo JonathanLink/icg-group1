@@ -26,14 +26,16 @@ void MyWorld::init() {
     _bezierLookCurve.setScene(this);
 
     // CURVE OK
-    _handle1 = glm::vec3(-33.299969, 29.899982, 19.099995);
-    _handle2 = glm::vec3(-23.700001, 11.299978, 1.400000);
-    _handle3 = glm::vec3(-24.099998, 6.599979, -7.899996);
-    _handle4 = glm::vec3(13.699999, 16.199974, -3.599999);
+    _handle1 =glm::vec3(-25.799969, 20.399982, 25.099995);
+    _handle2 = glm::vec3(-32.500004, 13.299983, 4.400000);
+    _handle3 = glm::vec3(-15.599994, 12.499980, 5.4f);
+    _handle4 = glm::vec3(-12.699999, 15.199974, 8.599999);
+
     _selectedHandle = &_handle1;
     buildBezierCurve();
 
     _wireframeIsEnabled = false;
+    _selectedBezierCamera = BIRD_EYE;
 }
 
 void MyWorld::generateSkyViewCurve() {
@@ -112,10 +114,22 @@ void MyWorld::generateAroundCurve() {
 }
 
 void MyWorld::buildBezierCurve() {
-    // decomment which bezier path you want to visualize
-    //generateSkyViewCurve();
-    generateLakeCurve();
-    //generateAroundCurve();
+    
+    switch (_selectedBezierCamera) {
+        case BIRD_EYE: {
+            generateSkyViewCurve();
+            break;
+        }
+        case LAKE: {
+            generateLakeCurve();
+            break;
+        }
+        case PARABOLIC: {
+            generateAroundCurve();
+            break;
+        }
+    }
+
 }
 
 
@@ -191,7 +205,13 @@ void MyWorld::cleanUp() {
 
 // This method is ugly and i know it!
 void MyWorld::keyCallback(int key, int scancode, int action, int mode) {
-    if (action == GLFW_PRESS && _keys[GLFW_KEY_R]) {
+
+    if (action == GLFW_PRESS && key == GLFW_KEY_X) {
+        _selectedBezierCamera = (BezierCamera)((_selectedBezierCamera + 1) % 3);
+        buildBezierCurve();
+    }
+
+    if (action == GLFW_PRESS && key == GLFW_KEY_R) {
         _particlesEnabled = ! _particlesEnabled;
         if (_particlesEnabled) {
             std::cout << "Particles mode enabled" << std::endl;
@@ -212,10 +232,10 @@ void MyWorld::keyCallback(int key, int scancode, int action, int mode) {
     // *********************************
     // ****bezier ajust speed ****
     // *********************************
-    if (action == GLFW_PRESS && key == GLFW_KEY_K) {
+    if (action == GLFW_PRESS && key == GLFW_KEY_J) {
         _cameraBezier.increasePeriod();
     }
-    if (action == GLFW_PRESS && key == GLFW_KEY_L) {
+    if (action == GLFW_PRESS && key == GLFW_KEY_K) {
         _cameraBezier.decreasePeriod();
     }
 
