@@ -3,8 +3,6 @@
 
 #include "Scene.h"
 #include "../Skybox/Skybox.h"
-#include "../Bezier/Curve/Curve.h"
-#include "../Bezier/Curve/Handles/Handles.h"
 #include "../Bezier/BezierController.h"
 #include "../Terrain/Terrain.h"
 #include "../Perlin/Perlin.h"
@@ -17,12 +15,6 @@
 class MyWorld: public Scene {
 public:
 
-
-	enum BezierCamera {
-        BIRD_EYE,
-        LAKE,
-        PARABOLIC
-    };
 
 	MyWorld(unsigned int terrainReflectFbWidth,
 			unsigned int terrainReflectFbHeight);
@@ -53,22 +45,6 @@ private:
 	bool _particlesEnabled = false;
 
 	BezierController _bezierController;
-
-	// Bezier 
-	BezierCamera _selectedBezierCamera;
-	glm::vec3 _delta;
-	float _step;
-	bool _bezierEditModeEnabled;
-	CameraBezier _cameraBezierTopView;
-	CameraBezier _cameraBezierLake;
-	Curve _bezierPositionCurve;
-	Curve _bezierLookCurve;
-	Handles _bezierHandles;
-	glm::vec3 *_selectedHandle;
-	glm::vec3 _handle1;
-	glm::vec3 _handle2;
-	glm::vec3 _handle3;
-	glm::vec3 _handle4;
 
 	FrameBuffer _terrainReflectFB;
 };

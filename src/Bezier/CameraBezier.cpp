@@ -32,33 +32,8 @@ glm::mat4 CameraBezier::getViewMatrix() {
     glm::vec3 cameraPosition = _cameraPositionCurve.samplePointAtTime(t);
     glm::vec3 cameraLook = _cameraLookCurve.samplePointAtTime(t);
     glm::vec3 cameraUp(0.0f, 1.0f, 0.0f);
-    //std::cout << "t=" << t << " cameraPosition: "<< glm::to_string(cameraPosition) << std::endl;
-    //std::cout << "t=" << t << " cameraLook: "<< glm::to_string(cameraLook) << std::endl;
-
-    /*glm::vec3 cameraDirection = glm::normalize(cameraPosition - cameraLook);
-    if (cameraUp == cameraDirection) {
-        cameraUp = glm::vec3(-1.0f, 0.0f, 0.0f);
-    }
-    glm::vec3 cameraRight = glm::normalize(glm::cross(cameraUp, cameraDirection));
-    cameraUp = glm::cross(cameraDirection, cameraRight);*/
-
-    //glm::vec3 cameraDirection = glm::normalize(cameraPosition - cameraLook); // hum?!
-
-    //std::cout << "t=" << t << " >>> "<< glm::to_string(cameraPosition - cameraLook) << std::endl;
-    //return glm::lookAt(cameraPosition, cameraDirection, cameraUp);
-
-    /*if (cameraDirection == cameraUp) {
-
-    }
-    glm::vec3 right = glm::normalize(glm::cross(cameraDirection, cameraUp));
-    glm::vec3 up = glm::normalize(glm::cross(right, cameraDirection));
-
-    std::cout << "t=" << t << " up: "<< glm::to_string(right) << std::endl;
-    return glm::lookAt(cameraPosition, cameraDirection, up);*/
-
     glm::vec3 right = glm::normalize(glm::cross( glm::normalize(cameraLook), cameraUp));
     glm::vec3 up = glm::normalize(glm::cross(right, cameraLook));
-    //std::cout << "t=" << t << " up: "<< glm::to_string(up) << std::endl;
     return glm::lookAt(cameraPosition, cameraLook, glm::abs(up));
 }
 

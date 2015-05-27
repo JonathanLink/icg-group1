@@ -24,12 +24,12 @@ Press:
 * P to select the forth and last handle
 * X to move along the X-axe
 * Y to move along the Y-axe
-* Z to move along the z-axe
+* Z to move along the Z-axe
 * UP ARROW to increase value
 * DOWN ARROW to decrease value
 * LEFT ARROW to increase step value
 * RIGHT ARROW to decrease step value
-* ENTER to write the 4 handles coordinates into the console
+* ENTER to output the 4 handles coordinates into the console
 
 # Perlin Mode:
 
