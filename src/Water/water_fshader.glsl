@@ -30,7 +30,7 @@ float rand(vec2 c){
 
 void main() {
 
-    vec4 textureColor = vec4(0,241.0/255.0, 1.0, 0.7);
+    vec4 textureColor = vec4(0,201.0/255.0, 1.0, 0.7);
     vec4 finalColor = vec4(0,0,0,0);
 
         // ============ Lightning part ==================
@@ -43,8 +43,12 @@ void main() {
         vec3 norm = normalize(normal);
         vec3 lightDir = normalize(lightPos - fragPos);  
         float diff = max(dot(norm, lightDir), 0.0);
-        float cLength = length(uv_coords + 0.2*normal.x);
-        vec3 rng = lightColor * 0.2 * cos( time * cLength ) / cLength;
+        vec3 diffuse = diff * lightColor;
+
+
+        float cLength = length(vec2(uv_coords.x, uv_coords.y));
+        float sqrtCoord = sqrt(1);
+        vec3 rng = lightColor * ((0.1 - 0.1 * cos(sin(5*time * (fragHeight*(3*uv_coords.x + 3*uv_coords.y))) / fragHeight)));
         // Ambient + RNG
 
         vec4 result = vec4((ambient + rng), 1.0f) * textureColor;

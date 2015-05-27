@@ -20,6 +20,7 @@ uniform vec3 cameraPos;
 uniform int fogEnabled;
 uniform int isReflected;
 uniform float water_height;
+uniform float time;
 
 out vec4 color;
 
@@ -99,8 +100,15 @@ void main() {
         float diff = max(dot(norm, lightDir), 0.0);
         vec3 diffuse = diff * lightColor;
 
+        vec3 rng = vec3(0.0);
+        if (!(isReflected > 0.5)) {
+            float cLength = length(vec2(uv_coords.x, uv_coords.y));
+            float sqrtCoord = sqrt(1);
+            rng = lightColor * ((0.1 - 0.1 * cos(sin(5*time * (fragHeight*(3*uv_coords.x + 3*uv_coords.y))) / fragHeight)));
+        }
+
         // Ambient + Diffuse
-        vec3 result = (ambient + diffuse) * textureColor;
+        vec3 result = (ambient + diffuse + rng) * textureColor;
         finalColor = vec4(result, alpha);
 
         // =========== Camera underwater ? =======
@@ -124,6 +132,7 @@ void main() {
             vec4  fogColor  = vec4(1,1,1,1);
             finalColor = mix( finalColor, fogColor, fogAmount );
         }
+
     }
     
     color = finalColor;
