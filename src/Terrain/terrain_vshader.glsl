@@ -67,7 +67,7 @@ void main() {
     }
 
 
-	vec3 local_pos_3d = vec3(position.x, fragHeight - heightWater, position.y);
+	vec3 local_pos_3d = vec3(position.x, fragHeight, position.y);
     gl_Position = MVP_matrix * vec4(local_pos_3d, 1.0);
 
     fragPos = vec3(model * vec4(local_pos_3d, 1.0f));

@@ -20,6 +20,7 @@ uniform vec3 cameraPos;
 uniform int fogEnabled;
 uniform int isReflected;
 uniform float water_height;
+uniform float time;
 
 out vec4 color;
 
@@ -44,10 +45,19 @@ float rand(vec2 c){
 void main() {
    
     vec4 finalColor = vec4(1.0, 0.0,0.0, 0.5);
-   
+    vec2 uv = uv_coords;
+
     if (fragHeight < water_height && !(isReflected > 0.5)) {
         discard;
     } else {
+
+        // ============= Reflection effect Part ===========
+        if(!(isReflected > 0.5)) {
+            vec2 cPos = -1.0 + 2.0 * uv_coords;
+            float cLength = length(cPos);
+
+           // uv = uv_coords + (cPos/cLength)*cos(cLength*120.0-time*4.0)*0.0035;
+        }
 
         // ============ Texturing part ==================
         float tilingScaleSand = 30;
@@ -58,10 +68,10 @@ void main() {
         float angle = dot(normal, vec3(0.0f, 1.0f, 0.0f));
         vec3 textureColor;
 
-        vec3 sandTex = texture(sandTex, tilingScaleSand * uv_coords).rgb;
-        vec3 rockTex = texture(rockTex, tilingScaleRock * uv_coords).rgb;
-        vec3 grassTex = texture(grassTex, tilingScaleGrass * uv_coords).rgb;
-        vec3 snowTex = texture(snowTex, tilingScaleSnow * uv_coords).rgb;
+        vec3 sandTex = texture(sandTex, tilingScaleSand * uv).rgb;
+        vec3 rockTex = texture(rockTex, tilingScaleRock * uv).rgb;
+        vec3 grassTex = texture(grassTex, tilingScaleGrass * uv).rgb;
+        vec3 snowTex = texture(snowTex, tilingScaleSnow * uv).rgb;
         vec3 rockMixedGrass = mix(rockTex, grassTex, grassCoeff(1.0 - angle));
         vec3 snowMixedRock = mix(rockTex, snowTex, snowCoeff(1.0 - angle));
         vec3 snowMixedRockMixedGrass = mix(rockMixedGrass, snowTex, snowCoeff(1.0 - angle)); 

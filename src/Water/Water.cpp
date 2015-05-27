@@ -40,6 +40,19 @@ void Water::init() {
     _model = glm::scale(_model, glm::vec3(Constants::TERRAIN_SCALE,
                                         Constants::TERRAIN_SCALE,
                                         Constants::TERRAIN_SCALE));
+
+    // Bind Grass Texture
+    _waterTextureId = gen2DTexture("../tex/water.jpg", GL_RGBA);
+
+
+    /* 
+    PROBLEM
+        Find a better normalMap Texture for water because we can see shading artefact right now
+        Maybe the problem is not related to the actual texture but the way it is stored or
+        the way the diffuse term is calculated
+    PROBLEM
+    */
+    _waterNormalTextureId = gen2DTexture("../tex/waternormal.jpg", GL_RGB);
     
 }   
 
@@ -66,7 +79,7 @@ void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glUniform1f(time_id, time_size);
 
     /* Bind textures */
-    //Terrain reflection
+    //Perlin texture
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _perlinTextureId);
     glUniform1i(glGetUniformLocation(_pid, "tex"), 0);
@@ -75,6 +88,16 @@ void Water::render(const glm::mat4 &view, const glm::mat4 &projection) {
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, _mirrorTextureId);
     glUniform1i(glGetUniformLocation(_pid, "tex_mirror"), 1);
+
+    //Terrain reflection
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, _waterTextureId);
+    glUniform1i(glGetUniformLocation(_pid, "tex_water"), 2);
+
+    //Water normal
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, _waterTextureId);
+    glUniform1i(glGetUniformLocation(_pid, "tex_water_normal"), 3);
 
     // Draw
     glEnable(GL_BLEND);

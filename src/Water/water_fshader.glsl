@@ -7,9 +7,13 @@ in vec3 fragPos;
 in vec3 normal;
 in float fragHeight;
 in vec2 frag_coord;
+in vec2 posV;
 
 uniform sampler2D tex;
 uniform sampler2D tex_mirror;
+uniform sampler2D tex_water;
+uniform sampler2D tex_water_normal;
+
 uniform float grid_size;
 
 uniform vec3 lightPos;
@@ -18,13 +22,25 @@ uniform vec3 cameraPos;
 uniform mat4 MVP_matrix;
 uniform float water_height;
 uniform int fogEnabled;
+uniform float time;
 
 out vec4 color;
 
 
 void main() {
 
-    vec4 textureColor = vec4(0,128.0/255.0, 1.0, 0.5);
+    //vec4 textureColor = vec4(0,128.0/255.0, 1.0, 0.5);
+
+
+    vec2 uv = posV.xy + ( (0.1*cos(5*time))  );
+
+    /* 
+    PROBLEM
+        Find a way better move equation  (cf. slide technique)
+    PROBLEM
+    */
+    vec4 textureColor = vec4(texture2D(tex_water, 5*uv).rgb, 0.7);
+
     vec4 finalColor = vec4(0,0,0,0);
    
     if (fragHeight >= water_height) { // hide water if not a visible lake
@@ -38,10 +54,12 @@ void main() {
         vec3 ambient = ambientStrength * lightColor;
 
         // Diffuse
-        vec3 norm = normalize(normal);
-        vec3 lightDir = normalize(lightPos - fragPos);  
+        vec3 waterNormal = texture2D(tex_water_normal, uv).rgb;
+        vec3 norm = normalize(waterNormal);
+        vec3 lightDir = normalize(lightPos - fragPos);
         float diff = max(dot(norm, lightDir), 0.0);
         vec3 diffuse = diff * lightColor;
+
         // Ambient + Diffuse
 
         vec4 result = vec4((ambient + diffuse), 1.0f) * textureColor;
