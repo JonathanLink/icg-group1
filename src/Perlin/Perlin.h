@@ -30,7 +30,7 @@ private:
 
     int _frameBufferWidth;
     ParamNoise _param;
-    bool _perlinModeIsEnabled;
+    bool _perlinModeIsEnabled = false;
     float _lacunarity;
 	float _freq;
 	int _octaves; 
