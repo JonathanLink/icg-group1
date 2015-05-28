@@ -1,3 +1,4 @@
+
 #version 330 core
 
 #define M_PI 3.1415926535897932384626433832795
@@ -30,8 +31,8 @@ out vec4 color;
 
 void main() {
 
-    vec3 waterNormal = normalize(2.0 * texture2D(tex_water_normal, uv_coords).rgb - 1.0);
-    vec4 textureColor = vec4(texture2D(tex_water, uv_coords).rgb, 0.7);
+    vec3 waterNormal = normalize(2.0 * texture(tex_water_normal, uv_coords).rgb - 1.0);
+    vec4 textureColor = vec4(texture(tex_water, uv_coords).rgb, 0.7);
     vec4 finalColor = vec4(0.0);
 
     /*
