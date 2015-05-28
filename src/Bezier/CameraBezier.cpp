@@ -6,7 +6,7 @@
 
 #include "CameraBezier.h"
 
- const float PERIOD_STEP = 0.1;
+const float STEP = 0.01;
 
 CameraBezier::CameraBezier() {
 }
@@ -18,7 +18,7 @@ void CameraBezier::setHulls(const std::vector<Hull> &cameraHulls, const std::vec
     _lookHulls = lookHulls;
     _cameraPositionCurve.addHulls(_cameraHulls);
     _cameraLookCurve.addHulls(_lookHulls);
-    _period = 0.1;
+    _step = 0.01;
 }
 
 void CameraBezier::clear() {
@@ -27,45 +27,18 @@ void CameraBezier::clear() {
 }
 
 glm::mat4 CameraBezier::getViewMatrix() {
-    float openGlTime = glfwGetTime() - _initialTime;
-    float t = fabs(sin( _period * openGlTime));
+    float t = getUpdatedT();
     glm::vec3 cameraPosition = _cameraPositionCurve.samplePointAtTime(t);
     glm::vec3 cameraLook = _cameraLookCurve.samplePointAtTime(t);
     glm::vec3 cameraUp(0.0f, 1.0f, 0.0f);
-    //std::cout << "t=" << t << " cameraPosition: "<< glm::to_string(cameraPosition) << std::endl;
-    //std::cout << "t=" << t << " cameraLook: "<< glm::to_string(cameraLook) << std::endl;
-
-    /*glm::vec3 cameraDirection = glm::normalize(cameraPosition - cameraLook);
-    if (cameraUp == cameraDirection) {
-        cameraUp = glm::vec3(-1.0f, 0.0f, 0.0f);
-    }
-    glm::vec3 cameraRight = glm::normalize(glm::cross(cameraUp, cameraDirection));
-    cameraUp = glm::cross(cameraDirection, cameraRight);*/
-
-    //glm::vec3 cameraDirection = glm::normalize(cameraPosition - cameraLook); // hum?!
-
-    //std::cout << "t=" << t << " >>> "<< glm::to_string(cameraPosition - cameraLook) << std::endl;
-    //return glm::lookAt(cameraPosition, cameraDirection, cameraUp);
-
-    /*if (cameraDirection == cameraUp) {
-
-    }
-    glm::vec3 right = glm::normalize(glm::cross(cameraDirection, cameraUp));
-    glm::vec3 up = glm::normalize(glm::cross(right, cameraDirection));
-
-    std::cout << "t=" << t << " up: "<< glm::to_string(right) << std::endl;
-    return glm::lookAt(cameraPosition, cameraDirection, up);*/
-
     glm::vec3 right = glm::normalize(glm::cross( glm::normalize(cameraLook), cameraUp));
     glm::vec3 up = glm::normalize(glm::cross(right, cameraLook));
-    //std::cout << "t=" << t << " up: "<< glm::to_string(up) << std::endl;
     return glm::lookAt(cameraPosition, cameraLook, glm::abs(up));
 }
 
 
 glm::vec3 CameraBezier::getPosition() {
-    float openGlTime = glfwGetTime() - _initialTime;
-    float t = fabs(sin( _period * openGlTime));
+    float t = getUpdatedT();
     glm::vec3 cameraPosition = _cameraPositionCurve.samplePointAtTime(t);
     return cameraPosition;
 }
@@ -78,16 +51,27 @@ std::vector<glm::vec3> CameraBezier::getLookCurvePoints() {
     return _cameraLookCurve.getVertices();
 }
 
+float CameraBezier::getUpdatedT() {
+    float deltaTime = glfwGetTime() - _previousTime;
+    _t = _t + _step * (deltaTime);
+    if (_t > 1)  _t = 0.0001;
+    if (_t < 0)  _t = 1 + _t;
+    _previousTime = glfwGetTime();
+    return _t;
+}
+
 void CameraBezier::setPeriod(float period) {
     _period = period;
 }
 
-void CameraBezier::increasePeriod() {
-    _period = _period + PERIOD_STEP;
+void CameraBezier::increaseSpeed() {
+    _step = _step + STEP;
+    if (_step > 0.3) _step = 0.3;
 }
 
-void CameraBezier::decreasePeriod() {
-    _period = _period - PERIOD_STEP;
+void CameraBezier::decreaseSpeed() {
+    _step = _step - STEP;
+    if (_step < -0.3) _step = -0.3;
 }
 
 

@@ -28,7 +28,6 @@ out vec4 color;
 
 
 void main() {
-
     //vec4 textureColor = vec4(0,128.0/255.0, 1.0, 0.5);
  
     /* 
@@ -38,8 +37,7 @@ void main() {
     */
     vec2 uv = posV.xy - 0.02*time;
 
-    vec4 textureColor = vec4(texture2D(tex_water, 5*uv).rgb, 0.7);
-
+    vec4 textureColor = vec4(texture(tex_water, 5*uv).rgb, 0.7);
     vec4 finalColor = vec4(0,0,0,0);
    
     if (fragHeight >= water_height) { // hide water if not a visible lake
@@ -53,7 +51,7 @@ void main() {
         vec3 ambient = ambientStrength * lightColor;
 
         // Diffuse
-        vec3 waterNormal = texture2D(tex_water_normal, uv).rgb;
+        vec3 waterNormal = texture(tex_water_normal, uv).rgb;
         vec3 norm = normalize(waterNormal);
         vec3 lightDir = normalize(lightPos - fragPos);
         float diff = max(dot(norm, lightDir), 0.0);
@@ -95,8 +93,7 @@ void main() {
 
         if(texture(tex_mirror, rfl_uv).rgb != vec3(0.0, 0.0, 0.0) ) {
             vec3 terrainReflected = texture(tex_mirror, rfl_uv).rgb;
-
-            finalColor.xyz = mix(finalColor.xyz, terrainReflected, 0.5);
+            finalColor = vec4(mix(finalColor.xyz, terrainReflected, 0.5), 0.6);
         }
 
         // ============ Fog part =======================
