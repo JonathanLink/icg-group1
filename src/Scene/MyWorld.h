@@ -26,11 +26,7 @@ public:
 
 private:
 	void updateFpsCameraPosition() override;
-	void buildBezierCurve();
 	float getHeight(unsigned int x, unsigned int y);
-	void generateSkyViewCurve();
-	void generateLakeCurve();
-	void generateAroundCurve();
 	void drawPerlin();
 	GLuint _perlinTextureId;
 

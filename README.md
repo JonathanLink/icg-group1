@@ -10,8 +10,9 @@ Press:
 * R to turn on/off the rain
 * F to turn on/off the fog
 * L to turn on/off wireframe mode
-* J to increase camera bezier speed
-* K to decrease camera bezier speed
+* V to switch between Bezier curves
+* J to decrease camera bezier speed
+* K to increase camera bezier speed
 
 # Bezier Mode:
 
@@ -27,8 +28,8 @@ Press:
 * Z to move along the Z-axe
 * UP ARROW to increase value
 * DOWN ARROW to decrease value
-* LEFT ARROW to increase step value
-* RIGHT ARROW to decrease step value
+* RIGHT ARROW to increase step value
+* LEFT ARROW to decrease step value
 * ENTER to output the 4 handles coordinates into the console
 
 # Perlin Mode:

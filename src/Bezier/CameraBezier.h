@@ -17,12 +17,16 @@ public:
     std::vector<glm::vec3> getLookCurvePoints();
     glm::vec3 getPosition();
     void setPeriod(float period);
-    void increasePeriod();
-    void decreasePeriod();
+    void increaseSpeed();
+    void decreaseSpeed();
 
     void setInitialTime(float initialTime);
 
 private:
+    float getUpdatedT();
+    float _t;
+    float _previousTime;
+    float _step;
     float _initialTime;
     Bezier _cameraPositionCurve;
     Bezier _cameraLookCurve;

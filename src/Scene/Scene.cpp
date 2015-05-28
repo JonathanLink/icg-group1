@@ -72,7 +72,7 @@ void Scene::renderScene() {
 
     // update projection
     //projection = glm::perspective(camera.getZoom(), (GLfloat)getSceneAspectRatio(), 0.1f, 100.0f);
-    _projection = glm::perspective(45.0f, (GLfloat)getSceneAspectRatio(), 0.1f, 200.0f);
+    _projection = glm::perspective(45.0f, (GLfloat)getSceneAspectRatio(), 0.1f, 450.0f);
 
     render();
 }
