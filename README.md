@@ -1,6 +1,9 @@
 README
 ==================================
 
+You can have a look at the repo and the README online on GitHub:
+* https://github.com/JonathanLink/icg-group1/blob/master/README.md
+
 # Team
 
 * Adan Häfliger
@@ -149,4 +152,3 @@ Description of all classes of the PoGL library:
 # PoGL Background
 
 A small home-made library aiming to accelerate simple OpenGL projects or for prototyping purpose. PoGL actually stands for Prototyping OpenGL (name is subject to change, still brainstorming, fist name was pgl). It allows you to quickly set up a multiplatform openGL application. It handles for you 2 types of camera (FLY and BEZIER). PoGL is still in development phase.
-
