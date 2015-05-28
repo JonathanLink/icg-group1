@@ -128,5 +128,5 @@ Description of all classes of the PoGL library:
 
 # PoGL Background
 
-A small home-made library aiming to accelerate simple openGL projects or for prototyping purpose. PoGL actually stands for Prototyping OpenGL (name is subject to change, still brainstorming, fist name was pgl). It allows you to quickly set up a multiplatform openGL application. It handles for you 2 types of camera (FLY and BEZIER). If interested to get a cleaner and nicer and better version of the library, tell us.
+A small home-made library aiming to accelerate simple openGL projects or for prototyping purpose. PoGL actually stands for Prototyping OpenGL (name is subject to change, still brainstorming, fist name was pgl). It allows you to quickly set up a multiplatform openGL application. It handles for you 2 types of camera (FLY and BEZIER). PoGL is still in development phase.
 
