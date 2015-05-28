@@ -30,16 +30,13 @@ out vec4 color;
 void main() {
 
     //vec4 textureColor = vec4(0,128.0/255.0, 1.0, 0.5);
-
-
-    
+ 
     /* 
     PROBLEM
         Find a way better move equation  (cf. slide technique)
     PROBLEM
     */
     vec2 uv = posV.xy - 0.02*time;
-
 
     vec4 textureColor = vec4(texture2D(tex_water, 5*uv).rgb, 0.7);
 
@@ -62,10 +59,23 @@ void main() {
         float diff = max(dot(norm, lightDir), 0.0);
         vec3 diffuse = diff * lightColor;
 
-        // Ambient + Diffuse
+        //Specular
+        vec3 vReflection = normalize(reflect(-normalize(lightDir),normalize(waterNormal)));
+        float spec = max(0.0, dot(normalize(waterNormal), vReflection));
 
-        vec4 result = vec4((ambient + diffuse), 1.0f) * textureColor;
+        vec3 vSpec = vec3(0.0);
+
+        if(diff != 0) {
+            float fSpec = pow(spec, 32.0);
+            vSpec = vec3(fSpec, fSpec, fSpec);
+        } 
+
+
+        // Ambient + Diffuse + Specular
+
+        vec4 result = vec4((ambient + diffuse + vSpec), 1.0f) * textureColor;
         finalColor = result;
+
 
 
         // ============ Reflection part ==================
