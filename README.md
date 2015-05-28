@@ -1,13 +1,39 @@
 README
 ==================================
 
-#Team
+# Team
 
 * Adan Häfliger
 * Jonathan Link
 * Pierre Walch
 
+# Description
 
+We implemented all the mandatory features, and added many extensions:
+* General
+    * We have our own code base. We wrote our own OpenGL library (POGL). You can read more about this at the bottom of the README.
+* Part 1
+    * multiple terrains (island, moutains, live editor from the program(!))
+* Part 2
+    * water reflection
+    * water dynamics
+    * water depth (camera under water)
+    * underwater camera
+    * fog
+    * the sun moves around the terrain with a parabola
+* Part 3
+    * mouse for view direction
+    * jumping
+    * bezier curve (with speed control)
+    * advanced edit bezier mode
+    * rain particles
+
+Other small features:
+   * wireframe mode
+   * switch between 3 Bezier cameras
+       * bird-eye view
+       * lake view
+       * parabolic view
 
 # Keyboard tips:
 
@@ -118,15 +144,9 @@ Description of all classes of the PoGL library:
     * FrameBuffer object with bind and unbind functions. Draw your texture in between those 2 calls.
 
 * Skybox
-	* Manage a simple skybox	 
-
-
-********************************************************************
-* CURRENTLY WE MERGED THE POGL LIBRARY SOURCES WITH THE CG PROJECT SOURCES.
-* DUE TO LACK OF TIME, CODE BECAME A BIT MESSY. SORRY!!!
-********************************************************************
+    * Manage a simple skybox
 
 # PoGL Background
 
-A small home-made library aiming to accelerate simple openGL projects or for prototyping purpose. PoGL actually stands for Prototyping OpenGL (name is subject to change, still brainstorming, fist name was pgl). It allows you to quickly set up a multiplatform openGL application. It handles for you 2 types of camera (FLY and BEZIER). PoGL is still in development phase.
+A small home-made library aiming to accelerate simple OpenGL projects or for prototyping purpose. PoGL actually stands for Prototyping OpenGL (name is subject to change, still brainstorming, fist name was pgl). It allows you to quickly set up a multiplatform openGL application. It handles for you 2 types of camera (FLY and BEZIER). PoGL is still in development phase.
 
