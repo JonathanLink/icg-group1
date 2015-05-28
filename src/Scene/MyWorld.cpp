@@ -21,10 +21,7 @@ void MyWorld::init() {
 
     drawPerlin();
     _wireframeIsEnabled = false;
-    
-
 }
-
 
 void MyWorld::drawPerlin() {
     // Draw perlin noise in framebuffer we've just created
@@ -78,6 +75,9 @@ void MyWorld::render() {
         if (_bezierController.bezierEditModeEnabled) {
             _bezierController.render(_view, _projection);
         }
+
+        _sun.setPosition(getLightPosition());
+        _sun.render(_view, _projection);
     } else {
         _perlin.render(_view, _projection);
     }
@@ -91,11 +91,11 @@ void MyWorld::cleanUp() {
     _bezierController.cleanUp();
 
     _particles.cleanUp();
+    _sun.cleanUp();
 }
 
 // This method is ugly and i know it!
 void MyWorld::keyCallback(int key, int scancode, int action, int mode) {
-
     _bezierController.keyCallback(key, scancode, action, mode);
 
     if (action == GLFW_PRESS && key == GLFW_KEY_R) {
@@ -125,23 +125,27 @@ void MyWorld::keyCallback(int key, int scancode, int action, int mode) {
     if (action == GLFW_PRESS && key == GLFW_KEY_K) {
         _cameraBezier.increaseSpeed();
     }
-
-   
 }
 
 void MyWorld::updateFpsCameraPosition() {
+    // We use fly through camera first, and then put a constraint on Y coordinate
     updateFlyCameraPosition();
     glm::vec3 cameraPosition = _camera.getPosition();
     glm::vec2 pos_2d(cameraPosition.x, cameraPosition.z);
-    //std::cout << "2D position: " << pos_2d.x << ", " << pos_2d.y << std::endl;
+
+    // Convert world coordinates to texture coordinates
     glm::vec2 pos_texture(
         (pos_2d.x / Constants::TERRAIN_SCALE + 1.0) * 0.5,
         (pos_2d.y / Constants::TERRAIN_SCALE + 1.0) * 0.5
     );
-
+    //std::cout << "2D position: " << pos_2d.x << ", " << pos_2d.y << std::endl;
     //std::cout << "Texture position: " << pos_texture.x << ", " << pos_texture.y << std::endl;
+
+    // Find height corresponding to current position in texture scale
     float normalizedHeight = getHeight(pos_texture.x * _perlin.getFrameBufferWidth(), pos_texture.y * _perlin.getFrameBufferWidth());
     //std::cout << "Height: " << normalizedHeight << std::endl;
+
+    // Find height corresponding to current position in world scale, with a small offset in Y direction.
     float height = (normalizedHeight + 0.05) * Constants::TERRAIN_SCALE;
     if(_keys[GLFW_KEY_SPACE] && !_hasJumped) {
         _hasJumped = true;
@@ -153,6 +157,7 @@ void MyWorld::updateFpsCameraPosition() {
         GLfloat timeSinceJump = glfwGetTime() - _jumpStartTime;
         const static float MAX_JUMP_TIME = 3.0f;
         if (timeSinceJump <= MAX_JUMP_TIME) {
+            // Change Y position according to parabola of height vs time
             GLfloat jumpHeight = 9 - pow(3 * timeSinceJump - 3, 2.0) + _jumpStartHeight;
             _camera.setHeight(std::max(jumpHeight, height));
         } else {

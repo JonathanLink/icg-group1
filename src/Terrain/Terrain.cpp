@@ -51,7 +51,7 @@ void Terrain::init() {
     _rockTexId = gen2DTexture("../tex/rock.jpg", GL_RGB);
 
     reflection = false;
-}   
+}
 
 
 void Terrain::render(const glm::mat4 &view, const glm::mat4 &projection) {
