@@ -4,6 +4,9 @@ README
 You can have a look at the repo and the README online on GitHub:
 * https://github.com/JonathanLink/icg-group1/blob/master/README.md
 
+You can also access the presentation we did (with the TAs):
+* https://docs.google.com/presentation/d/1smA_cXriQBdCqXfAcJgoeClScihTdeLJtaJhzFbnZtE/pub?start=false&loop=false&delayms=3000
+
 # Group 1
 
 Members
